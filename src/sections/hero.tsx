@@ -20,24 +20,19 @@ export default function hero() {
           />
         </MotionDiv>
       </div>
-      <h1 className="text-2xl font-semibold text-center">
-        <MotionDiv delayOffset={0.8}>Developer 🧑🏻‍💻</MotionDiv>
-      </h1>
-      <h1 className="text-2xl font-semibold text-center">
-        <MotionDiv delayOffset={1}>Artist 🎨</MotionDiv>
-      </h1>
-      <h1 className="text-2xl font-semibold text-center">
-        <MotionDiv delayOffset={1}>Cook 🧑‍🍳</MotionDiv>
-      </h1>
-      <div className="my-12 flex w-full flex-col gap-2 text-center lg:w-[50%]">
+      <div className="my-9 flex w-full flex-col gap-2 text-center lg:w-[50%]">
         <MotionDiv delayOffset={1.2}>
-          <p>A Frontend Engineer</p>
+          <h1 className="text-2xl font-semibold">A UI Developer</h1>
         </MotionDiv>
         <MotionDiv delayOffset={1.4}>
           <p>
-            Who hails from the vibrant and tech-forward Greater Seattle Area. I
-            blend my expertise in Typescript, Next.js, React, and Tailwind CSS
-            to craft engaging, responsive, and user-friendly web experiences.
+            Who is passionate and innovative UI Developer hailing from the
+            vibrant and tech-forward Greater Seattle Area. With a strong
+            foundation in TypeScript, Next.js, React, and Tailwind CSS, I
+            specialize in crafting engaging, responsive, and user-friendly web
+            experiences. My mission is to bring creative ideas to life through
+            seamless and visually stunning interfaces that delight users and
+            drive results.
           </p>
         </MotionDiv>
       </div>

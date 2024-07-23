@@ -15,19 +15,22 @@ export default function about() {
         <article className="flex flex-col gap-4">
           <MotionDiv delayOffset={0.4}>
             <p>
-              As an ambitious entry-level Frontend Engineer, I specialize in
-              creating innovative and user-friendly web applications, with a
-              solid foundation in Next.js, TypeScript, React, Tailwind CSS, and
-              Prisma.
+              I&apos;m a passionate and innovative UI Developer hailing from the
+              vibrant and tech-forward Greater Seattle Area. With a strong
+              foundation in TypeScript, Next.js, React, and Tailwind CSS, I
+              specialize in crafting engaging, responsive, and user-friendly web
+              experiences. My mission is to bring creative ideas to life through
+              seamless and visually stunning interfaces that delight users and
+              drive results.
             </p>
           </MotionDiv>
           <MotionDiv delayOffset={0.5}>
             <p>
-              My ultimate goal is to enrich the web with unique yet accessible
-              digital products that users love and benefit from. I am keen on
-              collaboration, believing that sharing insights and innovative
-              approaches with peers leads to more impactful and meaningful
-              technology solutions.
+              I thrive on challenges and continuously strive to push the
+              boundaries of what&apos;s possible in web development. Whether
+              it&apos;s building dynamic applications or designing intuitive
+              user interfaces, I am dedicated to delivering high-quality
+              solutions that exceed expectations.
             </p>
           </MotionDiv>
           <MotionDiv delayOffset={0.6}>
