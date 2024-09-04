@@ -1,9 +1,9 @@
-import "./globals.css";
+import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
-import Header from "@/components/header";
+import Header from "@/components/layout/header";
 import BackToTop from "@/components/back-to-top";
-import GridBackground from "@/components/grid-background"
+import GridBackground from "@/components/grid-background";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     description: "Drake Alia's Personal Website",
     images: [
       {
-        url: "/photo.png",
+        url: "/images/photo.png",
         alt: "Drake's Portrait",
         width: 640,
         height: 800,

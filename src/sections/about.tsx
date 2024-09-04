@@ -47,7 +47,7 @@ export default function about() {
         <MotionDiv delayOffset={0.4}>
           <CoolPortraitCard className="hidden lg:block">
             <Image
-              src="/photo.png"
+              src="/images/photo.png"
               alt="photo"
               width={200}
               height={200}
@@ -57,7 +57,7 @@ export default function about() {
         </MotionDiv>
         <MotionDiv delayOffset={0.4}>
           <Image
-            src="/photo.png"
+            src="/images/photo.png"
             alt="photo"
             width={200}
             height={200}

@@ -12,8 +12,8 @@ export default function hero() {
       <div className="overflow-hidden md:p-4">
         <MotionDiv delayOffset={0.4}>
           <Image
-            src="/hero.png"
-            alt="photo"
+            src="/images/hero.png"
+            alt="hero"
             width={200}
             height={200}
             className="flex flex-col overflow-hidden rounded-lg"
