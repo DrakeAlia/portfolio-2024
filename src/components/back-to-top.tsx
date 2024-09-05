@@ -31,7 +31,7 @@ export default function BackToTop() {
   }, [y]);
   useEffect(() => {
     show ? controls.start("visible") : controls.start("hidden");
-  }, [show]);
+  }, [controls, show]);
 
   return (
     <motion.div

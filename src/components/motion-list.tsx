@@ -1,4 +1,5 @@
 "use client";
+
 import { cn } from "@/lib/utils";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
@@ -20,12 +21,12 @@ export default function MotionList({
     if (!showWhenInView) {
       controls.start("visible");
     }
-  }, []);
+  }, [controls, showWhenInView]);
   useEffect(() => {
     if (isInView && showWhenInView) {
       controls.start("visible");
     }
-  }, [isInView]);
+  }, [controls, isInView, showWhenInView]);
   return (
     <motion.ul
       ref={ref}
