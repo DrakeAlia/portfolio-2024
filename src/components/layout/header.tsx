@@ -4,8 +4,6 @@ import Link from "next/link";
 import localFont from "next/font/local";
 import { cn } from "@/lib/utils";
 
-// ../assets/GoldenSignature.otf
-
 const goldenSignature = localFont({
   src: "../../assets/GoldenSignature.otf",
   display: "swap",

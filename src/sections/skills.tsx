@@ -2,7 +2,7 @@ import MotionDiv from "@/components/motion-div";
 import MotionList from "@/components/motion-list";
 import Image from "next/image";
 
-// icons
+// Icons:
 import reactIcon from "../../public/icons/react.png";
 import nextjsIcon from "../../public/icons/next-js.png";
 import typescriptIcon from "../../public/icons/typescript.png";
@@ -19,6 +19,7 @@ import macosIcon from "../../public/icons/macos.png";
 import vscodeIcon from "../../public/icons/vscode.png";
 import postmanIcon from "../../public/icons/postman.svg";
 import githubActionsIcon from "../../public/icons/github-actions.png";
+
 
 export default function skills() {
   const data = [
