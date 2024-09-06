@@ -115,7 +115,7 @@ export default function About() {
           variants={itemVariants}
           className="w-full max-w-2xl mx-auto lg:max-w-full"
         >
-          <CardContainer className="inter-var w-full">
+          <CardContainer className="flex justify-centerinter-var w-full">
             <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full h-auto rounded-xl p-6 border transition-all duration-300 hover:scale-105">
               <CardItem
                 translateZ="100"
@@ -124,8 +124,8 @@ export default function About() {
                 <Image
                   src="/images/photo.png"
                   alt="Drake Alia"
-                  layout="fill"
-                  objectFit="cover"
+                  width={450}
+                  height={400}
                   className="rounded-xl group-hover/card:shadow-xl"
                 />
               </CardItem>
