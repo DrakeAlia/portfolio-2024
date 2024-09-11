@@ -1,6 +1,29 @@
-import MotionDiv from "@/components/motion-div";
-import MotionList from "@/components/motion-list";
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import Image, { StaticImageData } from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Separator } from "@/components/ui/separator";
+import { Progress } from "@/components/ui/progress";
+// import {
+//   Tooltip,
+//   TooltipContent,
+//   TooltipProvider,
+//   TooltipTrigger,
+// } from "@/components/ui/tooltip";
+// import { Card, CardContent } from "@/components/ui/card";
 
 // Icons:
 import reactIcon from "../../public/icons/react.png";
@@ -20,8 +43,21 @@ import vscodeIcon from "../../public/icons/vscode.png";
 import postmanIcon from "../../public/icons/postman.svg";
 import githubActionsIcon from "../../public/icons/github-actions.png";
 
+interface Skill {
+  name: string;
+  icon: StaticImageData;
+  proficiency?: number;
+  description?: string;
+}
 
-export default function skills() {
+interface SkillCategory {
+  title: string;
+  skills: Skill[];
+}
+
+export default function Skills() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
   const data = [
     {
       title: "Web Development",
@@ -29,6 +65,9 @@ export default function skills() {
         {
           name: "React.js",
           icon: reactIcon,
+          proficiency: 90,
+          description:
+            "Advanced proficiency in building complex React applications.",
         },
         {
           name: "Next.js",
@@ -132,41 +171,114 @@ export default function skills() {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
   return (
-    <section
+    <motion.section
       id="skills"
-      className="flex w-full flex-col items-center text-center"
+      className="flex w-full flex-col items-center text-center py-16 bg-gradient-to-b from-background to-background/50"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
     >
-      <MotionDiv>
-        <h2 className="mb-4 text-[1.4rem] md:text-[2rem]">My Skills</h2>
-      </MotionDiv>
-      <div className="flex flex-wrap justify-center">
-        {data.map((item, index) => (
-          <MotionDiv key={index}>
-            <div className="mb-6 md:px-2">
-              <h3>{item.title}</h3>
-              <MotionList className="flex flex-wrap justify-evenly gap-0 md:gap-5 md:px-6 lg:justify-center">
-                {item.skills.map((skill) => (
-                  <SkillCard key={skill.name} {...skill} />
-                ))}
-              </MotionList>
-            </div>
-          </MotionDiv>
-        ))}
-      </div>
-    </section>
+      <motion.h2 className="mb-8 text-3xl font-bold" variants={itemVariants}>
+        My Skills
+      </motion.h2>
+      <motion.div
+        className="w-full max-w-4xl px-4"
+        variants={containerVariants}
+      >
+        <Accordion
+          type="single"
+          collapsible
+          className="w-full"
+          onValueChange={(value) => setSelectedCategory(value)}
+        >
+          {data.map((category, index) => (
+            <AccordionItem key={index} value={category.title}>
+              <AccordionTrigger className="text-lg font-semibold">
+                {category.title}
+              </AccordionTrigger>
+              <AccordionContent>
+                <AnimatePresence>
+                  {selectedCategory === category.title && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="grid grid-cols-2 md:grid-cols-3 gap-4 py-4"
+                    >
+                      {category.skills.map((skill) => (
+                        <SkillBadge key={skill.name} {...skill} />
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </AccordionContent>
+              {index < data.length - 1 && <Separator className="my-2" />}
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </motion.div>
+    </motion.section>
   );
 }
 
-function SkillCard({ icon, name }: { icon: string; name: string }) {
+function SkillBadge({
+  icon,
+  name,
+  proficiency,
+  description,
+}: {
+  icon: StaticImageData;
+  name: string;
+  proficiency?: number;
+  description?: string;
+}) {
   return (
-    <div className="group rounded-xl border-none p-5 text-center shadow-none transition-all duration-200 ease-linear hover:scale-110 hover:drop-shadow-xl">
-      <div className="flex flex-col items-center gap-2">
-        <div className="flex h-16 w-16 items-center justify-center">
-          <Image src={icon} alt={name} priority />
+    <HoverCard>
+      <HoverCardTrigger>
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex flex-col items-center"
+        >
+          <Badge variant="secondary" className="p-2 mb-2">
+            <div className="flex items-center gap-2">
+              <Image src={icon} alt={name} width={24} height={24} />
+              <span>{name}</span>
+            </div>
+          </Badge>
+          <Progress value={proficiency} className="w-full h-1" />
+        </motion.div>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-64">
+        <div className="space-y-2">
+          <h4 className="text-sm font-semibold">{name}</h4>
+          <Progress value={proficiency} className="w-full h-2" />
+          <p className="text-xs text-muted-foreground">
+            Proficiency: {proficiency}%
+          </p>
+          <p className="text-sm">{description}</p>
         </div>
-        <p>{name}</p>
-      </div>
-    </div>
+      </HoverCardContent>
+    </HoverCard>
   );
 }
