@@ -55,119 +55,140 @@ interface SkillCategory {
   skills: Skill[];
 }
 
+const skillsData: Record<string, Skill> = {
+  react: {
+    name: "React.js",
+    icon: reactIcon,
+    proficiency: 90,
+    description: "Advanced proficiency in building complex React applications.",
+  },
+  typescript: {
+    name: "TypeScript",
+    icon: typescriptIcon,
+    proficiency: 80,
+    description: "Strong typing and code safety.",
+  },
+  javascript: {
+    name: "JavaScript",
+    icon: javascriptIcon,
+    proficiency: 80,
+    description: "Proficient in modern JavaScript.",
+  },
+  html5: {
+    name: "HTML5",
+    icon: html5Icon,
+    proficiency: 90,
+    description: "Semantic markup and accessibility.",
+  },
+  tailwindcss: {
+    name: "Tailwind CSS",
+    icon: tailwindcssIcon,
+    proficiency: 85,
+    description: "Utility-first CSS framework.",
+  },
+  shadcnui: {
+    name: "shadcn/ui",
+    icon: shadcnuiIcon,
+    proficiency: 90,
+    description: "Custom UI library for React.",
+  },
+  prettier: {
+    name: "Prettier",
+    icon: prettierIcon,
+    proficiency: 90,
+    description: "Code formatting and style consistency.",
+  },
+  nodejs: {
+    name: "Node.js",
+    icon: nodejsIcon,
+    proficiency: 70,
+    description: "Building scalable and performant APIs.",
+  },
+  prisma: {
+    name: "Prisma ORM",
+    icon: prismaIcon,
+    proficiency: 70,
+    description: "Modern database access for Node.js.",
+  },
+  postgres: {
+    name: "PostgreSQL",
+    icon: postgresIcon,
+    proficiency: 50,
+    description: "Relational database management system.",
+  },
+  reactnative: {
+    name: "React Native",
+    icon: reactIcon,
+    proficiency: 50,
+    description: "Building cross-platform mobile apps.",
+  },
+  git: {
+    name: "Git",
+    icon: gitIcon,
+    proficiency: 90,
+    description: "Version control and collaboration.",
+  },
+  macos: {
+    name: "macOS",
+    icon: macosIcon,
+    proficiency: 90,
+    description: "Primary operating system for development.",
+  },
+  vscode: {
+    name: "VS Code",
+    icon: vscodeIcon,
+    proficiency: 90,
+    description: "Powerful code editor with extensions.",
+  },
+  postman: {
+    name: "Postman",
+    icon: postmanIcon,
+    proficiency: 50,
+    description: "API development and testing tool.",
+  },
+  githubActions: {
+    name: "GitHub Actions",
+    icon: githubActionsIcon,
+    proficiency: 45,
+    description: "Automate workflows and CI/CD pipelines.",
+  },
+};
+
 export default function Skills() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const data = [
+  const data: SkillCategory[] = [
     {
       title: "Web Development",
       skills: [
-        {
-          name: "React.js",
-          icon: reactIcon,
-          proficiency: 90,
-          description:
-            "Advanced proficiency in building complex React applications.",
-        },
-        {
-          name: "Next.js",
-          icon: nextjsIcon,
-        },
-        {
-          name: "TypeScript",
-          icon: typescriptIcon,
-        },
-        {
-          name: "JavaScript",
-          icon: javascriptIcon,
-        },
-        {
-          name: "HTML5",
-          icon: html5Icon,
-        },
-        {
-          name: "Tailwind CSS",
-          icon: tailwindcssIcon,
-        },
-
-        {
-          name: "shadcn/ui",
-          icon: shadcnuiIcon,
-        },
-        {
-          name: "Prettier",
-          icon: prettierIcon,
-        },
+        skillsData.react,
+        skillsData.typescript,
+        skillsData.javascript,
+        skillsData.html5,
+        skillsData.tailwindcss,
+        skillsData.shadcnui,
+        skillsData.prettier,
       ],
     },
     {
       title: "Backend Development",
-      skills: [
-        {
-          name: "Node.js",
-          icon: nodejsIcon,
-        },
-        {
-          name: "Prisma ORM",
-          icon: prismaIcon,
-        },
-        {
-          name: "PostgreSQL",
-          icon: postgresIcon,
-        },
-      ],
+      skills: [skillsData.nodejs, skillsData.prisma, skillsData.postgres],
     },
     {
       title: "Mobile Development",
-      skills: [
-        {
-          name: "React Native",
-          icon: reactIcon,
-        },
-      ],
+      skills: [skillsData.reactnative],
     },
     {
       title: "DevOps",
-      skills: [
-        {
-          name: "Git",
-          icon: gitIcon,
-        },
-        {
-          name: "GitHub Actions",
-          icon: githubActionsIcon,
-        },
-      ],
+      skills: [skillsData.git, skillsData.githubActions],
     },
     {
       title: "Languages",
-      skills: [
-        {
-          name: "TypeScript",
-          icon: typescriptIcon,
-        },
-        {
-          name: "JavaScript",
-          icon: javascriptIcon,
-        },
-      ],
+      skills: [skillsData.typescript, skillsData.javascript],
     },
     {
       title: "Tools & Environment",
-      skills: [
-        {
-          name: "macOS",
-          icon: macosIcon,
-        },
-        {
-          name: "VS Code",
-          icon: vscodeIcon,
-        },
-        {
-          name: "Postman",
-          icon: postmanIcon,
-        },
-      ],
+      skills: [skillsData.macos, skillsData.vscode, skillsData.postman],
     },
   ];
 
