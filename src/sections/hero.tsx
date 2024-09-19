@@ -2,10 +2,9 @@
 
 import React from "react";
 import ContactList from "@/components/contact-list";
-import MotionText from "@/components/motion-text";
 import MotionDiv from "@/components/motion-div";
 import Image from "next/image";
-import { motion, Variants } from "framer-motion";
+import { motion, Variants, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,6 +30,28 @@ const itemVariants: Variants = {
 };
 
 export default function Hero() {
+  const [isHovered, setIsHovered] = React.useState(false);
+
+  const nameVariants: Variants = {
+    initial: { opacity: 0, y: -20 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
+
+  const buttonVariants: Variants = {
+    initial: { scale: 1 },
+    hover: { scale: 1.05, transition: { duration: 0.2 } },
+    tap: { scale: 0.95 },
+  };
+
+  const iconVariants: Variants = {
+    initial: { rotate: 0 },
+    hover: { rotate: 360, transition: { duration: 0.5 } },
+  };
+
   return (
     <motion.section
       className="min-h-screen flex flex-col items-center justify-center relative bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
@@ -45,7 +66,10 @@ export default function Hero() {
             variants={itemVariants}
           >
             <MotionDiv delayOffset={0.4} className="relative">
-              <motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <Image
                   src="/images/hero.png"
                   alt="Drake Alia"
@@ -65,9 +89,11 @@ export default function Hero() {
             <div className="flex-1">
               <motion.h1
                 className="mb-4 text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400"
-                variants={itemVariants}
+                variants={nameVariants}
+                initial="initial"
+                animate="animate"
               >
-                <MotionText delayOffset={0}>Drake Alia</MotionText>
+                Drake Alia
               </motion.h1>
 
               <motion.div variants={itemVariants}>
@@ -89,16 +115,34 @@ export default function Hero() {
               </motion.p>
 
               <motion.ul className="space-y-2 mb-6" variants={itemVariants}>
-                <li className="flex items-center">
-                  <Code className="mr-2 text-blue-500" /> TypeScript & Next.js
-                </li>
-                <li className="flex items-center">
-                  <Palette className="mr-2 text-purple-500" /> React & Tailwind
-                  CSS
-                </li>
-                <li className="flex items-center">
-                  <Zap className="mr-2 text-yellow-500" /> User-Centric Design
-                </li>
+                {[
+                  {
+                    icon: Code,
+                    text: "TypeScript & Next.js",
+                    color: "text-blue-500",
+                  },
+                  {
+                    icon: Palette,
+                    text: "React & Tailwind CSS",
+                    color: "text-purple-500",
+                  },
+                  {
+                    icon: Zap,
+                    text: "User-Centric Design",
+                    color: "text-yellow-500",
+                  },
+                ].map((item, index) => (
+                  <motion.li
+                    key={index}
+                    className="flex items-center"
+                    whileHover={{ x: 5 }}
+                  >
+                    <motion.div variants={iconVariants} whileHover="hover">
+                      <item.icon className={`mr-2 ${item.color}`} />
+                    </motion.div>
+                    {item.text}
+                  </motion.li>
+                ))}
               </motion.ul>
 
               <motion.div variants={itemVariants}>
@@ -115,13 +159,27 @@ export default function Hero() {
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 1.5, repeat: Infinity }}
       >
-        <Button
-          variant="ghost"
-          size="icon"
-          className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white/70 dark:hover:bg-gray-700/70 transition-colors"
-        >
-          <ChevronDown className="h-6 w-6" />
-        </Button>
+        <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white/70 dark:hover:bg-gray-700/70 transition-colors"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={isHovered ? "hovered" : "default"}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ChevronDown className="h-6 w-6" />
+              </motion.div>
+            </AnimatePresence>
+          </Button>
+        </motion.div>
       </motion.div>
     </motion.section>
   );

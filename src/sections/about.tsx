@@ -12,7 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { ChefHat, Code, Rocket } from "lucide-react";
+import { ChefHat, Code, Rocket, Download } from "lucide-react";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 
 export default function About() {
@@ -26,6 +26,19 @@ export default function About() {
       },
     },
   };
+
+   const handleDownloadResume = () => {
+     // The path to your resume PDF file
+     const resumeUrl = "/path/to/your/resume.pdf";
+
+     // Creating a temporary anchor element
+     const link = document.createElement("a");
+     link.href = resumeUrl;
+     link.download = "Your_Name_Resume.pdf"; // Set the desired file name here
+     document.body.appendChild(link);
+     link.click();
+     document.body.removeChild(link);
+   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -173,8 +186,12 @@ export default function About() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white">
-          Download Resume
+        <Button
+          size="lg"
+          className="bg-blue-500 hover:bg-blue-600 text-white"
+          onClick={handleDownloadResume}
+        >
+          <Download className="mr-2 h-4 w-4" /> Download Resume
         </Button>
       </motion.div>
     </motion.section>
