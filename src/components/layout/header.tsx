@@ -65,7 +65,7 @@ export default function Header() {
         <Link href="/" className="flex items-center space-x-2">
           <motion.div
             className={cn(
-              "text-2xl font-bold text-primary",
+              "text-3xl md:text-4xl font-bold text-primary",
               goldenSignature.className
             )}
             whileHover={{ scale: 1.05 }}
@@ -105,52 +105,57 @@ export default function Header() {
           initial="hidden"
           animate="visible"
         >
-          <motion.div variants={childVariants} className="hidden sm:block">
-            <CommandMenu />
-          </motion.div>
-
-          <motion.div
-            className="flex items-center space-x-3"
-            variants={childVariants}
-          >
-            <Link
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
+          <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+            <motion.div
+              variants={childVariants}
+              className="w-full flex-1 md:w-auto md:flex-none"
             >
-              <div
-                className={cn(
-                  buttonVariants({
-                    variant: "ghost",
-                  }),
-                  "w-9 px-0"
-                )}
-              >
-                <Icons.gitHub className="h-4 w-4" />
-                <span className="sr-only">GitHub</span>
-              </div>
-            </Link>
+              <CommandMenu />
+            </motion.div>
 
-            <Link
-              href={siteConfig.links.twitter}
-              target="_blank"
-              rel="noreferrer"
+            <motion.div
+              className="flex items-center space-x-3"
+              variants={childVariants}
             >
-              <div
-                className={cn(
-                  buttonVariants({
-                    variant: "ghost",
-                  }),
-                  "w-9 px-0"
-                )}
+              <Link
+                href={siteConfig.links.github}
+                target="_blank"
+                rel="noreferrer"
               >
-                <Icons.twitter className="h-3 w-3 fill-current" />
-                <span className="sr-only">Twitter</span>
-              </div>
-            </Link>
+                <div
+                  className={cn(
+                    buttonVariants({
+                      variant: "ghost",
+                    }),
+                    "w-9 px-0"
+                  )}
+                >
+                  <Icons.gitHub className="h-4 w-4" />
+                  <span className="sr-only">GitHub</span>
+                </div>
+              </Link>
 
-            <ModeToggle />
-          </motion.div>
+              <Link
+                href={siteConfig.links.twitter}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <div
+                  className={cn(
+                    buttonVariants({
+                      variant: "ghost",
+                    }),
+                    "w-9 px-0"
+                  )}
+                >
+                  <Icons.twitter className="h-3 w-3 fill-current" />
+                  <span className="sr-only">Twitter</span>
+                </div>
+              </Link>
+
+              <ModeToggle />
+            </motion.div>
+          </div>
         </motion.div>
       </div>
     </motion.header>
