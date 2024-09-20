@@ -27,18 +27,18 @@ export default function About() {
     },
   };
 
-   const handleDownloadResume = () => {
-     // The path to your resume PDF file
-     const resumeUrl = "/path/to/your/resume.pdf";
+  const handleDownloadResume = () => {
+    // The path to your resume PDF file
+    const resumeUrl = "/path/to/your/resume.pdf";
 
-     // Creating a temporary anchor element
-     const link = document.createElement("a");
-     link.href = resumeUrl;
-     link.download = "Your_Name_Resume.pdf"; // Set the desired file name here
-     document.body.appendChild(link);
-     link.click();
-     document.body.removeChild(link);
-   };
+    // Creating a temporary anchor element
+    const link = document.createElement("a");
+    link.href = resumeUrl;
+    link.download = "Your_Name_Resume.pdf"; // Set the desired file name here
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -61,7 +61,7 @@ export default function About() {
   return (
     <motion.section
       id="about"
-      className="mx-auto my-16 px-4 md:px-8 max-w-6xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 rounded-xl py-12"
+      className="mx-auto my-16 px-4 md:px-8 max-w-6xl rounded-xl py-12"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -186,11 +186,7 @@ export default function About() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <Button
-          size="lg"
-          className="bg-blue-500 hover:bg-blue-600 text-white"
-          onClick={handleDownloadResume}
-        >
+        <Button size="lg" className=" " onClick={handleDownloadResume}>
           <Download className="mr-2 h-4 w-4" /> Download Resume
         </Button>
       </motion.div>

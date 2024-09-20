@@ -4,6 +4,8 @@ import { Montserrat } from "next/font/google";
 import Header from "@/components/layout/header";
 import BackToTop from "@/components/back-to-top";
 import GridBackground from "@/components/grid-background";
+import { ThemeProvider } from "@/components/theme-provider";
+import { cn } from "@/lib/utils";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -35,11 +37,27 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
-        <Header />
-        <GridBackground />
-        <main className="container overflow-x-hidden lg:px-28">{children}</main>
-        <BackToTop />
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          montserrat.className
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div vaul-drawer-wrapper="">
+            <div className="relative flex min-h-screen flex-col bg-background">
+              <Header />
+              <GridBackground />
+              <main className="flex-1">{children}</main>
+              <BackToTop />
+            </div>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

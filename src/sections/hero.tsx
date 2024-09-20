@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
+import Image from "next/image";
 import ContactList from "@/components/contact-list";
 import MotionDiv from "@/components/motion-div";
-import Image from "next/image";
-import { motion, Variants, AnimatePresence } from "framer-motion";
+import { motion, Variants, AnimatePresence, useAnimation } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,11 @@ const itemVariants: Variants = {
 
 export default function Hero() {
   const [isHovered, setIsHovered] = React.useState(false);
+  const controls = useAnimation();
+
+  useEffect(() => {
+    controls.start({ opacity: 1, y: 0 });
+  }, [controls]);
 
   const nameVariants: Variants = {
     initial: { opacity: 0, y: -20 },
@@ -52,14 +57,29 @@ export default function Hero() {
     hover: { rotate: 360, transition: { duration: 0.5 } },
   };
 
+  const badgeVariants: Variants = {
+    initial: { scale: 0 },
+    animate: {
+      scale: 1,
+      transition: { type: "spring", stiffness: 200, damping: 10 },
+    },
+  };
+
+  const handleScrollDown = () => {
+    const nextSection = document.getElementById("about"); // Assuming the next section is the About section
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <motion.section
-      className="min-h-screen flex flex-col items-center justify-center relative bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
+      className="min-h-screen flex flex-col items-center justify-center relative bg-[hsl(var(--custom-bg))]"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      <Card className="w-full max-w-4xl mx-auto bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-xl border-t border-l border-white/50 dark:border-gray-700/50">
+      <Card className="w-full max-w-4xl mx-auto bg-[hsl(var(--custom-secondary))] backdrop-blur-sm">
         <CardContent className="p-8 md:p-12">
           <motion.div
             className="flex flex-col md:flex-row items-center md:items-start gap-8"
@@ -88,7 +108,7 @@ export default function Hero() {
 
             <div className="flex-1">
               <motion.h1
-                className="mb-4 text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400"
+                className="mb-4 text-4xl md:text-5xl font-bold "
                 variants={nameVariants}
                 initial="initial"
                 animate="animate"
@@ -96,17 +116,27 @@ export default function Hero() {
                 Drake Alia
               </motion.h1>
 
-              <motion.div variants={itemVariants}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={controls}
+                transition={{ delay: 0.5 }}
+              >
                 <Badge
                   variant="secondary"
-                  className="text-lg font-semibold mb-4 px-4 py-2"
+                  className="text-lg font-semibold mb-4 px-4 py-2 bg-[hsl(var(--custom-primary))] text-[hsl(var(--custom-bg))]"
                 >
-                  UI Developer
+                  <motion.span
+                    variants={badgeVariants}
+                    initial="initial"
+                    animate="animate"
+                  >
+                    UI Developer
+                  </motion.span>
                 </Badge>
               </motion.div>
 
               <motion.p
-                className="text-gray-600 dark:text-gray-300 mb-6"
+                className="text-[hsl(var(--custom-text))] mb-6"
                 variants={itemVariants}
               >
                 Passionate and innovative UI Developer hailing from the vibrant
@@ -159,7 +189,12 @@ export default function Hero() {
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 1.5, repeat: Infinity }}
       >
-        <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap">
+        <motion.div
+          variants={buttonVariants}
+          whileHover="hover"
+          whileTap="tap"
+          onClick={handleScrollDown}
+        >
           <Button
             variant="ghost"
             size="icon"

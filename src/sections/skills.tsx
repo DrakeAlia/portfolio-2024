@@ -213,7 +213,7 @@ export default function Skills() {
   return (
     <motion.section
       id="skills"
-      className="flex w-full flex-col items-center text-center py-16 bg-gradient-to-b from-background to-background/50"
+      className="flex w-full flex-col items-center text-center py-16  from-background to-background/50"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
