@@ -5,25 +5,11 @@ import Image, { StaticImageData } from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
-// import {
-//   Tooltip,
-//   TooltipContent,
-//   TooltipProvider,
-//   TooltipTrigger,
-// } from "@/components/ui/tooltip";
-// import { Card, CardContent } from "@/components/ui/card";
 
 // Icons:
 import reactIcon from "../../public/icons/react.png";
@@ -42,6 +28,8 @@ import macosIcon from "../../public/icons/macos.png";
 import vscodeIcon from "../../public/icons/vscode.png";
 import postmanIcon from "../../public/icons/postman.svg";
 import githubActionsIcon from "../../public/icons/github-actions.png";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
 
 interface Skill {
   name: string;
@@ -156,6 +144,20 @@ const skillsData: Record<string, Skill> = {
 
 export default function Skills() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const buttonVariants = {
+    initial: { scale: 1 },
+    hover: { scale: 1.05, transition: { duration: 0.2 } },
+    tap: { scale: 0.95 },
+  };
+
+  const handleScrollDown = () => {
+    const nextSection = document.getElementById("projects"); // Adjust this to the ID of your next section
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const data: SkillCategory[] = [
     {
@@ -210,53 +212,104 @@ export default function Skills() {
     },
   };
 
+  const categoryVariants = {
+    closed: { height: 0, opacity: 0 },
+    open: { height: "auto", opacity: 1, transition: { duration: 0.3 } },
+  };
+
   return (
     <motion.section
       id="skills"
-      className="flex w-full flex-col items-center text-center py-16  from-background to-background/50"
+      className="flex w-full flex-col items-center text-center py-16 from-background to-background/50"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      <motion.h2 className="mb-8 text-3xl font-bold" variants={itemVariants}>
+      <motion.h2
+        className="mb-12 text-4xl font-bold text-primary relative inline-block"
+        variants={itemVariants}
+      >
         My Skills
+        <motion.span
+          className="absolute bottom-0 left-0 w-full h-1 bg-primary"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        />
       </motion.h2>
       <motion.div
         className="w-full max-w-4xl px-4"
         variants={containerVariants}
       >
-        <Accordion
-          type="single"
-          collapsible
-          className="w-full"
-          onValueChange={(value) => setSelectedCategory(value)}
+        {data.map((category, index) => (
+          <motion.div
+            key={category.title}
+            className="mb-6 last:mb-0"
+            variants={itemVariants}
+          >
+            <motion.button
+              className="w-full text-left text-lg font-semibold py-2 px-4 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors"
+              onClick={() =>
+                setSelectedCategory(
+                  selectedCategory === category.title ? null : category.title
+                )
+              }
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {category.title}
+            </motion.button>
+            <AnimatePresence>
+              {selectedCategory === category.title && (
+                <motion.div
+                  variants={categoryVariants}
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                  className="overflow-hidden"
+                >
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 py-4">
+                    {category.skills.map((skill) => (
+                      <SkillBadge key={skill.name} {...skill} />
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        ))}
+      </motion.div>
+      <motion.div
+        className="mt-12"
+        variants={itemVariants}
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
+      >
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={handleScrollDown}
         >
-          {data.map((category, index) => (
-            <AccordionItem key={index} value={category.title}>
-              <AccordionTrigger className="text-lg font-semibold">
-                {category.title}
-              </AccordionTrigger>
-              <AccordionContent>
-                <AnimatePresence>
-                  {selectedCategory === category.title && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
-                      className="grid grid-cols-2 md:grid-cols-3 gap-4 py-4"
-                    >
-                      {category.skills.map((skill) => (
-                        <SkillBadge key={skill.name} {...skill} />
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </AccordionContent>
-              {index < data.length - 1 && <Separator className="my-2" />}
-            </AccordionItem>
-          ))}
-        </Accordion>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="bg-primary/10 hover:bg-primary/20 transition-colors rounded-full"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={isHovered ? "hovered" : "default"}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ChevronDown className="h-6 w-6 text-primary" />
+              </motion.div>
+            </AnimatePresence>
+          </Button>
+        </motion.div>
       </motion.div>
     </motion.section>
   );
@@ -277,7 +330,7 @@ function SkillBadge({
     <HoverCard>
       <HoverCardTrigger>
         <motion.div
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.05, y: -5 }}
           whileTap={{ scale: 0.95 }}
           className="flex flex-col items-center"
         >

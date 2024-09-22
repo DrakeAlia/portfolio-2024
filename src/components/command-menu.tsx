@@ -21,6 +21,7 @@ import {
 import {
   CircleIcon,
   FileIcon,
+  DownloadIcon,
   LaptopIcon,
   MoonIcon,
   SunIcon,
@@ -112,6 +113,13 @@ export function CommandMenu({ ...props }: DialogProps) {
           {/* Sections group */}
           <CommandGroup heading="Sections">
             <CommandItem
+              value="Hero"
+              onSelect={() => runCommand(() => handleScroll("hero"))}
+            >
+              <DownloadIcon className="mr-2 h-4 w-4" />
+              Me
+            </CommandItem>
+            <CommandItem
               value="About"
               onSelect={() => runCommand(() => handleScroll("about"))}
             >
@@ -129,7 +137,7 @@ export function CommandMenu({ ...props }: DialogProps) {
               value="Projects"
               onSelect={() => runCommand(() => handleScroll("projects"))}
             >
-              <BoxIcon className="mr-2 h-4 w-4" />
+              <FileIcon className="mr-2 h-4 w-4" />
               Projects
             </CommandItem>
             <CommandItem

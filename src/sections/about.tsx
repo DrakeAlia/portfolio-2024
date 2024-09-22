@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -12,10 +12,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { ChefHat, Code, Rocket, Download } from "lucide-react";
+import { ChefHat, Code, Rocket, Download, ChevronDown } from "lucide-react";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 
 export default function About() {
+  const [isHovered, setIsHovered] = useState(false);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -53,9 +54,22 @@ export default function About() {
     visible: { opacity: 1 },
   };
 
+  const buttonVariants = {
+    initial: { scale: 1 },
+    hover: { scale: 1.05, transition: { duration: 0.2 } },
+    tap: { scale: 0.95 },
+  };
+
   const underlineVariants = {
     hidden: { width: "0%" },
     visible: { width: "100%", transition: { duration: 1 } },
+  };
+
+  const handleScrollDown = () => {
+    const nextSection = document.getElementById("skills");
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -72,7 +86,7 @@ export default function About() {
       >
         About Me
         <motion.span
-          className="absolute bottom-0 left-0 h-1 bg-blue-500"
+          className="absolute bottom-0 left-0 h-1 bg-primary"
           variants={underlineVariants}
         />
       </motion.h2>
@@ -164,7 +178,9 @@ export default function About() {
                     <TooltipTrigger>
                       <Badge
                         variant="secondary"
-                        className="p-3 transition-all duration-300 hover:bg-blue-500 hover:text-white"
+                        className="p-3 transition-all duration-300
+                        hover:scale-110 hover:bg-primary hover:text-white
+                        "
                       >
                         <item.icon size={18} />
                       </Badge>
@@ -180,16 +196,51 @@ export default function About() {
         </motion.div>
       </div>
 
-      <motion.div
-        className="mt-8 text-center"
-        variants={itemVariants}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <Button size="lg" className=" " onClick={handleDownloadResume}>
-          <Download className="mr-2 h-4 w-4" /> Download Resume
-        </Button>
-      </motion.div>
+      <div className="flex flex-col items-center mt-8">
+        <motion.div
+          className="mb-8"
+          variants={itemVariants}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Button size="lg" onClick={handleDownloadResume}>
+            <Download className="mr-2 h-4 w-4" /> Download Resume
+          </Button>
+        </motion.div>
+
+        <motion.div
+          variants={itemVariants}
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          <motion.div
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+            onClick={handleScrollDown}
+          >
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white/70 dark:hover:bg-gray-700/70 transition-colors"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={isHovered ? "hovered" : "default"}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown className="h-6 w-6" />
+                </motion.div>
+              </AnimatePresence>
+            </Button>
+          </motion.div>
+        </motion.div>
+      </div>
     </motion.section>
   );
 }
