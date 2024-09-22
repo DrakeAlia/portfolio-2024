@@ -6,7 +6,7 @@ import localFont from "next/font/local";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { CommandMenu } from "../command-menu";
-import { ModeToggle } from "./Mode-Toggle";
+import { ModeToggle } from "./mode-toggle";
 import { motion } from "framer-motion";
 import { Icons } from "@/components/ui/icons";
 import { buttonVariants } from "@/components/ui/button";
