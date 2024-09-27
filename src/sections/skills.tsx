@@ -238,12 +238,6 @@ export default function Skills() {
         >
           My Skills
         </motion.span>
-        <motion.span
-          className="absolute bottom-0 left-0 w-full h-1 bg-primary"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        />
       </motion.h2>
       <motion.div
         className="w-full max-w-4xl px-4"
@@ -296,7 +290,7 @@ export default function Skills() {
         className="mt-12"
         variants={itemVariants}
         animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity }}
+        transition={{ duration: 1.5 }}
       >
         <motion.div
           whileHover={{ scale: 1.1 }}
@@ -306,7 +300,7 @@ export default function Skills() {
           <Button
             variant="ghost"
             size="icon"
-            className="bg-primary/10 hover:bg-primary/20 transition-colors rounded-full"
+            className="bg-primary hover:bg-primary/20 rounded-full"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
@@ -318,7 +312,7 @@ export default function Skills() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.2 }}
               >
-                <ChevronDown className="h-6 w-6 text-primary" />
+                <ChevronDown className="h-6 w-6 text-white" />
               </motion.div>
             </AnimatePresence>
           </Button>

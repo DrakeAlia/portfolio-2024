@@ -74,12 +74,12 @@ export default function Hero() {
 
   return (
     <motion.section
-      className="min-h-screen flex flex-col items-center justify-center relative bg-[hsl(var(--custom-bg))]"
+      className="min-h-screen md:min-h-[120vh] flex flex-col items-center justify-center relative bg-[hsl(var(--custom-bg))] py-8 md:py-16"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      <Card className="w-full max-w-4xl mx-auto bg-[hsl(var(--custom-secondary))] backdrop-blur-sm">
+      <Card className="w-full max-w-4xl md:max-w-5xl mx-auto bg-[hsl(var(--custom-secondary))] backdrop-blur-sm mb-12 md:mb-24">
         <CardContent className="p-8 md:p-12">
           <motion.div
             className="flex flex-col md:flex-row items-center md:items-start gap-8"
@@ -186,7 +186,7 @@ export default function Hero() {
       <motion.div
         variants={itemVariants}
         animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity }}
+        transition={{ duration: 1.5 }}
       >
         <motion.div
           whileHover={{ scale: 1.1 }}
@@ -196,7 +196,7 @@ export default function Hero() {
           <Button
             variant="ghost"
             size="icon"
-            className="bg-primary/10 hover:bg-primary/20 transition-colors rounded-full"
+            className="bg-primary hover:bg-primary/20 transition-colors rounded-full"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
@@ -208,7 +208,7 @@ export default function Hero() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.2 }}
               >
-                <ChevronDown className="h-6 w-6 text-primary" />
+                <ChevronDown className="h-6 w-6 text-white" />
               </motion.div>
             </AnimatePresence>
           </Button>
