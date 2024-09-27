@@ -220,16 +220,24 @@ export default function Skills() {
   return (
     <motion.section
       id="skills"
-      className="flex w-full flex-col items-center text-center py-16 from-background to-background/50"
+      className="flex w-full flex-col items-center text-center py-16"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       <motion.h2
-        className="mb-12 text-4xl font-bold text-primary relative inline-block"
+        className="mb-12 text-4xl font-bold relative inline-block"
         variants={itemVariants}
       >
-        My Skills
+        <motion.span
+          initial={{ color: "hsl(var(--foreground))" }}
+          whileHover={{
+            color: "hsl(var(--primary))",
+            transition: { duration: 0.2 },
+          }}
+        >
+          My Skills
+        </motion.span>
         <motion.span
           className="absolute bottom-0 left-0 w-full h-1 bg-primary"
           initial={{ scaleX: 0 }}
@@ -248,13 +256,17 @@ export default function Skills() {
             variants={itemVariants}
           >
             <motion.button
-              className="w-full text-left text-lg font-semibold py-2 px-4 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors"
+              className="w-full text-left text-lg font-semibold py-2 px-4 bg-secondary rounded-lg transition-colors"
               onClick={() =>
                 setSelectedCategory(
                   selectedCategory === category.title ? null : category.title
                 )
               }
-              whileHover={{ scale: 1.02 }}
+              whileHover={{
+                scale: 1.02,
+                backgroundColor: "hsl(var(--primary))",
+                color: "hsl(var(--primary-foreground))",
+              }}
               whileTap={{ scale: 0.98 }}
             >
               {category.title}
@@ -279,6 +291,7 @@ export default function Skills() {
           </motion.div>
         ))}
       </motion.div>
+
       <motion.div
         className="mt-12"
         variants={itemVariants}
@@ -337,7 +350,15 @@ function SkillBadge({
           <Badge variant="secondary" className="p-2 mb-2">
             <div className="flex items-center gap-2">
               <Image src={icon} alt={name} width={24} height={24} />
-              <span>{name}</span>
+              <motion.span
+                initial={{ color: "inherit" }}
+                whileHover={{
+                  color: "hsl(var(--primary))",
+                  transition: { duration: 0.2 },
+                }}
+              >
+                {name}
+              </motion.span>
             </div>
           </Badge>
           <Progress value={proficiency} className="w-full h-1" />

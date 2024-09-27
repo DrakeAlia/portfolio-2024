@@ -214,15 +214,14 @@ export default function About() {
           transition={{ duration: 1.5, repeat: Infinity }}
         >
           <motion.div
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             onClick={handleScrollDown}
           >
             <Button
               variant="ghost"
               size="icon"
-              className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white/70 dark:hover:bg-gray-700/70 transition-colors"
+              className="bg-primary/10 hover:bg-primary/20 transition-colors rounded-full"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
@@ -234,7 +233,7 @@ export default function About() {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <ChevronDown className="h-6 w-6" />
+                  <ChevronDown className="h-6 w-6 text-primary" />
                 </motion.div>
               </AnimatePresence>
             </Button>
