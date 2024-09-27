@@ -18,7 +18,7 @@ const goldenSignature = localFont({
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const links = ["about", "skills", "contact"];
+  const links = ["about", "skills", "projects", "contact"];
 
   useEffect(() => {
     const handleScroll = () => {

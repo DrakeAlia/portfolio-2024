@@ -211,33 +211,42 @@ export default function About() {
         <motion.div
           variants={itemVariants}
           animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, }}
+          transition={{ duration: 1.5 }}
         >
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={handleScrollDown}
-          >
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-primary hover:bg-primary/20 transition-colors rounded-full"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
-              <AnimatePresence mode="wait">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
                 <motion.div
-                  key={isHovered ? "hovered" : "default"}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.2 }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={handleScrollDown}
                 >
-                  <ChevronDown className="h-6 w-6 text-white" />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="bg-primary hover:bg-primary/20 rounded-full"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={isHovered ? "hovered" : "default"}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <ChevronDown className="h-6 w-6 text-white" />
+                      </motion.div>
+                    </AnimatePresence>
+                  </Button>
                 </motion.div>
-              </AnimatePresence>
-            </Button>
-          </motion.div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Go to Skills</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </motion.div>
       </div>
     </motion.section>

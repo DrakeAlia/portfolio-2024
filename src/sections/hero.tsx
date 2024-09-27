@@ -3,70 +3,52 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import ContactList from "@/components/contact-list";
-import MotionDiv from "@/components/motion-div";
-import { motion, Variants, AnimatePresence, useAnimation } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useAnimation,
+  useTransform,
+  useMotionValue,
+} from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Code, Palette, Zap } from "lucide-react";
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      delayChildren: 0.3,
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-  },
-};
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Hero() {
   const [isHovered, setIsHovered] = React.useState(false);
   const controls = useAnimation();
+  const scrollY = useMotionValue(0);
 
   useEffect(() => {
     controls.start({ opacity: 1, y: 0 });
-  }, [controls]);
+    const handleScroll = () => scrollY.set(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [controls, scrollY]);
 
-  const nameVariants: Variants = {
-    initial: { opacity: 0, y: -20 },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
+  const coverImageHeight = useTransform(scrollY, (latest) =>
+    Math.max(400, 800 - latest * 0.5)
+  );
+
+  const fadeInUp = {
+    initial: { opacity: 0, y: 60 },
+    animate: { opacity: 1, y: 0 },
   };
 
-  const buttonVariants: Variants = {
-    initial: { scale: 1 },
-    hover: { scale: 1.05, transition: { duration: 0.2 } },
-    tap: { scale: 0.95 },
-  };
-
-  const iconVariants: Variants = {
-    initial: { rotate: 0 },
-    hover: { rotate: 360, transition: { duration: 0.5 } },
-  };
-
-  const badgeVariants: Variants = {
-    initial: { scale: 0 },
-    animate: {
-      scale: 1,
-      transition: { type: "spring", stiffness: 200, damping: 10 },
-    },
+  const fadeInUpTransition = {
+    duration: 0.8,
+    ease: [0.6, -0.05, 0.01, 0.99],
   };
 
   const handleScrollDown = () => {
-    const nextSection = document.getElementById("about"); // Assuming the next section is the About section
+    const nextSection = document.getElementById("about");
     if (nextSection) {
       nextSection.scrollIntoView({ behavior: "smooth" });
     }
@@ -74,77 +56,77 @@ export default function Hero() {
 
   return (
     <motion.section
-      className="min-h-screen md:min-h-[120vh] flex flex-col items-center justify-center relative bg-[hsl(var(--custom-bg))] py-8 md:py-16"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
+      className="relative overflow-hidden"
+      style={{ height: coverImageHeight, minHeight: "100vh" }}
     >
-      <Card className="w-full max-w-4xl md:max-w-5xl mx-auto bg-[hsl(var(--custom-secondary))] backdrop-blur-sm mb-12 md:mb-24">
-        <CardContent className="p-8 md:p-12">
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-b from-transparent"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5 }}
+      >
+        <Image
+          src="/images/hero.png"
+          alt="Drake Alia"
+          fill
+          sizes="100vw"
+          priority
+          className="object-cover transition-transform duration-300 hover:scale-105"
+        />
+      </motion.div>
+      <div className="absolute inset-0 bg-black/40">
+        <div className="container mx-auto h-full flex items-center">
           <motion.div
-            className="flex flex-col md:flex-row items-center md:items-start gap-8"
-            variants={itemVariants}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, staggerChildren: 0.2 }}
+            className="max-w-2xl text-left"
           >
-            <MotionDiv delayOffset={0.4} className="relative">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Image
-                  src="/images/hero.png"
-                  alt="Drake Alia"
-                  width={200}
-                  height={200}
-                  className="rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl"
-                />
-                <motion.div
-                  className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-sm"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                />
-              </motion.div>
-            </MotionDiv>
-
-            <div className="flex-1">
+            <motion.div
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+              transition={fadeInUpTransition}
+            >
               <motion.h1
-                className="mb-4 text-4xl md:text-5xl font-bold "
-                variants={nameVariants}
-                initial="initial"
-                animate="animate"
+                className="text-white font-bold text-5xl md:text-6xl lg:text-7xl leading-tight mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.8 }}
               >
                 Drake Alia
-              </motion.h1>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={controls}
-                transition={{ delay: 0.5 }}
-              >
-                <Badge
-                  variant="secondary"
-                  className="text-lg font-semibold mb-4 px-4 py-2 bg-[hsl(var(--custom-primary))] text-[hsl(var(--custom-bg))]"
+                <br />
+                <motion.span
+                  className="text-primary"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
                 >
-                  <motion.span
-                    variants={badgeVariants}
-                    initial="initial"
-                    animate="animate"
-                  >
-                    UI Developer
-                  </motion.span>
-                </Badge>
-              </motion.div>
-
-              <motion.p
-                className="text-[hsl(var(--custom-text))] mb-6"
-                variants={itemVariants}
-              >
-                Passionate and innovative UI Developer hailing from the vibrant
-                and tech-forward Greater Seattle Area. Crafting engaging web
-                experiences, I specialized in:
+                  UI Developer
+                </motion.span>
+              </motion.h1>
+            </motion.div>
+            <motion.div
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+              transition={{ ...fadeInUpTransition, delay: 0.2 }}
+            >
+              <motion.p className="text-white/80 text-xl font-semibold md:text-2xl max-w-xl mb-6">
+                Passionate and innovative UI Developer from the Greater Seattle
+                Area
               </motion.p>
-
-              <motion.ul className="space-y-2 mb-6" variants={itemVariants}>
+            </motion.div>
+            <motion.div
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+              transition={fadeInUpTransition}
+            >
+              <motion.ul
+                className="space-y-2 mb-6 text-white"
+                variants={fadeInUp}
+              >
                 {[
                   {
                     icon: Code,
@@ -167,52 +149,64 @@ export default function Hero() {
                     className="flex items-center"
                     whileHover={{ x: 5 }}
                   >
-                    <motion.div variants={iconVariants} whileHover="hover">
+                    <motion.div
+                      whileHover={{
+                        rotate: 360,
+                        transition: { duration: 0.5 },
+                      }}
+                    >
                       <item.icon className={`mr-2 ${item.color}`} />
                     </motion.div>
                     {item.text}
                   </motion.li>
                 ))}
               </motion.ul>
-
-              <motion.div variants={itemVariants}>
-                <ContactList delayOffset={1.2} showWhenInView={false} />
-              </motion.div>
-            </div>
+              <ContactList delayOffset={1.2} showWhenInView={false} />
+            </motion.div>
           </motion.div>
-        </CardContent>
-      </Card>
-
+        </div>
+      </div>
       <motion.div
-        variants={itemVariants}
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 1.5 }}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        variants={fadeInUp}
+        initial="initial"
+        animate="animate"
+        transition={{ ...fadeInUpTransition, delay: 0.6 }}
       >
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={handleScrollDown}
-        >
-          <Button
-            variant="ghost"
-            size="icon"
-            className="bg-primary hover:bg-primary/20 transition-colors rounded-full"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <AnimatePresence mode="wait">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
               <motion.div
-                key={isHovered ? "hovered" : "default"}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.2 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleScrollDown}
               >
-                <ChevronDown className="h-6 w-6 text-white" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="bg-primary hover:bg-primary/20 rounded-full"
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={isHovered ? "hovered" : "default"}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ChevronDown className="h-6 w-6 text-white" />
+                    </motion.div>
+                  </AnimatePresence>
+                </Button>
               </motion.div>
-            </AnimatePresence>
-          </Button>
-        </motion.div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Go to About</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </motion.div>
     </motion.section>
   );
