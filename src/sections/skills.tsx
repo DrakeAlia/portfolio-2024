@@ -15,7 +15,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
 
 // Icons:
 import reactIcon from "../../public/icons/react.png";
@@ -34,13 +35,10 @@ import macosIcon from "../../public/icons/macos.png";
 import vscodeIcon from "../../public/icons/vscode.png";
 import postmanIcon from "../../public/icons/postman.svg";
 import githubActionsIcon from "../../public/icons/github-actions.png";
-import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
 
 interface Skill {
   name: string;
   icon: StaticImageData;
-  proficiency?: number;
   description?: string;
 }
 
@@ -53,121 +51,86 @@ const skillsData: Record<string, Skill> = {
   react: {
     name: "React.js",
     icon: reactIcon,
-    proficiency: 90,
-    description: "Advanced proficiency in building complex React applications.",
+    description: "Building complex React applications.",
   },
   typescript: {
     name: "TypeScript",
     icon: typescriptIcon,
-    proficiency: 80,
     description: "Strong typing and code safety.",
   },
   javascript: {
     name: "JavaScript",
     icon: javascriptIcon,
-    proficiency: 80,
     description: "Proficient in modern JavaScript.",
   },
   html5: {
     name: "HTML5",
     icon: html5Icon,
-    proficiency: 90,
     description: "Semantic markup and accessibility.",
   },
   tailwindcss: {
     name: "Tailwind CSS",
     icon: tailwindcssIcon,
-    proficiency: 85,
     description: "Utility-first CSS framework.",
   },
   shadcnui: {
     name: "shadcn/ui",
     icon: shadcnuiIcon,
-    proficiency: 90,
     description: "Custom UI library for React.",
   },
   prettier: {
     name: "Prettier",
     icon: prettierIcon,
-    proficiency: 90,
     description: "Code formatting and style consistency.",
   },
   nodejs: {
     name: "Node.js",
     icon: nodejsIcon,
-    proficiency: 70,
     description: "Building scalable and performant APIs.",
   },
   prisma: {
     name: "Prisma ORM",
     icon: prismaIcon,
-    proficiency: 70,
     description: "Modern database access for Node.js.",
   },
   postgres: {
     name: "PostgreSQL",
     icon: postgresIcon,
-    proficiency: 50,
     description: "Relational database management system.",
-  },
-  reactnative: {
-    name: "React Native",
-    icon: reactIcon,
-    proficiency: 50,
-    description: "Building cross-platform mobile apps.",
   },
   git: {
     name: "Git",
     icon: gitIcon,
-    proficiency: 90,
     description: "Version control and collaboration.",
   },
   macos: {
     name: "macOS",
     icon: macosIcon,
-    proficiency: 90,
     description: "Primary operating system for development.",
   },
   vscode: {
     name: "VS Code",
     icon: vscodeIcon,
-    proficiency: 90,
     description: "Powerful code editor with extensions.",
   },
   postman: {
     name: "Postman",
     icon: postmanIcon,
-    proficiency: 50,
     description: "API development and testing tool.",
   },
   githubActions: {
     name: "GitHub Actions",
     icon: githubActionsIcon,
-    proficiency: 45,
     description: "Automate workflows and CI/CD pipelines.",
   },
 };
 
 export default function Skills() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [isHovered, setIsHovered] = useState(false);
-
-  const buttonVariants = {
-    initial: { scale: 1 },
-    hover: { scale: 1.05, transition: { duration: 0.2 } },
-    tap: { scale: 0.95 },
-  };
-
-  const handleScrollDown = () => {
-    const nextSection = document.getElementById("projects"); // Adjust this to the ID of your next section
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   const data: SkillCategory[] = [
     {
-      title: "Web Development",
+      title: "Front-End Development",
       skills: [
         skillsData.react,
         skillsData.typescript,
@@ -183,16 +146,8 @@ export default function Skills() {
       skills: [skillsData.nodejs, skillsData.prisma, skillsData.postgres],
     },
     {
-      title: "Mobile Development",
-      skills: [skillsData.reactnative],
-    },
-    {
       title: "DevOps",
       skills: [skillsData.git, skillsData.githubActions],
-    },
-    {
-      title: "Languages",
-      skills: [skillsData.typescript, skillsData.javascript],
     },
     {
       title: "Tools & Environment",
@@ -226,47 +181,41 @@ export default function Skills() {
   return (
     <motion.section
       id="skills"
-      className="flex w-full flex-col items-center text-center py-16"
+      className="flex w-full flex-col items-center text-center py-16 from-background to-background/50"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       <motion.h2
-        className="mb-12 text-4xl font-bold relative inline-block"
+        className="mb-12 text-4xl font-bold text-primary relative inline-block"
         variants={itemVariants}
       >
+        My Skills
         <motion.span
-          initial={{ color: "hsl(var(--foreground))" }}
-          whileHover={{
-            color: "hsl(var(--primary))",
-            transition: { duration: 0.2 },
-          }}
-        >
-          My Skills
-        </motion.span>
+          className="absolute bottom-0 left-0 w-full h-1 bg-primary"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        />
       </motion.h2>
       <motion.div
         className="w-full max-w-4xl px-4"
         variants={containerVariants}
       >
-        {data.map((category, index) => (
+        {data.map((category) => (
           <motion.div
             key={category.title}
             className="mb-6 last:mb-0"
             variants={itemVariants}
           >
             <motion.button
-              className="w-full text-left text-lg font-semibold py-2 px-4 bg-secondary rounded-lg transition-colors"
+              className="w-full text-left text-lg font-semibold py-2 px-4 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors"
               onClick={() =>
                 setSelectedCategory(
                   selectedCategory === category.title ? null : category.title
                 )
               }
-              whileHover={{
-                scale: 1.02,
-                backgroundColor: "hsl(var(--primary))",
-                color: "hsl(var(--primary-foreground))",
-              }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               {category.title}
@@ -291,63 +240,11 @@ export default function Skills() {
           </motion.div>
         ))}
       </motion.div>
-
-      <motion.div
-        className="mt-12"
-        variants={itemVariants}
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 1.5 }}
-      >
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={handleScrollDown}
-              >
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="bg-primary hover:bg-primary/20 rounded-full"
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                >
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={isHovered ? "hovered" : "default"}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <ChevronDown className="h-6 w-6 text-white" />
-                    </motion.div>
-                  </AnimatePresence>
-                </Button>
-              </motion.div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Go to Projects</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </motion.div>
     </motion.section>
   );
 }
 
-function SkillBadge({
-  icon,
-  name,
-  proficiency,
-  description,
-}: {
-  icon: StaticImageData;
-  name: string;
-  proficiency?: number;
-  description?: string;
-}) {
+function SkillBadge({ icon, name, description }: Skill) {
   return (
     <HoverCard>
       <HoverCardTrigger>
@@ -359,27 +256,14 @@ function SkillBadge({
           <Badge variant="secondary" className="p-2 mb-2">
             <div className="flex items-center gap-2">
               <Image src={icon} alt={name} width={24} height={24} />
-              <motion.span
-                initial={{ color: "inherit" }}
-                whileHover={{
-                  color: "hsl(var(--primary))",
-                  transition: { duration: 0.2 },
-                }}
-              >
-                {name}
-              </motion.span>
+              <span>{name}</span>
             </div>
           </Badge>
-          <Progress value={proficiency} className="w-full h-1" />
         </motion.div>
       </HoverCardTrigger>
       <HoverCardContent className="w-64">
         <div className="space-y-2">
           <h4 className="text-sm font-semibold">{name}</h4>
-          <Progress value={proficiency} className="w-full h-2" />
-          <p className="text-xs text-muted-foreground">
-            Proficiency: {proficiency}%
-          </p>
           <p className="text-sm">{description}</p>
         </div>
       </HoverCardContent>

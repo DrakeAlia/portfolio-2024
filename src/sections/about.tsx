@@ -16,7 +16,6 @@ import { ChefHat, Code, Rocket, Download, ChevronDown } from "lucide-react";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 
 export default function About() {
-  const [isHovered, setIsHovered] = useState(false);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -29,13 +28,13 @@ export default function About() {
   };
 
   const handleDownloadResume = () => {
-    // The path to your resume PDF file
-    const resumeUrl = "/path/to/your/resume.pdf";
+    // Update the path to match your file structure
+    const resumeUrl = "/pdf-file/resume-ui-dev.pdf";
 
-    // Creating a temporary anchor element
+    // Create a temporary anchor element
     const link = document.createElement("a");
     link.href = resumeUrl;
-    link.download = "Your_Name_Resume.pdf"; // Set the desired file name here
+    link.setAttribute("download", "drake-alia-resume.pdf"); // Set the desired file name for download
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -54,22 +53,9 @@ export default function About() {
     visible: { opacity: 1 },
   };
 
-  const buttonVariants = {
-    initial: { scale: 1 },
-    hover: { scale: 1.05, transition: { duration: 0.2 } },
-    tap: { scale: 0.95 },
-  };
-
   const underlineVariants = {
     hidden: { width: "0%" },
     visible: { width: "100%", transition: { duration: 1 } },
-  };
-
-  const handleScrollDown = () => {
-    const nextSection = document.getElementById("skills");
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
   return (
@@ -198,7 +184,6 @@ export default function About() {
 
       <div className="flex flex-col items-center mt-8">
         <motion.div
-          className="mb-8"
           variants={itemVariants}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -206,47 +191,6 @@ export default function About() {
           <Button size="lg" onClick={handleDownloadResume}>
             <Download className="mr-2 h-4 w-4" /> Download Resume
           </Button>
-        </motion.div>
-
-        <motion.div
-          variants={itemVariants}
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5 }}
-        >
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={handleScrollDown}
-                >
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="bg-primary hover:bg-primary/20 rounded-full"
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                  >
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={isHovered ? "hovered" : "default"}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <ChevronDown className="h-6 w-6 text-white" />
-                      </motion.div>
-                    </AnimatePresence>
-                  </Button>
-                </motion.div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Go to Skills</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
         </motion.div>
       </div>
     </motion.section>

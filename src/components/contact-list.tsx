@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+
 type Contact = {
   name: string;
   className: string;
@@ -24,7 +25,7 @@ const contacts: Contact[] = [
   {
     name: "Email",
     className: "bg-yellow-500 hover:bg-yellow-600",
-    href: "drakealia@gmail.com",
+    href: "mailto:drakealia@gmail.com",
     icon: faEnvelope,
   },
   {
@@ -42,7 +43,7 @@ const contacts: Contact[] = [
   },
   {
     name: "Github",
-    className: "bg-black hover:bg-gray-800/90",
+    className: "bg-green-500 hover:bg-green-600",
     href: "https://github.com/DrakeAlia",
     icon: faGithub,
   },
