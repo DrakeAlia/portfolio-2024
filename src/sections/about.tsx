@@ -29,7 +29,7 @@ export default function About() {
 
   const handleDownloadResume = () => {
     // Update the path to match your file structure
-    const resumeUrl = "/pdf-file/resume-ui-dev.pdf";
+    const resumeUrl = "/pdf-file/resume-ui-dev-portfolio.pdf";
 
     // Create a temporary anchor element
     const link = document.createElement("a");
