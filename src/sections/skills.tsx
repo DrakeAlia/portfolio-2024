@@ -179,7 +179,6 @@ function SkillIcon({ skill }: { skill: Skill }) {
                   src={skill.icon}
                   alt={skill.name}
                   layout="fill"
-                  objectFit="contain"
                   className="transition-all duration-300 group-hover:brightness-110 dark:group-hover:brightness-125"
                 />
               </div>
