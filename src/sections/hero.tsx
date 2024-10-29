@@ -76,7 +76,7 @@ export default function Hero() {
           animate="animate"
           transition={{ ...fadeInUpTransition, delay: 0.2 }}
         >
-          A UI Developer
+          A Web Developer
         </motion.h2>
 
         <motion.p
@@ -86,7 +86,7 @@ export default function Hero() {
           animate="animate"
           transition={{ ...fadeInUpTransition, delay: 0.4 }}
         >
-          Passionate UI Developer from the Greater Seattle Area, specializing in
+          Passionate Web Developer from the Greater Seattle Area, specializing in
           TypeScript, Next.js, React, and Tailwind CSS. Crafting engaging,
           responsive, and user-friendly web experiences that drive results.
         </motion.p>
