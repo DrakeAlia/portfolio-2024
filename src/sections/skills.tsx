@@ -178,7 +178,7 @@ function SkillIcon({ skill }: { skill: Skill }) {
                 <Image
                   src={skill.icon}
                   alt={skill.name}
-                  layout="fill"
+                  
                   className="transition-all duration-300 group-hover:brightness-110 dark:group-hover:brightness-125"
                 />
               </div>

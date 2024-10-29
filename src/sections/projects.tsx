@@ -1,94 +1,162 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Github, ExternalLink, ChevronRight } from "lucide-react";
 
 export default function Projects() {
+  const projects = [
+    {
+      title: "Green Thumb",
+      description:
+        "A smart indoor gardening system for monitoring and maintaining plant health.",
+      image: "/images/cover-green-thumb.png",
+      longDescription:
+        "A smart indoor gardening system built with Next.js, Tailwind CSS, TypeScript, shadcn, and Framer Motion.",
+      liveUrl: "https://green-thumb-mu.vercel.app/",
+      githubUrl: "https://github.com/DrakeAlia/green-thumb",
+      tags: [
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "Framer Motion",
+      ],
+      features: ["Plant monitoring", "Automated watering", "Growth tracking"],
+    },
+    {
+      title: "InfinitePages",
+      description:
+        "A full-stack application for managing and sharing book reviews.",
+      image: "/images/cover-book-reviews.png",
+      longDescription:
+        "A book review app where users can add, edit, and delete reviews. Built with Next.js, Tailwind CSS, TypeScript, and MongoDB.",
+      liveUrl: "https://book-reviews-orcin.vercel.app/",
+      githubUrl: "https://github.com/DrakeAlia/book-reviews",
+      tags: ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
+      features: [
+        "User authentication",
+        "CRUD operations",
+        "Search functionality",
+      ],
+    },
+  ];
+
   return (
     <section id="projects" className="py-20">
-      <div className="container mx-auto">
-        <div className="flex flex-col items-center justify-center space-y-8 mb-16">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center justify-center space-y-4 mb-16"
+        >
           <h2 className="text-4xl font-bold text-center">Projects</h2>
-          <p className="text-lg text-center text-gray-500">
-            Here are some of the projects I&apos;ve worked on.
+          <p className="text-lg text-center text-muted-foreground max-w-2xl">
+            Explore my recent projects showcasing my expertise in modern web
+            development
           </p>
-        </div>
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <motion.div
-            className="flex flex-col items-start space-y-4 rounded-lg shadow-md p-6"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <Image
-              src="/images/cover-green-thumb.png"
-              alt="Green Thumb Project Preview"
-              className="rounded-lg w-full h-auto object-cover"
-              width={400}
-              height={225}
-            />
-            <h3 className="text-2xl font-bold">Green Thumb</h3>
-            <p className="text-lg text-gray-500">
-              A smart indoor gardening system built with Next.js, Tailwind CSS,
-              TypeScript, shadcn, and Framer Motion.
-            </p>
-            <div className="flex items-center space-x-4">
-              <a
-                href="https://green-thumb-mu.vercel.app/"
-                className="text-blue-600 hover:underline"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View Project
-              </a>
-              <a
-                href="https://github.com/DrakeAlia/green-thumb"
-                className="text-blue-600 hover:underline"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View Source
-              </a>
-            </div>
-          </motion.div>
+        </motion.div>
 
-          {/* Additional Project Card */}
-          <motion.div
-            className="flex flex-col items-start space-y-4 rounded-lg shadow-md p-6"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <Image
-              src="/images/cover-book-reviews.png"
-              alt="Another Project Preview"
-              className="rounded-lg w-full h-auto object-cover"
-              width={400}
-              height={225}
-            />
-            <h3 className="text-2xl font-bold">Book Reviews</h3>
-            <p className="text-lg text-gray-500">
-              A book review app where users can add, edit, and delete reviews.
-              Built with Next.js, Tailwind CSS, TypeScript, and MongoDB.
-            </p>
-            <div className="flex items-center space-x-4">
-              <a
-                href="https://book-reviews-orcin.vercel.app/"
-                className="text-blue-600 hover:underline"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View Project
-              </a>
-              <a
-                href="https://github.com/DrakeAlia/book-reviews"
-                className="text-blue-600 hover:underline"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View Source
-              </a>
-            </div>
-          </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+            >
+              <Card className="overflow-hidden h-full">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                  className="relative group"
+                >
+                  <div className="relative h-48 overflow-hidden">
+                    <Image
+                      src={project.image}
+                      alt={`${project.title} Preview`}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <div className="space-x-4">
+                        <Button variant="secondary" size="sm" asChild>
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            Live Demo <ExternalLink className="ml-2 h-4 w-4" />
+                          </a>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <CardHeader>
+                  <CardTitle className="text-2xl font-bold text-primary">
+                    {project.title}
+                  </CardTitle>
+                  <CardDescription>{project.description}</CardDescription>
+                </CardHeader>
+
+                <CardContent>
+                  <div className="space-y-4">
+                    <p className="text-muted-foreground">
+                      {project.longDescription}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map((tag) => (
+                        <Badge key={tag} variant="secondary">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                    <div className="space-y-2">
+                      <p className="font-medium">Key Features:</p>
+                      <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                        {project.features.map((feature) => (
+                          <li key={feature}>{feature}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+
+                <CardFooter className="flex justify-between">
+                  <Button variant="outline" size="sm" asChild>
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Github className="mr-2 h-4 w-4" />
+                      View Source
+                    </a>
+                  </Button>
+                  <Button variant="default" size="sm" asChild>
+                    <a href={project.liveUrl} target="_blank" rel="noreferrer">
+                      View Project
+                      <ChevronRight className="ml-2 h-4 w-4" />
+                    </a>
+                  </Button>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
