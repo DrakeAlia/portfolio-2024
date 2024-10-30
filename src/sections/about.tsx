@@ -92,7 +92,7 @@ export default function About() {
                 >
                   {key === "paragraph1" && (
                     <>
-                      I&apos;m a passionate and innovative UI Developer hailing
+                      I&apos;m a passionate and innovative Web Developer hailing
                       from the vibrant and tech-forward Greater Seattle Area.
                       With a strong foundation in TypeScript, Next.js, React,
                       and Tailwind CSS, I specialize in crafting engaging,

@@ -27,7 +27,7 @@ export default function Hero() {
     <motion.section className="relative overflow-hidden py-8 sm:py-12 md:py-20">
       <div className="container mx-auto px-4 flex flex-col items-center justify-center h-full text-center">
         <motion.h1
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8"
           variants={fadeInUp}
           initial="initial"
           animate="animate"

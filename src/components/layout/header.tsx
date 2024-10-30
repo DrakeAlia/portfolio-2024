@@ -18,7 +18,7 @@ const goldenSignature = localFont({
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const links = ["about", "skills", "projects", "contact"];
+  const links = ["about", "skills", "projects"];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,7 +62,8 @@ export default function Header() {
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center space-x-2">
+        {/* Left section */}
+        <Link href="/" className="flex-shrink-0">
           <motion.div
             className={cn(
               "text-3xl md:text-4xl font-bold text-primary",
@@ -75,8 +76,9 @@ export default function Header() {
           </motion.div>
         </Link>
 
+        {/* Center section */}
         <motion.nav
-          className="hidden md:flex items-center space-x-6"
+          className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center space-x-12"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -99,63 +101,44 @@ export default function Header() {
           ))}
         </motion.nav>
 
+        {/* Right section */}
         <motion.div
-          className="flex items-center space-x-4"
+          className="flex items-center space-x-3"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-            <motion.div
-              variants={childVariants}
-              className="w-full flex-1 md:w-auto md:flex-none"
+          <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
+            <div
+              className={cn(
+                buttonVariants({
+                  variant: "ghost",
+                }),
+                "w-9 px-0"
+              )}
             >
-              <CommandMenu />
-            </motion.div>
-
-            <motion.div
-              className="flex items-center space-x-3"
-              variants={childVariants}
+              <Icons.gitHub className="h-4 w-4" />
+              <span className="sr-only">GitHub</span>
+            </div>
+          </Link>
+          <Link
+            href={siteConfig.links.twitter}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <div
+              className={cn(
+                buttonVariants({
+                  variant: "ghost",
+                }),
+                "w-9 px-0"
+              )}
             >
-              <Link
-                href={siteConfig.links.github}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div
-                  className={cn(
-                    buttonVariants({
-                      variant: "ghost",
-                    }),
-                    "w-9 px-0"
-                  )}
-                >
-                  <Icons.gitHub className="h-4 w-4" />
-                  <span className="sr-only">GitHub</span>
-                </div>
-              </Link>
-
-              <Link
-                href={siteConfig.links.twitter}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div
-                  className={cn(
-                    buttonVariants({
-                      variant: "ghost",
-                    }),
-                    "w-9 px-0"
-                  )}
-                >
-                  <Icons.twitter className="h-3 w-3 fill-current" />
-                  <span className="sr-only">Twitter</span>
-                </div>
-              </Link>
-
-              <ModeToggle />
-            </motion.div>
-          </div>
+              <Icons.twitter className="h-3 w-3 fill-current" />
+              <span className="sr-only">Twitter</span>
+            </div>
+          </Link>
+          <ModeToggle />
         </motion.div>
       </div>
     </motion.header>
