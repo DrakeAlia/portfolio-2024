@@ -19,11 +19,10 @@ export default function Projects() {
   const projects = [
     {
       title: "Green Thumb",
-      description:
-        "A smart indoor gardening system for monitoring and maintaining plant health.",
+      description: "A plant monitoring app with automated watering.",
       image: "/images/cover-green-thumb.png",
       longDescription:
-        "A smart indoor gardening system built with Next.js, Tailwind CSS, TypeScript, shadcn, and Framer Motion.",
+        "This splash page revolves around products and features for water plants remotely with a app. The splash is center around animations based on user interaction  Built with Next.js, Tailwind CSS, TypeScript, Shadcn, and Framer Motion.",
       liveUrl: "https://green-thumb-mu.vercel.app/",
       githubUrl: "https://github.com/DrakeAlia/green-thumb",
       tags: [
@@ -33,22 +32,26 @@ export default function Projects() {
         "shadcn/ui",
         "Framer Motion",
       ],
-      features: ["Plant monitoring", "Automated watering", "Growth tracking"],
+      features: [
+        "Interactive animations",
+        "Custom design system",
+        "Responsive layout",
+      ],
     },
     {
       title: "InfinitePages",
       description:
-        "A full-stack application for managing and sharing book reviews.",
+        "A full-stack application for reviewing books and sharing them with others.",
       image: "/images/cover-book-reviews.png",
       longDescription:
-        "A book review app where users can add, edit, and delete reviews. Built with Next.js, Tailwind CSS, TypeScript, and MongoDB.",
+        "This full-stack application allows users to manage and share book reviews. Users can create an account, add books to their collection, and write reviews. The application is built with Next.js, TypeScript, MongoDB, and Tailwind CSS.",
       liveUrl: "https://book-reviews-orcin.vercel.app/",
       githubUrl: "https://github.com/DrakeAlia/book-reviews",
       tags: ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
       features: [
         "User authentication",
-        "CRUD operations",
-        "Search functionality",
+        "Database integration",
+        "Responsive layout",
       ],
     },
   ];

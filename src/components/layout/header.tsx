@@ -139,6 +139,8 @@ export default function Header() {
             </div>
           </Link>
           <ModeToggle />
+          <CommandMenu className="hidden" />{" "}
+          {/* Hidden but keeping functionality */}
         </motion.div>
       </div>
     </motion.header>
