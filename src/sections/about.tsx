@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -12,8 +12,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { ChefHat, Code, Rocket, Download, ChevronDown } from "lucide-react";
+import { ChefHat, Code, Rocket, Download, Eye } from "lucide-react";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 export default function About() {
   const containerVariants = {
@@ -28,13 +29,10 @@ export default function About() {
   };
 
   const handleDownloadResume = () => {
-    // Update the path to match your file structure
     const resumeUrl = "/pdf-file/resume-drake.pdf";
-
-    // Create a temporary anchor element
     const link = document.createElement("a");
     link.href = resumeUrl;
-    link.setAttribute("download", "drake-alia-resume.pdf"); // Set the desired file name for download
+    link.setAttribute("download", "drake-alia-resume.pdf");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -182,14 +180,35 @@ export default function About() {
         </motion.div>
       </div>
 
-      <div className="flex flex-col items-center mt-8">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
         <motion.div
           variants={itemVariants}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <Button size="lg" onClick={handleDownloadResume}>
-            <Download className="mr-2 h-4 w-4" /> Download Resume
+          <Button
+            variant="outline"
+            size="lg"
+            className="border-2 flex items-center gap-2 bg-background hover:bg-accent"
+            onClick={() => window.open("/pdf-file/resume-drake.pdf", "_blank")}
+          >
+            <Eye className="h-4 w-4" />
+            View Resume
+          </Button>
+        </motion.div>
+
+        <motion.div
+          variants={itemVariants}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Button
+            size="lg"
+            onClick={handleDownloadResume}
+            className="bg-primary hover:bg-primary/90 flex items-center gap-2"
+          >
+            <Download className="h-4 w-4" />
+            Download Resume
           </Button>
         </motion.div>
       </div>
