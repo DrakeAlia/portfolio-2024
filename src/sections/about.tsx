@@ -241,7 +241,7 @@ export default function About() {
             variant="outline"
             size="lg"
             className="border-2 flex items-center gap-2 bg-background hover:bg-accent relative overflow-hidden group"
-            onClick={() => window.open("/pdf-file/resume-drake.pdf", "_blank")}
+            onClick={() => window.open("/pdf-file/resume-drakealia.pdf", "_blank")}
           >
             <motion.div
               className="absolute inset-0 bg-primary/10"
