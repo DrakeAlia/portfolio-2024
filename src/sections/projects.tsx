@@ -18,6 +18,22 @@ import { Github, ExternalLink, ChevronRight } from "lucide-react";
 export default function Projects() {
   const projects = [
     {
+      title: "InfinitePages",
+      description:
+        "A full-stack application for reviewing books and sharing them with others.",
+      image: "/images/cover-book-reviews.png",
+      longDescription:
+        "This full-stack application allows users to manage and share book reviews. Users can create an account, add books to their collection, and write reviews. The application is built with Next.js, TypeScript, MongoDB, and Tailwind CSS.",
+      liveUrl: "https://book-reviews-orcin.vercel.app/",
+      githubUrl: "https://github.com/DrakeAlia/book-reviews",
+      tags: ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
+      features: [
+        "User authentication",
+        "Database integration",
+        "Responsive layout",
+      ],
+    },
+    {
       title: "Green Thumb",
       description: "A plant monitoring app with automated watering.",
       image: "/images/cover-green-thumb.png",
@@ -39,19 +55,19 @@ export default function Projects() {
       ],
     },
     {
-      title: "InfinitePages",
-      description:
-        "A full-stack application for reviewing books and sharing them with others.",
-      image: "/images/cover-book-reviews.png",
+      title: "VitaFlow",
+      description: "A modern pharmacy and healthcare provider website.",
+      image: "/images/cover-vitaflow.png",
       longDescription:
-        "This full-stack application allows users to manage and share book reviews. Users can create an account, add books to their collection, and write reviews. The application is built with Next.js, TypeScript, MongoDB, and Tailwind CSS.",
-      liveUrl: "https://book-reviews-orcin.vercel.app/",
-      githubUrl: "https://github.com/DrakeAlia/book-reviews",
-      tags: ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
+        "Designed and developed a fully-functional front-end website for VitaFlow pharmacy using Next.js and React. The site features responsive design, interactive UI components with Framer Motion animations, and a comprehensive service showcase that effectively communicates VitaFlow's healthcare offerings and brand identity.",
+      liveUrl: "https://vitaflow.vercel.app/",
+      githubUrl: "https://github.com/DrakeAlia/vitaflow",
+      tags: ["Next.js", "React", "Tailwind CSS", "shadcn/ui", "Framer Motion"],
       features: [
-        "User authentication",
-        "Database integration",
-        "Responsive layout",
+        "Responsive design with grid and flex layouts",
+        "Interactive animations and transitions",
+        "Component-based architecture",
+        "Modern UI with hover effects and cards",
       ],
     },
   ];
