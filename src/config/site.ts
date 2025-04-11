@@ -10,7 +10,7 @@ export const siteConfig = {
   name: "Portfolio",
 
   // The URL where the site is hosted
-  url: "https://portfolio-2024-sandy.vercel.app/",
+  url: "https://drakealia-sandy.vercel.app/",
 
   // A brief description of the website or application
   description: "A personal portfolio website for Drake Alia",
@@ -18,7 +18,7 @@ export const siteConfig = {
   // An object containing important links related to the project
   links: {
     // The creator's or project's Twitter profile
-    twitter: "https://twitter.com/drake___alia",
+    twitter: "https://x.com/Drake2Alia",
 
     // The creator's GitHub profile
     github: "https://github.com/DrakeAlia/",

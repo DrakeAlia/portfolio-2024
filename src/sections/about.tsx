@@ -12,7 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { ChefHat, Code, Rocket, Download, Eye } from "lucide-react";
+import { ChefHat, Code, Rocket, Eye } from "lucide-react";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 
 export default function About() {
@@ -30,15 +30,6 @@ export default function About() {
     },
   };
 
-  const handleDownloadResume = () => {
-    const resumeUrl = "/pdf-file/resume-drake.pdf";
-    const link = document.createElement("a");
-    link.href = resumeUrl;
-    link.setAttribute("download", "drake-alia-resume.pdf");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   const itemVariants = {
     hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
@@ -241,7 +232,9 @@ export default function About() {
             variant="outline"
             size="lg"
             className="border-2 flex items-center gap-2 bg-background hover:bg-accent relative overflow-hidden group"
-            onClick={() => window.open("/pdf-file/resume-drakealia.pdf", "_blank")}
+            onClick={() =>
+              window.open("/pdf-file/resume-drakealia.pdf", "_blank")
+            }
           >
             <motion.div
               className="absolute inset-0 bg-primary/10"
@@ -260,20 +253,12 @@ export default function About() {
           whileTap={{ scale: 0.95 }}
           transition={{ type: "spring", stiffness: 400, damping: 17 }}
         >
-          <Button
-            size="lg"
-            onClick={handleDownloadResume}
-            className="bg-primary hover:bg-primary/90 flex items-center gap-2 relative overflow-hidden group"
-          >
-            <motion.div
-              className="absolute inset-0 bg-white/20"
-              initial={{ x: "-100%" }}
-              whileHover={{ x: "100%" }}
-              transition={{ duration: 0.6 }}
-            />
-            <Download className="h-4 w-4 transition-transform group-hover:scale-110" />
-            Download Resume
-          </Button>
+          <motion.div
+            className="absolute inset-0 bg-white/20"
+            initial={{ x: "-100%" }}
+            whileHover={{ x: "100%" }}
+            transition={{ duration: 0.6 }}
+          />
         </motion.div>
       </div>
     </motion.section>

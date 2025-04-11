@@ -64,7 +64,7 @@ export const miniNavConfig: MiniNavConfig = {
     },
     {
       title: "Twitter",
-      href: "https://twitter.com/drake___alia",
+      href: "https://x.com/Drake2Alia",
       external: true,
     },
   ],

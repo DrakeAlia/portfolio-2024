@@ -1,76 +1,141 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import Image from "next/image";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import React, { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import ProjectCard from "@/components/project-card";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Github, ExternalLink, ChevronRight } from "lucide-react";
+import { Search, Filter, X } from "lucide-react";
 
 export default function Projects() {
-  const projects = [
-    {
-      title: "InfinitePages",
-      description:
-        "A full-stack application for reviewing books and sharing them with others.",
-      image: "/images/cover-book-reviews.png",
-      longDescription:
-        "This full-stack application allows users to manage and share book reviews. Users can create an account, add books to their collection, and write reviews. The application is built with Next.js, TypeScript, MongoDB, and Tailwind CSS.",
-      liveUrl: "https://book-reviews-orcin.vercel.app/",
-      githubUrl: "https://github.com/DrakeAlia/book-reviews",
-      tags: ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
-      features: [
-        "User authentication",
-        "Database integration",
-        "Responsive layout",
-      ],
-    },
-    {
-      title: "Green Thumb",
-      description: "A plant monitoring app with automated watering.",
-      image: "/images/cover-green-thumb.png",
-      longDescription:
-        "This splash page revolves around products and features for water plants remotely with a app. The splash is center around animations based on user interaction  Built with Next.js, Tailwind CSS, TypeScript, Shadcn, and Framer Motion.",
-      liveUrl: "https://green-thumb-mu.vercel.app/",
-      githubUrl: "https://github.com/DrakeAlia/green-thumb",
-      tags: [
-        "Next.js",
-        "TypeScript",
-        "Tailwind CSS",
-        "shadcn/ui",
-        "Framer Motion",
-      ],
-      features: [
-        "Interactive animations",
-        "Custom design system",
-        "Responsive layout",
-      ],
-    },
-    {
-      title: "VitaFlow",
-      description: "A modern pharmacy and healthcare provider website.",
-      image: "/images/cover-vitaflow.png",
-      longDescription:
-        "Designed and developed a fully-functional front-end website for VitaFlow pharmacy using Next.js and React. The site features responsive design, interactive UI components with Framer Motion animations, and a comprehensive service showcase that effectively communicates VitaFlow's healthcare offerings and brand identity.",
-      liveUrl: "https://vitaflow.vercel.app/",
-      githubUrl: "https://github.com/DrakeAlia/vitaflow",
-      tags: ["Next.js", "React", "Tailwind CSS", "shadcn/ui", "Framer Motion"],
-      features: [
-        "Responsive design with grid and flex layouts",
-        "Interactive animations and transitions",
-        "Component-based architecture",
-        "Modern UI with hover effects and cards",
-      ],
-    },
+  const projects = useMemo(
+    () => [
+      {
+        title: "InfinitePages",
+        description:
+          "A full-stack application for reviewing books and sharing them with others.",
+        image: "/images/cover-book-reviews.png",
+        longDescription:
+          "This full-stack application allows users to manage and share book reviews. Users can create an account, add books to their collection, and write reviews. The application is built with Next.js, TypeScript, MongoDB, and Tailwind CSS.",
+        liveUrl: "https://book-reviews-orcin.vercel.app/",
+        githubUrl: "https://github.com/DrakeAlia/book-reviews",
+        tags: ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
+        features: [
+          "User authentication",
+          "Database integration",
+          "Responsive layout",
+        ],
+        category: "full-stack",
+      },
+      {
+        title: "Green Thumb",
+        description: "A plant monitoring app with automated watering.",
+        image: "/images/cover-green-thumb.png",
+        longDescription:
+          "This splash page revolves around products and features for water plants remotely with a app. The splash is center around animations based on user interaction  Built with Next.js, Tailwind CSS, TypeScript, Shadcn, and Framer Motion.",
+        liveUrl: "https://green-thumb-mu.vercel.app/",
+        githubUrl: "https://github.com/DrakeAlia/green-thumb",
+        tags: [
+          "Next.js",
+          "TypeScript",
+          "Tailwind CSS",
+          "shadcn/ui",
+          "Framer Motion",
+        ],
+        features: [
+          "Interactive animations",
+          "Custom design system",
+          "Responsive layout",
+        ],
+        category: "front-end",
+      },
+      {
+        title: "VitaFlow",
+        description: "A modern pharmacy and healthcare provider website.",
+        image: "/images/cover-vitaflow.png",
+        longDescription:
+          "Designed and developed a fully-functional front-end website for VitaFlow pharmacy using Next.js and React. The site features responsive design, interactive UI components with Framer Motion animations, and a comprehensive service showcase that effectively communicates VitaFlow's healthcare offerings and brand identity.",
+        liveUrl: "https://vitaflow.vercel.app/",
+        githubUrl: "https://github.com/DrakeAlia/vitaflow",
+        tags: [
+          "Next.js",
+          "React",
+          "Tailwind CSS",
+          "shadcn/ui",
+          "Framer Motion",
+        ],
+        features: [
+          "Responsive design with grid and flex layouts",
+          "Interactive animations and transitions",
+          "Component-based architecture",
+          "Modern UI with hover effects and cards",
+        ],
+        category: "front-end",
+      },
+    ],
+    []
+  );
+
+  // Extract unique categories and tags for filtering
+  const allCategories = [
+    "all",
+    ...Array.from(new Set(projects.map((project) => project.category))),
   ];
+  const allTags = [
+    "All",
+    ...Array.from(new Set(projects.flatMap((project) => project.tags))),
+  ];
+
+  // State for filtering and search
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedTag, setSelectedTag] = useState("all");
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredProjects, setFilteredProjects] = useState(projects);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  // Format category names for display
+  const formatCategoryName = (category: string) => {
+    return category
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  // Filter projects when any filter changes
+  useEffect(() => {
+    let result = projects;
+
+    // Filter by category
+    if (selectedCategory !== "all") {
+      result = result.filter(
+        (project) => project.category === selectedCategory
+      );
+    }
+
+    // Filter by tag
+    if (selectedTag !== "all") {
+      result = result.filter((project) => project.tags.includes(selectedTag));
+    }
+
+    // Filter by search
+    if (searchValue.trim() !== "") {
+      const searchLower = searchValue.toLowerCase();
+      result = result.filter(
+        (project) =>
+          project.title.toLowerCase().includes(searchLower) ||
+          project.description.toLowerCase().includes(searchLower) ||
+          project.tags.some((tag) => tag.toLowerCase().includes(searchLower))
+      );
+    }
+
+    setFilteredProjects(result);
+  }, [selectedCategory, selectedTag, searchValue, projects]);
+
+  const resetFilters = () => {
+    setSelectedCategory("all");
+    setSelectedTag("all");
+    setSearchValue("");
+  };
 
   return (
     <section id="projects" className="py-20">
@@ -79,7 +144,7 @@ export default function Projects() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col items-center justify-center space-y-4 mb-16"
+          className="flex flex-col items-center justify-center space-y-4 mb-8"
         >
           <h2 className="text-4xl font-bold text-center">Projects</h2>
           <p className="text-lg text-center text-muted-foreground max-w-2xl">
@@ -88,95 +153,201 @@ export default function Projects() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
-            >
-              <Card className="overflow-hidden h-full">
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.2 }}
-                  className="relative group"
+        {/* Search and filter controls */}
+        <div className="mb-8">
+          <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+            {/* Search input */}
+            <div className="relative w-full md:w-64">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search projects..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                className="pl-8 w-full"
+              />
+              {searchValue && (
+                <button
+                  className="absolute right-2 top-2.5 text-muted-foreground hover:text-foreground"
+                  onClick={() => setSearchValue("")}
+                  aria-label="Clear search"
                 >
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={project.image}
-                      alt={`${project.title} Preview`}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <div className="space-x-4">
-                        <Button variant="secondary" size="sm" asChild>
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Live Demo <ExternalLink className="ml-2 h-4 w-4" />
-                          </a>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
 
-                <CardHeader>
-                  <CardTitle className="text-2xl font-bold text-primary">
-                    {project.title}
-                  </CardTitle>
-                  <CardDescription>{project.description}</CardDescription>
-                </CardHeader>
+            {/* Filter toggle for mobile */}
+            <div className="md:hidden w-full">
+              <Button
+                variant="outline"
+                className="w-full flex items-center justify-between"
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+              >
+                <span>Filters</span>
+                <Filter className="h-4 w-4 ml-2" />
+              </Button>
+            </div>
 
-                <CardContent>
-                  <div className="space-y-4">
-                    <p className="text-muted-foreground">
-                      {project.longDescription}
-                    </p>
+            {/* Desktop filters */}
+            <div className="hidden md:flex flex-wrap items-center gap-4">
+              <div className="flex items-center gap-1 flex-wrap">
+                {allCategories.map((category) => (
+                  <Button
+                    key={`category-${category}`}
+                    variant={
+                      selectedCategory === category ? "default" : "outline"
+                    }
+                    size="sm"
+                    onClick={() => setSelectedCategory(category)}
+                    className="capitalize"
+                  >
+                    {formatCategoryName(category)}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="w-[1px] h-6 bg-border mx-1"></div>
+
+              <div className="flex items-center gap-1 flex-wrap">
+                {allTags.slice(0, 5).map((tag) => (
+                  <Button
+                    key={`tag-${tag}`}
+                    variant={selectedTag === tag ? "secondary" : "ghost"}
+                    size="sm"
+                    onClick={() => setSelectedTag(tag)}
+                  >
+                    {tag}
+                  </Button>
+                ))}
+                {allTags.length > 5 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  >
+                    +{allTags.length - 5} more
+                  </Button>
+                )}
+              </div>
+
+              {(selectedCategory !== "all" ||
+                selectedTag !== "all" ||
+                searchValue) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={resetFilters}
+                  className="ml-2"
+                >
+                  <X className="h-3 w-3 mr-1" /> Clear Filters
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile filters (expanding) */}
+          <AnimatePresence>
+            {isFilterOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden md:hidden mt-4"
+              >
+                <div className="p-4 border rounded-md bg-card">
+                  <div className="mb-4">
+                    <h3 className="text-sm font-medium mb-2">Categories</h3>
                     <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary">
-                          {tag}
-                        </Badge>
+                      {allCategories.map((category) => (
+                        <Button
+                          key={`mobile-category-${category}`}
+                          variant={
+                            selectedCategory === category
+                              ? "default"
+                              : "outline"
+                          }
+                          size="sm"
+                          onClick={() => setSelectedCategory(category)}
+                          className="capitalize"
+                        >
+                          {formatCategoryName(category)}
+                        </Button>
                       ))}
                     </div>
-                    <div className="space-y-2">
-                      <p className="font-medium">Key Features:</p>
-                      <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                        {project.features.map((feature) => (
-                          <li key={feature}>{feature}</li>
-                        ))}
-                      </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-medium mb-2">Technologies</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {allTags.map((tag) => (
+                        <Button
+                          key={`mobile-tag-${tag}`}
+                          variant={selectedTag === tag ? "secondary" : "ghost"}
+                          size="sm"
+                          onClick={() => setSelectedTag(tag)}
+                        >
+                          {tag}
+                        </Button>
+                      ))}
                     </div>
                   </div>
-                </CardContent>
 
-                <CardFooter className="flex justify-between">
-                  <Button variant="outline" size="sm" asChild>
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Github className="mr-2 h-4 w-4" />
-                      View Source
-                    </a>
-                  </Button>
-                  <Button variant="default" size="sm" asChild>
-                    <a href={project.liveUrl} target="_blank" rel="noreferrer">
-                      View Project
-                      <ChevronRight className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
+                  {(selectedCategory !== "all" || selectedTag !== "all") && (
+                    <div className="mt-4 pt-4 border-t">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={resetFilters}
+                        className="w-full"
+                      >
+                        Clear Filters
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
+
+        {/* Projects grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${selectedCategory}-${selectedTag}-${searchValue}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {filteredProjects.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredProjects.map((project, index) => (
+                  <ProjectCard
+                    key={`${project.title}-${index}`}
+                    title={project.title}
+                    description={project.description}
+                    image={project.image}
+                    longDescription={project.longDescription}
+                    tags={project.tags}
+                    githubUrl={project.githubUrl}
+                    liveUrl={project.liveUrl}
+                    features={project.features}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20 border rounded-lg bg-card">
+                <h3 className="text-xl font-medium mb-2">No projects found</h3>
+                <p className="text-muted-foreground mb-6">
+                  Try adjusting your filters or search criteria.
+                </p>
+                <Button onClick={resetFilters}>Reset Filters</Button>
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

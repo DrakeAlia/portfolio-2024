@@ -20,6 +20,7 @@ import {
 
 // Icons:
 import reactIcon from "../../public/icons/react.png";
+import { Zap } from "lucide-react";
 import nextjsIcon from "../../public/icons/next-js.png";
 import typescriptIcon from "../../public/icons/typescript.png";
 import javascriptIcon from "../../public/icons/javascript.png";
@@ -61,6 +62,26 @@ const skills: Skill[] = [
     icon: tailwindcssIcon,
     category: "Front-End Development",
   },
+  {
+    name: "Midjourney",
+    icon: { src: "/placeholder-ai.png", width: 40, height: 40 },
+    category: "AI Tools",
+  },
+  {
+    name: "ChatGPT",
+    icon: { src: "/placeholder-ai.png", width: 40, height: 40 },
+    category: "AI Tools",
+  },
+  {
+    name: "Claude",
+    icon: { src: "/placeholder-ai.png", width: 40, height: 40 },
+    category: "AI Tools",
+  },
+  {
+    name: "Cursor",
+    icon: { src: "/placeholder-ai.png", width: 40, height: 40 },
+    category: "AI Tools",
+  },
   { name: "shadcn/ui", icon: shadcnuiIcon, category: "Front-End Development" },
   { name: "Prettier", icon: prettierIcon, category: "Front-End Development" },
   { name: "Node.js", icon: nodejsIcon, category: "Backend Development" },
@@ -78,6 +99,7 @@ const categories = [
   "Backend Development",
   "DevOps",
   "Tools & Environment",
+  "AI Tools",
 ];
 
 export default function Skills() {
@@ -164,6 +186,9 @@ export default function Skills() {
 }
 
 function SkillIcon({ skill }: { skill: Skill }) {
+  const isPlaceholder =
+    skill.icon.src && skill.icon.src.includes("placeholder");
+
   return (
     <TooltipProvider>
       <Tooltip>
@@ -174,13 +199,16 @@ function SkillIcon({ skill }: { skill: Skill }) {
             className="flex flex-col items-center group"
           >
             <div className="w-16 h-16 flex items-center justify-center bg-primary/10 dark:bg-primary/20 rounded-full p-3 shadow-md transition-all duration-300 group-hover:bg-primary/30 dark:group-hover:bg-primary/40 group-hover:shadow-lg group-hover:shadow-primary/20 dark:group-hover:shadow-primary/40">
-              <div className="relative w-10 h-10">
-                <Image
-                  src={skill.icon}
-                  alt={skill.name}
-                  
-                  className="transition-all duration-300 group-hover:brightness-110 dark:group-hover:brightness-125"
-                />
+              <div className="relative w-10 h-10 flex items-center justify-center">
+                {isPlaceholder ? (
+                  <Zap className="w-8 h-8 text-primary" />
+                ) : (
+                  <Image
+                    src={skill.icon}
+                    alt={skill.name}
+                    className="transition-all duration-300 group-hover:brightness-110 dark:group-hover:brightness-125"
+                  />
+                )}
               </div>
             </div>
             <span className="mt-2 text-sm text-center font-medium transition-colors duration-300 group-hover:text-primary dark:group-hover:text-primary-foreground">

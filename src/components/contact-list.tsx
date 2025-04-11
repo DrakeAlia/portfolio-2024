@@ -38,7 +38,7 @@ const contacts: Contact[] = [
   {
     name: "X",
     className: "bg-black hover:bg-gray-800/90",
-    href: "https://twitter.com/drake___alia",
+    href: "https://x.com/Drake2Alia",
     icon: faXTwitter,
   },
   {
