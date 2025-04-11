@@ -6,7 +6,7 @@ import ContactList from "@/components/contact-list";
 import { motion, useAnimation } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, ArrowRight, Eye } from "lucide-react";
+import { ArrowRight, Eye } from "lucide-react";
 
 export default function Hero() {
   const controls = useAnimation();
@@ -90,7 +90,6 @@ export default function Hero() {
           responsive, and user-friendly web experiences that drive results.
         </motion.p>
         {/* Resume and CTA Buttons */}
-
         <motion.div
           className="flex flex-wrap justify-center gap-4 mb-8"
           variants={fadeInUp}
