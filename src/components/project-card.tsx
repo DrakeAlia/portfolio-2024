@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Github, ExternalLink, Code, X, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,12 +24,30 @@ interface ProjectCardProps {
   image: string;
   tags: string[];
   githubUrl?: string;
+  featured?: boolean;
   liveUrl?: string;
   features: string[];
   longDescription: string;
   slug?: string; // Optional for linking to dedicated project pages
   category?: string; // Optional for categorization
 }
+
+const getTagColor = (tag: string) => {
+  const tagLower = tag.toLowerCase();
+  if (tagLower.includes("react"))
+    return "bg-[#61dafb]/20 text-[#61dafb] border-[#61dafb]/30";
+  if (tagLower.includes("next"))
+    return "bg-black/10 text-foreground border-gray-700/20";
+  if (tagLower.includes("typescript"))
+    return "bg-[#3178c6]/20 text-[#3178c6] border-[#3178c6]/30";
+  if (tagLower.includes("mongodb"))
+    return "bg-[#47a248]/20 text-[#47a248] border-[#47a248]/30";
+  if (tagLower.includes("tailwind"))
+    return "bg-[#38bdf8]/20 text-[#38bdf8] border-[#38bdf8]/30";
+  if (tagLower.includes("shadcn"))
+    return "bg-black/10 text-foreground border-gray-700/20";
+  return "bg-secondary/50 text-secondary-foreground";
+};
 
 export default function ProjectCard({
   title,
@@ -42,6 +60,7 @@ export default function ProjectCard({
   longDescription,
   slug,
   category = "project",
+  featured = false,
 }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -69,8 +88,21 @@ export default function ProjectCard({
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
+          {featured && (
+            <div className="absolute top-2 right-2 z-10">
+              <Badge
+                variant="default"
+                className="bg-primary text-xs font-medium"
+              >
+                Featured
+              </Badge>
+            </div>
+          )}
           {/* Image container with category badge */}
-          <div className="relative overflow-hidden h-48">
+          <div className="relative overflow-hidden aspect-video">
+            {!imageLoaded && (
+              <div className="absolute inset-0 bg-muted animate-pulse" />
+            )}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: imageLoaded ? 1 : 0 }}
@@ -194,75 +226,96 @@ export default function ProjectCard({
                     <Code className="mr-2 h-4 w-4" /> View Details
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>{title}</DialogTitle>
-                    <DialogDescription>{description}</DialogDescription>
-                  </DialogHeader>
+                <DialogContent
+                  className="max-w-3xl max-h-[90vh] overflow-y-auto"
+                  forceMount
+                >
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="w-full"
+                  >
+                    <DialogHeader>
+                      <DialogTitle>{title}</DialogTitle>
+                      <DialogDescription>{description}</DialogDescription>
+                    </DialogHeader>
 
-                  <div className="mt-4">
-                    <div className="relative h-64 mb-4">
-                      <Image
-                        src={image}
-                        alt={title}
-                        fill
-                        className="object-cover rounded-md"
-                      />
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mt-4">
+                      <div className="md:col-span-3">
+                        <div className="relative aspect-video mb-4">
+                          <Image
+                            src={image}
+                            alt={title}
+                            fill
+                            className="object-cover rounded-md"
+                          />
+                        </div>
+                        <h4 className="text-lg font-medium mb-2">
+                          About this project
+                        </h4>
+                        <p className="text-muted-foreground mb-4">
+                          {longDescription}
+                        </p>
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <h4 className="text-lg font-medium mb-2">Features</h4>
+                        <ul className="list-disc pl-5 mb-4 space-y-1">
+                          {features.map((feature, index) => (
+                            <li key={index}>{feature}</li>
+                          ))}
+                        </ul>
+
+                        <h4 className="text-lg font-medium mb-2">
+                          Technologies
+                        </h4>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {tags.map((tag, index) => (
+                            <Badge
+                              key={index}
+                              variant="secondary"
+                              className={getTagColor(tag)}
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+
+                        <div className="flex gap-2 mt-4">
+                          {githubUrl && (
+                            <Button asChild>
+                              <a
+                                href={githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <Github className="mr-2 h-4 w-4" /> View Code
+                              </a>
+                            </Button>
+                          )}
+                          {liveUrl && (
+                            <Button variant="outline" asChild>
+                              <a
+                                href={liveUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <ExternalLink className="mr-2 h-4 w-4" /> Live
+                                Demo
+                              </a>
+                            </Button>
+                          )}
+                          <DialogClose asChild>
+                            <Button variant="ghost">
+                              <X className="mr-2 h-4 w-4" /> Close
+                            </Button>
+                          </DialogClose>
+                        </div>
+                      </div>
                     </div>
-
-                    <h4 className="text-lg font-medium mb-2">
-                      About this project
-                    </h4>
-                    <p className="text-muted-foreground mb-4">
-                      {longDescription}
-                    </p>
-
-                    <h4 className="text-lg font-medium mb-2">Features</h4>
-                    <ul className="list-disc pl-5 mb-4 space-y-1">
-                      {features.map((feature, index) => (
-                        <li key={index}>{feature}</li>
-                      ))}
-                    </ul>
-
-                    <h4 className="text-lg font-medium mb-2">Technologies</h4>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {tags.map((tag, index) => (
-                        <Badge key={index} variant="secondary">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-
-                    <div className="flex gap-2 mt-4">
-                      {githubUrl && (
-                        <Button asChild>
-                          <a
-                            href={githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <Github className="mr-2 h-4 w-4" /> View Code
-                          </a>
-                        </Button>
-                      )}
-                      {liveUrl && (
-                        <Button variant="outline" asChild>
-                          <a
-                            href={liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
-                          </a>
-                        </Button>
-                      )}
-                      <DialogClose asChild>
-                        <Button variant="ghost">
-                          <X className="mr-2 h-4 w-4" /> Close
-                        </Button>
-                      </DialogClose>
-                    </div>
-                  </div>
+                  </motion.div>
                 </DialogContent>
               </Dialog>
             )}

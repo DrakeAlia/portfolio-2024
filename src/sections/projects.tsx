@@ -6,87 +6,25 @@ import ProjectCard from "@/components/project-card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Filter, X } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { projects, Project } from "../lib/projects";
 
 export default function Projects() {
-  const projects = useMemo(
-    () => [
-      {
-        title: "InfinitePages",
-        description:
-          "A full-stack application for reviewing books and sharing them with others.",
-        image: "/images/cover-book-reviews.png",
-        longDescription:
-          "This full-stack application allows users to manage and share book reviews. Users can create an account, add books to their collection, and write reviews. The application is built with Next.js, TypeScript, MongoDB, and Tailwind CSS.",
-        liveUrl: "https://book-reviews-orcin.vercel.app/",
-        githubUrl: "https://github.com/DrakeAlia/book-reviews",
-        tags: ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
-        features: [
-          "User authentication",
-          "Database integration",
-          "Responsive layout",
-        ],
-        category: "full-stack",
-      },
-      {
-        title: "Green Thumb",
-        description: "A plant monitoring app with automated watering.",
-        image: "/images/cover-green-thumb.png",
-        longDescription:
-          "This splash page revolves around products and features for water plants remotely with a app. The splash is center around animations based on user interaction  Built with Next.js, Tailwind CSS, TypeScript, Shadcn, and Framer Motion.",
-        liveUrl: "https://green-thumb-mu.vercel.app/",
-        githubUrl: "https://github.com/DrakeAlia/green-thumb",
-        tags: [
-          "Next.js",
-          "TypeScript",
-          "Tailwind CSS",
-          "shadcn/ui",
-          "Framer Motion",
-        ],
-        features: [
-          "Interactive animations",
-          "Custom design system",
-          "Responsive layout",
-        ],
-        category: "front-end",
-      },
-      {
-        title: "VitaFlow",
-        description: "A modern pharmacy and healthcare provider website.",
-        image: "/images/cover-vitaflow.png",
-        longDescription:
-          "Designed and developed a fully-functional front-end website for VitaFlow pharmacy using Next.js and React. The site features responsive design, interactive UI components with Framer Motion animations, and a comprehensive service showcase that effectively communicates VitaFlow's healthcare offerings and brand identity.",
-        liveUrl: "https://vitaflow.vercel.app/",
-        githubUrl: "https://github.com/DrakeAlia/vitaflow",
-        tags: [
-          "Next.js",
-          "React",
-          "Tailwind CSS",
-          "shadcn/ui",
-          "Framer Motion",
-        ],
-        features: [
-          "Responsive design with grid and flex layouts",
-          "Interactive animations and transitions",
-          "Component-based architecture",
-          "Modern UI with hover effects and cards",
-        ],
-        category: "front-end",
-      },
-    ],
-    []
-  );
-
   // Extract unique categories and tags for filtering
   const allCategories = [
     "all",
-    ...Array.from(new Set(projects.map((project) => project.category))),
-  ];
+    ...Array.from(
+      new Set(projects.map((project: Project) => project.category))
+    ),
+  ] as string[];
   const allTags = [
     "All",
-    ...Array.from(new Set(projects.flatMap((project) => project.tags))),
-  ];
+    ...Array.from(
+      new Set(projects.flatMap((project: Project) => project.tags))
+    ),
+  ] as string[];
 
-  // State for filtering and search
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedTag, setSelectedTag] = useState("all");
   const [searchValue, setSearchValue] = useState("");
@@ -103,33 +41,41 @@ export default function Projects() {
 
   // Filter projects when any filter changes
   useEffect(() => {
+    setIsLoading(true);
     let result = projects;
 
-    // Filter by category
-    if (selectedCategory !== "all") {
-      result = result.filter(
-        (project) => project.category === selectedCategory
-      );
-    }
+    const timer = setTimeout(() => {
+      let result = projects;
 
-    // Filter by tag
-    if (selectedTag !== "all") {
-      result = result.filter((project) => project.tags.includes(selectedTag));
-    }
+      // Filter by category
+      if (selectedCategory !== "all") {
+        result = result.filter(
+          (project) => project.category === selectedCategory
+        );
+      }
 
-    // Filter by search
-    if (searchValue.trim() !== "") {
-      const searchLower = searchValue.toLowerCase();
-      result = result.filter(
-        (project) =>
-          project.title.toLowerCase().includes(searchLower) ||
-          project.description.toLowerCase().includes(searchLower) ||
-          project.tags.some((tag) => tag.toLowerCase().includes(searchLower))
-      );
-    }
+      // Filter by tag
+      if (selectedTag !== "all") {
+        result = result.filter((project) => project.tags.includes(selectedTag));
+      }
 
-    setFilteredProjects(result);
-  }, [selectedCategory, selectedTag, searchValue, projects]);
+      // Filter by search
+      if (searchValue.trim() !== "") {
+        const searchLower = searchValue.toLowerCase();
+        result = result.filter(
+          (project) =>
+            project.title.toLowerCase().includes(searchLower) ||
+            project.description.toLowerCase().includes(searchLower) ||
+            project.tags.some((tag) => tag.toLowerCase().includes(searchLower))
+        );
+      }
+
+      setFilteredProjects(result);
+      setIsLoading(false);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [selectedCategory, selectedTag, searchValue]);
 
   const resetFilters = () => {
     setSelectedCategory("all");
@@ -321,20 +267,43 @@ export default function Projects() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {filteredProjects.length > 0 ? (
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[1, 2, 3].map((i) => (
+                  <Card key={i} className="h-[400px] overflow-hidden">
+                    <div className="relative aspect-video bg-muted animate-pulse" />
+                    <CardContent className="p-4">
+                      <div className="h-6 w-3/4 bg-muted animate-pulse rounded mb-4" />
+                      <div className="h-4 bg-muted animate-pulse rounded mb-2" />
+                      <div className="h-4 w-2/3 bg-muted animate-pulse rounded mb-6" />
+                      <div className="flex gap-2 mb-4">
+                        {[1, 2, 3].map((j) => (
+                          <div
+                            key={j}
+                            className="h-5 w-16 bg-muted animate-pulse rounded"
+                          />
+                        ))}
+                      </div>
+                      <div className="h-9 bg-muted animate-pulse rounded mt-auto" />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : filteredProjects.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredProjects.map((project, index) => (
-                  <ProjectCard
+                  <motion.div
                     key={`${project.title}-${index}`}
-                    title={project.title}
-                    description={project.description}
-                    image={project.image}
-                    longDescription={project.longDescription}
-                    tags={project.tags}
-                    githubUrl={project.githubUrl}
-                    liveUrl={project.liveUrl}
-                    features={project.features}
-                  />
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: index * 0.1,
+                      ease: "easeOut",
+                    }}
+                  >
+                    <ProjectCard {...project} />
+                  </motion.div>
                 ))}
               </div>
             ) : (
