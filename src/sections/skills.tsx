@@ -78,7 +78,7 @@ const skills: Skill[] = [
     category: "AI Tools",
   },
   {
-    name: "Cursor",
+    name: "Cursor AI",
     icon: { src: "/placeholder-ai.png", width: 40, height: 40 },
     category: "AI Tools",
   },

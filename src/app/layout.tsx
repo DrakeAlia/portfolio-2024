@@ -1,10 +1,13 @@
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import dynamic from "next/dynamic";
 import Header from "@/components/layout/header";
 import BackToTop from "@/components/back-to-top";
 import GridBackground from "@/components/grid-background";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ClientWrapper } from "@/components/client-wrapper";
+import { SkipToContent } from "@/components/skip-to-content";
 import { cn } from "@/lib/utils";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -43,6 +46,7 @@ export default function RootLayout({
           montserrat.className
         )}
       >
+        <SkipToContent />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -53,7 +57,9 @@ export default function RootLayout({
             <div className="relative flex min-h-screen flex-col bg-background">
               <Header />
               <GridBackground />
-              <main className="flex-1">{children}</main>
+              <ClientWrapper>
+                <main className="flex-1">{children}</main>
+              </ClientWrapper>
               <BackToTop />
             </div>
           </div>

@@ -41,7 +41,7 @@ export default function ProjectCard({
   features,
   longDescription,
   slug,
-  category,
+  category = "project",
 }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
