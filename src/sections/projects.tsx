@@ -258,6 +258,12 @@ export default function Projects() {
           </AnimatePresence>
         </div>
 
+        <div className="flex justify-between items-center my-4">
+          <p className="text-sm text-muted-foreground">
+            Showing {filteredProjects.length} of {projects.length} projects
+          </p>
+        </div>
+
         {/* Projects grid */}
         <AnimatePresence mode="wait">
           <motion.div

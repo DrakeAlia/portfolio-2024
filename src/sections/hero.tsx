@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import ContactList from "@/components/contact-list";
 import { motion, useAnimation } from "framer-motion";
@@ -10,6 +10,18 @@ import { ArrowRight, Eye } from "lucide-react";
 
 export default function Hero() {
   const controls = useAnimation();
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     controls.start({ opacity: 1, y: 0 });
@@ -119,6 +131,34 @@ export default function Hero() {
           <ContactList delayOffset={1.2} showWhenInView={false} />
         </motion.div>
       </div>
+      <motion.div
+        className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:flex flex-col items-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+      >
+        <p className="text-xs text-muted-foreground mb-2">Scroll to explore</p>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          <svg
+            width="20"
+            height="10"
+            viewBox="0 0 20 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 1L10 9L19 1"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </motion.div>
+      </motion.div>
     </motion.section>
   );
 }

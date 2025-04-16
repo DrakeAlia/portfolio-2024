@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { SkipToContent } from "@/components/skip-to-content";
+import { useKeyboardNav } from "@/hooks/useKeyboardNav";
 
 // Import GoogleAnalytics with dynamic import
 const GoogleAnalytics = dynamic(
@@ -10,6 +11,8 @@ const GoogleAnalytics = dynamic(
 );
 
 export function ClientWrapper({ children }: { children: React.ReactNode }) {
+  useKeyboardNav();
+
   return (
     <>
       <SkipToContent />

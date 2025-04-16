@@ -9,27 +9,51 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ClientWrapper } from "@/components/client-wrapper";
 import { SkipToContent } from "@/components/skip-to-content";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 export const metadata: Metadata = {
-  title: "Drake Alia | Personal",
-  metadataBase: new URL("https://github.com/DrakeAlia"),
+  title: "Drake Alia | Web Developer",
+  metadataBase: new URL("https://github.com/DrakeAlia"), // Keep your existing URL
   alternates: {
     canonical: "/",
   },
+  description:
+    "Web Developer specializing in modern UI development with Next.js, React, and TypeScript",
+  keywords: [
+    "web developer",
+    "frontend",
+    "UI engineer",
+    "Next.js",
+    "React",
+    "TypeScript",
+  ],
   authors: [{ name: "Drake Alia", url: "https://github.com/DrakeAlia" }],
-  description: "Drake Alia",
+  creator: "Drake Alia",
+  publisher: "Drake Alia",
+  formatDetection: {
+    email: false,
+    telephone: false,
+  },
   openGraph: {
-    title: "Drake Alia | Personal",
-    description: "Drake Alia's Personal Website",
+    type: "website",
+    title: "Drake Alia | Web Developer",
+    description:
+      "Creating engaging, responsive web experiences with modern technologies",
+    siteName: "Drake Alia Portfolio",
     images: [
       {
-        url: "/images/photo.png",
-        alt: "Drake's Portrait",
+        url: "/images/photo.png", // Use your existing image or create a dedicated OG image
         width: 640,
         height: 800,
+        alt: "Drake Alia - Web Developer",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    creator: "@Drake2Alia",
+    images: ["/images/photo.png"], // Use your existing image or create a dedicated Twitter image
   },
 };
 
