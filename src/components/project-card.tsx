@@ -88,16 +88,6 @@ export default function ProjectCard({
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          {featured && (
-            <div className="absolute top-2 right-2 z-10">
-              <Badge
-                variant="default"
-                className="bg-primary text-xs font-medium"
-              >
-                Featured
-              </Badge>
-            </div>
-          )}
           {/* Image container with category badge */}
           <div className="relative overflow-hidden aspect-video">
             {!imageLoaded && (

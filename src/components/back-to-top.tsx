@@ -36,15 +36,18 @@ export default function BackToTop() {
     <motion.button
       onClick={scrollToTop}
       className="fixed bottom-8 right-8 p-3 rounded-full bg-primary text-primary-foreground shadow-lg z-50"
-      initial={{ opacity: 0, scale: 0.8 }}
+      initial={{ opacity: 0, scale: 0.8, y: 100 }} // Start further down
       animate={{
         opacity: isVisible ? 1 : 0,
         scale: isVisible ? 1 : 0.8,
-        y: isVisible ? 0 : 20,
+        y: isVisible ? 0 : 100, // Hide further down when not visible
       }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }} // Smoother transition
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
+      style={{
+        pointerEvents: isVisible ? "auto" : "none", // Disable clicks when hidden
+      }}
     >
       <svg className="w-6 h-6" viewBox="0 0 24 24">
         <motion.circle
