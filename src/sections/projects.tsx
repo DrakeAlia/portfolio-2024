@@ -276,23 +276,66 @@ export default function Projects() {
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {[1, 2, 3].map((i) => (
-                  <Card key={i} className="h-[400px] overflow-hidden">
-                    <div className="relative aspect-video bg-muted animate-pulse" />
-                    <CardContent className="p-4">
-                      <div className="h-6 w-3/4 bg-muted animate-pulse rounded mb-4" />
-                      <div className="h-4 bg-muted animate-pulse rounded mb-2" />
-                      <div className="h-4 w-2/3 bg-muted animate-pulse rounded mb-6" />
-                      <div className="flex gap-2 mb-4">
-                        {[1, 2, 3].map((j) => (
-                          <div
-                            key={j}
-                            className="h-5 w-16 bg-muted animate-pulse rounded"
-                          />
-                        ))}
-                      </div>
-                      <div className="h-9 bg-muted animate-pulse rounded mt-auto" />
-                    </CardContent>
-                  </Card>
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ 
+                      duration: 0.5, 
+                      delay: i * 0.1,
+                      ease: "easeOut"
+                    }}
+                  >
+                    <Card className="h-[400px] overflow-hidden relative">
+                      <motion.div 
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+                        animate={{ x: [-200, 400] }}
+                        transition={{ 
+                          duration: 1.5, 
+                          repeat: Infinity, 
+                          repeatDelay: 1,
+                          ease: "easeInOut"
+                        }}
+                      />
+                      <div className="relative aspect-video bg-muted animate-pulse" />
+                      <CardContent className="p-4">
+                        <motion.div 
+                          className="h-6 w-3/4 bg-muted rounded mb-4"
+                          animate={{ opacity: [0.3, 0.8, 0.3] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                        />
+                        <motion.div 
+                          className="h-4 bg-muted rounded mb-2"
+                          animate={{ opacity: [0.3, 0.8, 0.3] }}
+                          transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
+                        />
+                        <motion.div 
+                          className="h-4 w-2/3 bg-muted rounded mb-6"
+                          animate={{ opacity: [0.3, 0.8, 0.3] }}
+                          transition={{ duration: 1.5, repeat: Infinity, delay: 0.4 }}
+                        />
+                        <div className="flex gap-2 mb-4">
+                          {[1, 2, 3].map((j) => (
+                            <motion.div
+                              key={j}
+                              className="h-5 w-16 bg-muted rounded"
+                              animate={{ opacity: [0.3, 0.8, 0.3] }}
+                              transition={{ 
+                                duration: 1.5, 
+                                repeat: Infinity, 
+                                delay: 0.6 + j * 0.1 
+                              }}
+                            />
+                          ))}
+                        </div>
+                        <motion.div 
+                          className="h-9 bg-muted rounded mt-auto"
+                          animate={{ opacity: [0.3, 0.8, 0.3] }}
+                          transition={{ duration: 1.5, repeat: Infinity, delay: 0.8 }}
+                        />
+                      </CardContent>
+                    </Card>
+                  </motion.div>
                 ))}
               </div>
             ) : filteredProjects.length > 0 ? (

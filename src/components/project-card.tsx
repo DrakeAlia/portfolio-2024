@@ -4,10 +4,11 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, ExternalLink, Code, X, ArrowRight } from "lucide-react";
+import { Github, ExternalLink, Code, X, ArrowRight, Sparkles } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -76,18 +77,51 @@ export default function ProjectCard({
   return (
     <>
       <motion.div
-        whileHover={{ y: -10 }}
+        whileHover={{ 
+          y: -10,
+          scale: 1.02,
+          rotateX: 5,
+          rotateY: 5
+        }}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ 
+          duration: 0.5,
+          type: "spring",
+          stiffness: 300,
+          damping: 20
+        }}
         viewport={{ once: true }}
         className="h-full"
+        style={{ perspective: "1000px" }}
       >
         <Card
-          className="overflow-hidden h-full flex flex-col shadow-lg hover:shadow-xl transition-all duration-300"
+          className="overflow-hidden h-full flex flex-col shadow-lg hover:shadow-2xl transition-all duration-500 transform-gpu relative group"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
+          {/* Animated background gradient */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.3 }}
+          />
+          
+          {/* Featured badge with sparkle effect */}
+          {featured && (
+            <motion.div
+              className="absolute top-4 right-4 z-20"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 500 }}
+            >
+              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold px-3 py-1 shadow-lg">
+                <Sparkles className="mr-1 h-3 w-3" />
+                Featured
+              </Badge>
+            </motion.div>
+          )}
           {/* Image container with category badge */}
           <div className="relative overflow-hidden aspect-video">
             {!imageLoaded && (
@@ -173,37 +207,69 @@ export default function ProjectCard({
               {tags.slice(0, 4).map((tag, index) => (
                 <motion.div
                   key={index}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  transition={{ duration: 0.2 }}
+                  whileHover={{ 
+                    scale: 1.1, 
+                    y: -3,
+                    rotateX: 10
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ 
+                    duration: 0.2,
+                    type: "spring",
+                    stiffness: 400
+                  }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  style={{ transition: `transform 0.2s ease-out ${index * 0.1}s` }}
                 >
                   <Badge
                     variant="secondary"
-                    className="text-xs cursor-pointer transition-colors hover:bg-secondary/80"
+                    className={cn(
+                      "text-xs cursor-pointer transition-all duration-300 hover:shadow-md",
+                      getTagColor(tag)
+                    )}
                   >
                     {tag}
                   </Badge>
                 </motion.div>
               ))}
               {tags.length > 4 && (
-                <Badge variant="outline" className="text-xs">
-                  +{tags.length - 4}
-                </Badge>
+                <motion.div
+                  whileHover={{ scale: 1.05, rotate: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Badge variant="outline" className="text-xs hover:bg-muted/80 transition-colors">
+                    +{tags.length - 4}
+                  </Badge>
+                </motion.div>
               )}
             </div>
 
             {/* Details dialog or link to project page */}
             {slug ? (
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full group"
-                asChild
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
               >
-                <Link href={`/projects/${slug}`}>
-                  View Project Details
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full group relative overflow-hidden"
+                  asChild
+                >
+                  <Link href={`/projects/${slug}`}>
+                    <motion.span
+                      className="absolute inset-0 bg-primary/10 rounded-md"
+                      initial={{ x: "-100%" }}
+                      whileHover={{ x: "0%" }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    <span className="relative z-10">View Project Details</span>
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 relative z-10" />
+                  </Link>
+                </Button>
+              </motion.div>
             ) : (
               <Dialog>
                 <DialogTrigger asChild>

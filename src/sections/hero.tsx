@@ -3,13 +3,17 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import ContactList from "@/components/contact-list";
-import { motion, useAnimation } from "framer-motion";
+import ParallaxWrapper from "@/components/parallax-wrapper";
+import { motion, useAnimation, useScroll, useTransform } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Eye } from "lucide-react";
 
 export default function Hero() {
   const controls = useAnimation();
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 300], [0, -50]);
+  const y2 = useTransform(scrollY, [0, 300], [0, -30]);
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -40,23 +44,27 @@ export default function Hero() {
   return (
     <motion.section className="relative overflow-hidden py-8 sm:py-12 md:py-20">
       <div className="container mx-auto px-4 flex flex-col items-center justify-center h-full text-center">
-        <motion.h1
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8"
-          variants={fadeInUp}
-          initial="initial"
-          animate="animate"
-          transition={fadeInUpTransition}
-        >
-          Hello, I&apos;m Drake Alia!{" "}
-          <motion.span
-            className="inline-block"
-            animate={{ rotate: [0, 14, -8, 14, -4, 10, 0, 0] }}
-            transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1 }}
+        <motion.div style={{ y: y1 }}>
+          <motion.h1
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8"
+            variants={fadeInUp}
+            initial="initial"
+            animate="animate"
+            transition={fadeInUpTransition}
           >
-            👋
-          </motion.span>
-        </motion.h1>
+            Hello, I&apos;m Drake Alia!{" "}
+            <motion.span
+              className="inline-block"
+              animate={{ rotate: [0, 14, -8, 14, -4, 10, 0, 0] }}
+              transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1 }}
+            >
+              👋
+            </motion.span>
+          </motion.h1>
+        </motion.div>
+
         <motion.div
+          style={{ y: y2 }}
           className="w-40 h-40 sm:w-48 sm:h-48 md:w-80 md:h-80 lg:w-96 lg:h-96 mb-6 sm:mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

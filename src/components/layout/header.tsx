@@ -18,7 +18,7 @@ const goldenSignature = localFont({
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const links = ["about", "skills", "projects"];
+  const links = ["about", "skills", "projects", "blog"];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -91,9 +91,13 @@ export default function Header() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => {
-                document
-                  .getElementById(link)
-                  ?.scrollIntoView({ behavior: "smooth" });
+                if (link === "blog") {
+                  window.location.href = "/blog";
+                } else {
+                  document
+                    .getElementById(link)
+                    ?.scrollIntoView({ behavior: "smooth" });
+                }
               }}
             >
               {link.charAt(0).toUpperCase() + link.slice(1)}
