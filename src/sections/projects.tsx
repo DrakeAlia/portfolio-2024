@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import ProjectCard from "@/components/project-card";
 import { projects } from "../lib/projects";
@@ -10,8 +10,13 @@ import { Button } from "@/components/ui/button";
 
 export default function Projects() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [isClient, setIsClient] = useState(false);
   const projectsPerPage = 6;
   const totalPages = Math.ceil(projects.length / projectsPerPage);
+  
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   
   const nextPage = () => {
     setCurrentPage((prev) => (prev + 1) % totalPages);
@@ -45,7 +50,7 @@ export default function Projects() {
             Explore my recent projects showcasing my expertise in modern web
             development
           </p>
-          {totalPages > 1 && (
+          {isClient && totalPages > 1 && (
             <p className="text-sm text-muted-foreground">
               Swipe left/right on mobile or use navigation buttons • Page {currentPage + 1} of {totalPages}
             </p>
@@ -53,7 +58,7 @@ export default function Projects() {
         </motion.div>
 
         {/* Navigation buttons for desktop */}
-        {totalPages > 1 && (
+        {isClient && totalPages > 1 && (
           <div className="flex justify-center items-center gap-4 mb-8">
             <Button
               variant="outline"

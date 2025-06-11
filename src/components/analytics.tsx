@@ -7,9 +7,10 @@ declare global {
   }
 }
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
 
 export function GoogleAnalytics({
   GA_MEASUREMENT_ID,
@@ -17,15 +18,14 @@ export function GoogleAnalytics({
   GA_MEASUREMENT_ID: string;
 }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (pathname && window.gtag) {
       window.gtag("config", GA_MEASUREMENT_ID, {
-        page_path: pathname + (searchParams?.toString() || ""),
+        page_path: pathname,
       });
     }
-  }, [pathname, searchParams, GA_MEASUREMENT_ID]);
+  }, [pathname, GA_MEASUREMENT_ID]);
 
   return (
     <>
@@ -42,7 +42,7 @@ export function GoogleAnalytics({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GA_MEASUREMENT_ID}', {
-              page_path: window.location.pathname + window.location.search,
+              page_path: window.location.pathname,
               anonymize_ip: true,
               allow_google_signals: false,
               allow_ad_personalization_signals: false
@@ -62,23 +62,24 @@ interface AnalyticsProps {
 
 export function Analytics({ googleAnalyticsId, plausibleDomain }: AnalyticsProps) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   // Track page views
   useEffect(() => {
     if (googleAnalyticsId && window.gtag) {
       window.gtag("config", googleAnalyticsId, {
-        page_path: pathname + (searchParams?.toString() || ""),
+        page_path: pathname,
       });
     }
 
     if (plausibleDomain && window.plausible) {
       window.plausible("pageview");
     }
-  }, [pathname, searchParams, googleAnalyticsId, plausibleDomain]);
+  }, [pathname, googleAnalyticsId, plausibleDomain]);
 
   // Track user interactions
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const trackEvent = (eventName: string, properties?: Record<string, any>) => {
       if (googleAnalyticsId && window.gtag) {
         window.gtag("event", eventName, properties);
@@ -160,7 +161,7 @@ export function Analytics({ googleAnalyticsId, plausibleDomain }: AnalyticsProps
       window.removeEventListener('scroll', handleScrollDepth);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [googleAnalyticsId, plausibleDomain]);
+  }, []);
 
   return (
     <>
@@ -177,7 +178,7 @@ export function Analytics({ googleAnalyticsId, plausibleDomain }: AnalyticsProps
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${googleAnalyticsId}', {
-                page_path: window.location.pathname + window.location.search,
+                page_path: window.location.pathname,
                 anonymize_ip: true,
                 allow_google_signals: false,
                 allow_ad_personalization_signals: false

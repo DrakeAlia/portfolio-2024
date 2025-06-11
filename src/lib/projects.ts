@@ -19,10 +19,6 @@ export interface Project {
       decision: string;
       reasoning: string;
     }[];
-    outcomes: {
-      metric: string;
-      value: string;
-    }[];
     learnings: string[];
     timeline?: string;
     teamSize?: number;
@@ -62,7 +58,7 @@ export const projects = [
     category: "full-stack",
     featured: true,
     slug: "fit-and-fly",
-    completedAt: "2024-06",
+    completedAt: "2025-06",
     caseStudy: {
       problem:
         "Travelers often struggle to maintain their fitness routines and healthy eating habits while traveling, lacking personalized guidance for their specific destinations and available resources.",
@@ -103,24 +99,6 @@ export const projects = [
             "Provides consistent, accessible components while allowing full customization and brand integration",
         },
       ],
-      outcomes: [
-        {
-          metric: "User Engagement",
-          value: "85% completion rate for onboarding flow",
-        },
-        {
-          metric: "Performance",
-          value: "95+ Lighthouse score on mobile and desktop",
-        },
-        {
-          metric: "State Persistence",
-          value: "100% reliable data recovery across sessions",
-        },
-        {
-          metric: "Animation Performance",
-          value: "Consistent 60fps across all interactions",
-        },
-      ],
       learnings: [
         "Complex state management requires careful architecture planning from the start",
         "Mobile-first design is crucial for fitness and travel applications",
@@ -128,7 +106,7 @@ export const projects = [
         "Performance optimization is critical for animation-heavy applications",
         "Persistent storage strategies need to handle edge cases gracefully",
       ],
-      timeline: "12 weeks",
+      timeline: "2 days",
       role: "Full-stack Developer & UX Designer",
     },
   },
@@ -150,7 +128,7 @@ export const projects = [
     category: "full-stack",
     featured: true,
     slug: "infinitepages",
-    completedAt: "2024-03",
+    completedAt: "2024-01",
     caseStudy: {
       problem:
         "Book enthusiasts needed a platform to track, review, and share their reading experiences with a community of like-minded readers.",
@@ -177,20 +155,6 @@ export const projects = [
           decision: "TypeScript for type safety",
           reasoning:
             "Reduces runtime errors and improves development experience with better IDE support",
-        },
-      ],
-      outcomes: [
-        {
-          metric: "User Engagement",
-          value: "Average session duration of 12+ minutes",
-        },
-        {
-          metric: "Performance",
-          value: "90+ Lighthouse score across all metrics",
-        },
-        {
-          metric: "Mobile Usage",
-          value: "65% of users access via mobile devices",
         },
       ],
       learnings: [
@@ -225,7 +189,7 @@ export const projects = [
     category: "front-end",
     featured: false,
     slug: "green-thumb",
-    completedAt: "2024-01",
+    completedAt: "2024-03",
     caseStudy: {
       problem:
         "Plant enthusiasts struggled to maintain proper care schedules and monitor their plants remotely, leading to plant health issues and frequent plant loss.",
@@ -252,20 +216,6 @@ export const projects = [
           decision: "Tailwind CSS for styling",
           reasoning:
             "Enables rapid prototyping and consistent design system implementation",
-        },
-      ],
-      outcomes: [
-        {
-          metric: "User Engagement",
-          value: "40% increase in time spent on landing page",
-        },
-        {
-          metric: "Animation Performance",
-          value: "60fps maintained across all interactions",
-        },
-        {
-          metric: "Mobile Optimization",
-          value: "100% responsive design compatibility",
         },
       ],
       learnings: [
@@ -295,7 +245,7 @@ export const projects = [
     category: "front-end",
     featured: true,
     slug: "vitaflow",
-    completedAt: "2024-02",
+    completedAt: "2024-03",
     caseStudy: {
       problem:
         "VitaFlow needed a modern, trustworthy online presence that would effectively communicate their healthcare services while building patient confidence and encouraging engagement.",
@@ -324,26 +274,12 @@ export const projects = [
             "Adds professional polish without compromising the serious nature of healthcare services",
         },
       ],
-      outcomes: [
-        {
-          metric: "Page Load Speed",
-          value: "95+ Lighthouse performance score",
-        },
-        {
-          metric: "User Experience",
-          value: "30% reduction in bounce rate",
-        },
-        {
-          metric: "Accessibility",
-          value: "WCAG 2.1 AA compliance achieved",
-        },
-      ],
       learnings: [
         "Healthcare websites require extra attention to accessibility standards",
         "Trust indicators are crucial for medical service providers",
         "Performance optimization directly impacts user confidence",
       ],
-      timeline: "8 weeks",
+      timeline: "3 weeks",
       role: "Lead Frontend Developer & UX Designer",
     },
   },

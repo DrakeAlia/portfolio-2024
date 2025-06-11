@@ -22,7 +22,7 @@ export const useSwipeGesture = <T extends HTMLElement = HTMLDivElement>({
 
   useEffect(() => {
     const element = elementRef.current;
-    if (!element) return;
+    if (!element || typeof window === 'undefined') return;
 
     const handleTouchStart = (e: TouchEvent) => {
       const touch = e.touches[0];

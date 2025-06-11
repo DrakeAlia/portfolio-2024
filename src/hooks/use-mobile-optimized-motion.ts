@@ -5,8 +5,11 @@ import { useEffect, useState } from "react";
 export const useMobileOptimizedMotion = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+    
     // Check if user prefers reduced motion
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mediaQuery.matches);
@@ -58,6 +61,7 @@ export const useMobileOptimizedMotion = () => {
   return {
     isMobile,
     prefersReducedMotion,
+    isClient,
     getMotionConfig,
   };
 };

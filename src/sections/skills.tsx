@@ -138,10 +138,10 @@ export default function Skills() {
   };
 
   return (
-    <section id="skills" className="py-16 bg-background">
-      <div className="container mx-auto">
+    <section id="skills" className="py-12 sm:py-16 bg-background">
+      <div className="container mx-auto px-4 sm:px-6">
         <motion.h2
-          className="text-4xl font-bold text-center mb-12"
+          className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -153,7 +153,7 @@ export default function Skills() {
           animate={controls}
           initial="hidden"
           variants={containerVariants}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"
         >
           {categories.map((category) => (
             <motion.div
@@ -162,13 +162,13 @@ export default function Skills() {
               className="h-full"
             >
               <Card className="overflow-hidden h-full">
-                <CardHeader className="bg-primary/5 dark:bg-primary/10">
-                  <CardTitle className="text-2xl font-semibold text-primary/80 dark:text-primary/90">
+                <CardHeader className="bg-primary/5 dark:bg-primary/10 p-4 sm:p-6">
+                  <CardTitle className="text-lg sm:text-xl md:text-2xl font-semibold text-primary/80 dark:text-primary/90 text-center sm:text-left">
                     {category}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-6">
-                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
                     {skills
                       .filter((skill) => skill.category === category)
                       .map((skill) => (
@@ -186,38 +186,50 @@ export default function Skills() {
 }
 
 function SkillIcon({ skill }: { skill: Skill }) {
+  const [isMobile, setIsMobile] = useState(false);
   const isPlaceholder =
     skill.icon.src && skill.icon.src.includes("placeholder");
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
           <motion.div
-            whileHover={{ scale: 1.1, rotate: 5 }}
+            whileHover={isMobile ? {} : { scale: 1.1, rotate: 5 }}
             whileTap={{ scale: 0.95 }}
-            className="flex flex-col items-center group"
+            className="flex flex-col items-center group touch-manipulation"
           >
-            <div className="w-16 h-16 flex items-center justify-center bg-primary/10 dark:bg-primary/20 rounded-full p-3 shadow-md transition-all duration-300 group-hover:bg-primary/30 dark:group-hover:bg-primary/40 group-hover:shadow-lg group-hover:shadow-primary/20 dark:group-hover:shadow-primary/40">
-              <div className="relative w-10 h-10 flex items-center justify-center">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center bg-primary/10 dark:bg-primary/20 rounded-full p-2 sm:p-3 shadow-md transition-all duration-300 group-hover:bg-primary/30 dark:group-hover:bg-primary/40 group-hover:shadow-lg group-hover:shadow-primary/20 dark:group-hover:shadow-primary/40">
+              <div className="relative w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 flex items-center justify-center">
                 {isPlaceholder ? (
-                  <Zap className="w-8 h-8 text-primary" />
+                  <Zap className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 text-primary" />
                 ) : (
                   <Image
                     src={skill.icon}
                     alt={skill.name}
-                    className="transition-all duration-300 group-hover:brightness-110 dark:group-hover:brightness-125"
+                    className="transition-all duration-300 group-hover:brightness-110 dark:group-hover:brightness-125 w-full h-full object-contain"
+                    width={40}
+                    height={40}
                   />
                 )}
               </div>
             </div>
-            <span className="mt-2 text-sm text-center font-medium transition-colors duration-300 group-hover:text-primary dark:group-hover:text-primary-foreground">
+            <span className="mt-1 sm:mt-2 text-xs sm:text-sm text-center font-medium transition-colors duration-300 group-hover:text-primary dark:group-hover:text-primary-foreground leading-tight px-1">
               {skill.name}
             </span>
           </motion.div>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{skill.name}</p>
+          <p className="text-xs sm:text-sm">{skill.name}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

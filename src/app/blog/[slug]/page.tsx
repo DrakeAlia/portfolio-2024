@@ -40,15 +40,15 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <article className="container mx-auto px-4 py-8 max-w-4xl">
+      <article className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 max-w-4xl">
         {/* Back button */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-8"
+          className="mb-6 sm:mb-8"
         >
-          <Button variant="ghost" asChild className="group">
+          <Button variant="ghost" asChild className="group touch-manipulation">
             <Link href="/blog">
               <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
               Back to Blog
@@ -61,13 +61,13 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-12"
+          className="mb-8 sm:mb-10 md:mb-12"
         >
-          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <Calendar className="h-4 w-4" />
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-4">
+            <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
             <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
             <span>•</span>
-            <Clock className="h-4 w-4" />
+            <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
             <span>{post.readTime}</span>
             <span>•</span>
             <Badge variant="secondary" className="capitalize">
@@ -75,39 +75,39 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             </Badge>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight">
             {post.title}
           </h1>
 
-          <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-4 sm:mb-6 leading-relaxed">
             {post.excerpt}
           </p>
 
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag) => (
-                <Badge key={tag} variant="outline">
+                <Badge key={tag} variant="outline" className="text-xs sm:text-sm">
                   <Tag className="mr-1 h-3 w-3" />
                   {tag}
                 </Badge>
               ))}
             </div>
             
-            <Button variant="ghost" size="sm" onClick={sharePost}>
+            <Button variant="ghost" size="sm" onClick={sharePost} className="touch-manipulation">
               <Share2 className="mr-2 h-4 w-4" />
               Share
             </Button>
           </div>
         </motion.header>
 
-        <Separator className="mb-12" />
+        <Separator className="mb-8 sm:mb-10 md:mb-12" />
 
         {/* Article content */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="prose prose-lg dark:prose-invert max-w-none mb-16"
+          className="prose prose-sm sm:prose-base md:prose-lg dark:prose-invert max-w-none mb-8 sm:mb-12 md:mb-16"
           dangerouslySetInnerHTML={{ 
             __html: post.content
               .split('\n')
@@ -142,13 +142,13 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="border-t pt-12"
+            className="border-t pt-8 sm:pt-10 md:pt-12"
           >
-            <h2 className="text-2xl font-bold mb-8">More Articles</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <h2 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8">More Articles</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
               {otherPosts.map((relatedPost) => (
-                <Card key={relatedPost.slug} className="group hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
+                <Card key={relatedPost.slug} className="group hover:shadow-lg transition-shadow touch-manipulation">
+                  <CardContent className="p-4 sm:p-6">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                       <Calendar className="h-3 w-3" />
                       <span>{new Date(relatedPost.publishedAt).toLocaleDateString()}</span>
