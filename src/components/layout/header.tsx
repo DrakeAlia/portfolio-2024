@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import localFont from "next/font/local";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { CommandMenu } from "../command-menu";
@@ -10,11 +9,6 @@ import { ModeToggle } from "../mode-toggle";
 import { motion } from "framer-motion";
 import { Icons } from "@/components/ui/icons";
 import { buttonVariants } from "@/components/ui/button";
-
-const goldenSignature = localFont({
-  src: "../../assets/GoldenSignature.otf",
-  display: "swap",
-});
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -65,14 +59,11 @@ export default function Header() {
         {/* Left section */}
         <Link href="/" className="flex-shrink-0">
           <motion.div
-            className={cn(
-              "text-3xl md:text-4xl font-bold text-primary",
-              goldenSignature.className
-            )}
+            className="text-xl md:text-2xl font-bold text-primary"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Drake Alia
+            DA
           </motion.div>
         </Link>
 

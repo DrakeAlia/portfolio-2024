@@ -4,11 +4,12 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, ExternalLink, Code, X, ArrowRight, Sparkles } from "lucide-react";
+import { Github, ExternalLink, Code, X, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useMobileOptimizedMotion } from "@/hooks/use-mobile-optimized-motion";
 import {
   Dialog,
   DialogContent,
@@ -65,6 +66,8 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const { isMobile, getMotionConfig } = useMobileOptimizedMotion();
+  const motionConfig = getMotionConfig();
 
   // This handles the slug-based navigation if you implement dedicated project pages
   const handleViewDetails = () => {
@@ -77,28 +80,30 @@ export default function ProjectCard({
   return (
     <>
       <motion.div
-        whileHover={{ 
+        whileHover={isMobile ? motionConfig.whileHover : { 
           y: -10,
           scale: 1.02,
           rotateX: 5,
           rotateY: 5
         }}
+        whileTap={motionConfig.whileTap}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ 
+        transition={isMobile ? motionConfig.transition : { 
           duration: 0.5,
           type: "spring",
           stiffness: 300,
           damping: 20
         }}
         viewport={{ once: true }}
-        className="h-full"
-        style={{ perspective: "1000px" }}
+        className={cn("h-full touch-optimize", isMobile && "mobile-optimize")}
+        style={isMobile ? {} : { perspective: "1000px" }}
       >
         <Card
           className="overflow-hidden h-full flex flex-col shadow-lg hover:shadow-2xl transition-all duration-500 transform-gpu relative group"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          data-project-title={title}
         >
           {/* Animated background gradient */}
           <motion.div
@@ -108,20 +113,6 @@ export default function ProjectCard({
             transition={{ duration: 0.3 }}
           />
           
-          {/* Featured badge with sparkle effect */}
-          {featured && (
-            <motion.div
-              className="absolute top-4 right-4 z-20"
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 500 }}
-            >
-              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold px-3 py-1 shadow-lg">
-                <Sparkles className="mr-1 h-3 w-3" />
-                Featured
-              </Badge>
-            </motion.div>
-          )}
           {/* Image container with category badge */}
           <div className="relative overflow-hidden aspect-video">
             {!imageLoaded && (
