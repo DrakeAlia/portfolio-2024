@@ -7,7 +7,6 @@ import BackToTop from "@/components/back-to-top";
 import GridBackground from "@/components/grid-background";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClientWrapper } from "@/components/client-wrapper";
-import { LoadingProvider } from "@/components/loading-provider";
 import { SkipToContent } from "@/components/skip-to-content";
 import { StructuredData } from "@/components/structured-data";
 import { Analytics } from "@/components/analytics";
@@ -131,18 +130,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <LoadingProvider>
-            <div vaul-drawer-wrapper="">
-              <div className="relative flex min-h-screen flex-col bg-background">
-                <Header />
-                <GridBackground />
-                <ClientWrapper>
-                  <main className="flex-1">{children}</main>
-                </ClientWrapper>
-                <BackToTop />
-              </div>
+          <div vaul-drawer-wrapper="">
+            <div className="relative flex min-h-screen flex-col bg-background">
+              <Header />
+              <GridBackground />
+              <ClientWrapper>
+                <main className="flex-1">{children}</main>
+              </ClientWrapper>
+              <BackToTop />
             </div>
-          </LoadingProvider>
+          </div>
         </ThemeProvider>
       </body>
     </html>

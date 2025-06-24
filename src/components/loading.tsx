@@ -81,7 +81,6 @@ export function AppLoading() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <h2 className="text-xl font-bold text-primary mb-2">Drake Alia</h2>
           <p className="text-muted-foreground">Loading portfolio...</p>
         </motion.div>
       </div>

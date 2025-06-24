@@ -14,7 +14,7 @@ import { Menu, X } from "lucide-react";
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const links = ["home", "about", "skills", "projects", "contact", "blog"];
+  const links = ["home", "about", "skills", "projects", "contact"];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,9 +26,7 @@ export default function Header() {
 
   const handleLinkClick = (link: string) => {
     setIsMobileMenuOpen(false);
-    if (link === "blog") {
-      window.location.href = "/blog";
-    } else if (link === "home") {
+    if (link === "home") {
       // Navigate to home page / scroll to top
       if (window.location.pathname === "/") {
         window.scrollTo({ top: 0, behavior: "smooth" });
