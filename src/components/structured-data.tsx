@@ -10,7 +10,7 @@ export function StructuredData() {
     "jobTitle": "Full Stack Developer",
     "description": "Full Stack Developer & UI Engineer specializing in modern web applications with Next.js, React, TypeScript, and Node.js.",
     "url": "https://drakealia.com",
-    "image": "https://drakealia.com/images/photo.png",
+    "image": "https://drakealia.com/images/hero.png",
     "sameAs": [
       "https://github.com/DrakeAlia",
       "https://twitter.com/Drake2Alia",

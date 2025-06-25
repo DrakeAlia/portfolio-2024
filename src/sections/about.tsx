@@ -5,7 +5,6 @@ import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Eye, Play, Pause } from "lucide-react";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 
@@ -92,7 +91,7 @@ export default function About() {
         </motion.h2>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
         <motion.div
           className="lg:col-span-1"
           variants={itemVariants}
@@ -162,20 +161,20 @@ export default function About() {
 
         <motion.div
           variants={itemVariants}
-          className="w-full mx-auto flex flex-col items-center"
+          className="w-full mx-auto flex flex-col items-center order-first lg:order-last"
         >
           <div
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className="w-full relative"
+            className="w-full max-w-md mx-auto lg:max-w-none relative"
           >
             <CardContainer className="w-full">
-              <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full h-auto rounded-xl p-2 sm:p-3 border transition-all duration-300">
+              <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full h-auto rounded-xl p-2 sm:p-3 lg:p-4 border transition-all duration-300">
                 <CardItem
                   translateZ={
                     shouldReduceMotion ? "0" : isHovered ? "120" : "50"
                   }
-                  className="w-full aspect-[4/5] transition-all duration-300 ease-out relative overflow-hidden rounded-lg"
+                  className="w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/5] transition-all duration-300 ease-out relative overflow-hidden rounded-lg"
                 >
                   <video
                     ref={videoRef}
@@ -183,14 +182,15 @@ export default function About() {
                     loop
                     muted
                     playsInline
+                    preload="metadata"
                     className="w-full h-full object-cover rounded-lg group-hover/card:shadow-xl transition-transform duration-300"
                     onLoadedData={() => setIsPlaying(true)}
-                    poster="/images/photo.png" // Fallback image while loading
+                    poster="/images/hero.png"
                   >
                     <source src="/images/water-code.mp4" type="video/mp4" />
                     {/* Fallback for browsers that don't support video */}
                     <Image
-                      src="/images/photo.png"
+                      src="/images/hero.png"
                       alt="Drake Alia - Web Developer"
                       width={450}
                       height={400}

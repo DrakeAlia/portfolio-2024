@@ -1,7 +1,6 @@
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
-import dynamic from "next/dynamic";
 import Header from "@/components/layout/header";
 import BackToTop from "@/components/back-to-top";
 import GridBackground from "@/components/grid-background";
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
     default: "Drake Alia | Full Stack Developer & UI Engineer",
     template: "%s | Drake Alia"
   },
-  metadataBase: new URL("https://drakealia.com"), // Update to your actual domain
+  metadataBase: new URL("https://drakealia.dev"),
   alternates: {
     canonical: "/",
   },
@@ -81,7 +80,7 @@ export const metadata: Metadata = {
         type: "image/png",
       },
       {
-        url: "/images/photo.png", // Your profile photo
+        url: "/images/hero.png", // Your profile photo
         width: 400,
         height: 400,
         alt: "Drake Alia - Professional Headshot",

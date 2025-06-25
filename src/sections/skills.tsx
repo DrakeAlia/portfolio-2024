@@ -64,22 +64,22 @@ const skills: Skill[] = [
   },
   {
     name: "Midjourney",
-    icon: { src: "/placeholder-ai.png", width: 40, height: 40 },
+    icon: { src: "/icons/midjourney.svg", width: 40, height: 40 },
     category: "AI Tools",
   },
   {
     name: "ChatGPT",
-    icon: { src: "/placeholder-ai.png", width: 40, height: 40 },
+    icon: { src: "/icons/chatgpt.svg", width: 40, height: 40 },
     category: "AI Tools",
   },
   {
     name: "Claude",
-    icon: { src: "/placeholder-ai.png", width: 40, height: 40 },
+    icon: { src: "/icons/claude.svg", width: 40, height: 40 },
     category: "AI Tools",
   },
   {
     name: "Cursor AI",
-    icon: { src: "/placeholder-ai.png", width: 40, height: 40 },
+    icon: { src: "/icons/cursor.svg", width: 40, height: 40 },
     category: "AI Tools",
   },
   { name: "shadcn/ui", icon: shadcnuiIcon, category: "Front-End Development" },
