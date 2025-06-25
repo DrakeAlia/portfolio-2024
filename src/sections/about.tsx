@@ -1,23 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { ChefHat, Code, Rocket, Eye } from "lucide-react";
+import { Eye, Play, Pause } from "lucide-react";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 
 export default function About() {
   const shouldReduceMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -62,14 +58,15 @@ export default function About() {
     },
   };
 
-  const textVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-  };
-
-  const underlineVariants = {
-    hidden: { width: "0%" },
-    visible: { width: "100%", transition: { duration: 1 } },
+  const togglePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
   };
 
   return (
@@ -95,9 +92,9 @@ export default function About() {
         </motion.h2>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
         <motion.div
-          className="lg:col-span-2"
+          className="lg:col-span-1"
           variants={itemVariants}
           whileHover="hover"
           initial="idle"
@@ -165,73 +162,63 @@ export default function About() {
 
         <motion.div
           variants={itemVariants}
-          className="w-full max-w-sm sm:max-w-md lg:max-w-full mx-auto flex flex-col items-center"
+          className="w-full mx-auto flex flex-col items-center"
         >
           <div
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className="w-full"
+            className="w-full relative"
           >
             <CardContainer className="w-full">
-              <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full h-auto rounded-xl p-3 sm:p-4 md:p-6 border transition-all duration-300">
+              <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full h-auto rounded-xl p-2 sm:p-3 border transition-all duration-300">
                 <CardItem
                   translateZ={
                     shouldReduceMotion ? "0" : isHovered ? "120" : "50"
                   }
-                  className="w-full aspect-[4/3] transition-all duration-300 ease-out"
+                  className="w-full aspect-[4/5] transition-all duration-300 ease-out relative overflow-hidden rounded-lg"
                 >
-                  <Image
-                    src="/images/photo.png"
-                    alt="Drake Alia - Web Developer"
-                    width={450}
-                    height={400}
-                    className="rounded-lg sm:rounded-xl group-hover/card:shadow-xl transition-transform duration-300 w-full h-full object-cover"
-                    sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 400px, 450px"
-                  />
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover rounded-lg group-hover/card:shadow-xl transition-transform duration-300"
+                    onLoadedData={() => setIsPlaying(true)}
+                    poster="/images/photo.png" // Fallback image while loading
+                  >
+                    <source src="/images/water-code.mp4" type="video/mp4" />
+                    {/* Fallback for browsers that don't support video */}
+                    <Image
+                      src="/images/photo.png"
+                      alt="Drake Alia - Web Developer"
+                      width={450}
+                      height={400}
+                      className="rounded-lg w-full h-full object-cover"
+                    />
+                  </video>
+
+                  {/* Play/Pause overlay */}
+                  <motion.button
+                    onClick={togglePlayPause}
+                    className="absolute inset-0 bg-black/20 dark:bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-lg"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="bg-white/90 dark:bg-black/90 rounded-full p-3 backdrop-blur-sm">
+                      {isPlaying ? (
+                        <Pause className="h-6 w-6 text-black dark:text-white" />
+                      ) : (
+                        <Play className="h-6 w-6 text-black dark:text-white ml-1" />
+                      )}
+                    </div>
+                  </motion.button>
                 </CardItem>
               </CardBody>
             </CardContainer>
+
           </div>
 
-          <motion.div
-            className="mt-4 sm:mt-6 flex justify-center space-x-3 sm:space-x-4"
-            variants={itemVariants}
-          >
-            {[
-              { icon: Code, tooltip: "Innovative Coder" },
-              { icon: Rocket, tooltip: "Problem Solver" },
-              { icon: ChefHat, tooltip: "UI Chef" },
-            ].map((item, index) => (
-              <motion.div
-                key={item.tooltip}
-                whileHover={{
-                  scale: shouldReduceMotion ? 1 : 1.1,
-                  rotate: shouldReduceMotion ? 0 : 5,
-                }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Badge
-                        variant="secondary"
-                        className="p-2 sm:p-3 transition-all duration-300 hover:scale-110 hover:bg-primary hover:text-white touch-manipulation"
-                      >
-                        <item.icon
-                          size={16}
-                          className="sm:w-[18px] sm:h-[18px]"
-                        />
-                      </Badge>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="text-xs sm:text-sm">{item.tooltip}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </motion.div>
-            ))}
-          </motion.div>
         </motion.div>
       </div>
 
