@@ -1,18 +1,16 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Eye, Play, Pause } from "lucide-react";
+import { Eye } from "lucide-react";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 
 export default function About() {
   const shouldReduceMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -57,16 +55,6 @@ export default function About() {
     },
   };
 
-  const togglePlayPause = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
 
   return (
     <motion.section
@@ -177,14 +165,12 @@ export default function About() {
                   className="w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/5] transition-all duration-300 ease-out relative overflow-hidden rounded-lg"
                 >
                   <video
-                    ref={videoRef}
                     autoPlay
                     loop
                     muted
                     playsInline
                     preload="metadata"
                     className="w-full h-full object-cover rounded-lg group-hover/card:shadow-xl transition-transform duration-300"
-                    onLoadedData={() => setIsPlaying(true)}
                     poster="/images/hero.png"
                   >
                     <source src="/images/water-code.mp4" type="video/mp4" />
@@ -198,21 +184,6 @@ export default function About() {
                     />
                   </video>
 
-                  {/* Play/Pause overlay */}
-                  <motion.button
-                    onClick={togglePlayPause}
-                    className="absolute inset-0 bg-black/20 dark:bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-lg"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <div className="bg-white/90 dark:bg-black/90 rounded-full p-3 backdrop-blur-sm">
-                      {isPlaying ? (
-                        <Pause className="h-6 w-6 text-black dark:text-white" />
-                      ) : (
-                        <Play className="h-6 w-6 text-black dark:text-white ml-1" />
-                      )}
-                    </div>
-                  </motion.button>
                 </CardItem>
               </CardBody>
             </CardContainer>
