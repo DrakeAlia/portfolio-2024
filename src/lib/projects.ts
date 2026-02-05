@@ -28,6 +28,65 @@ export interface Project {
 
 export const projects = [
   {
+    title: "Iron Works Gym",
+    description: "Complete website redesign and migration from Squarespace to a custom Next.js application for a local Seattle-area fitness center.",
+    image: "/images/cover-iron-works-gym.png",
+    longDescription: "A full website redesign and platform migration for Iron Works Gym, a fitness center in the Greater Seattle Area. Migrated from Squarespace to a custom-built Next.js application with improved performance, modern design, responsive layouts, and optimized images. The project included domain transfer, DNS configuration, and deployment on Vercel.",
+    liveUrl: "https://www.iron-works.com",
+    githubUrl: "https://github.com/DrakeAlia/ironworks-gym",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel", "Image Optimization"],
+    features: [
+      "Complete Squarespace to Next.js migration",
+      "Responsive mobile-first design",
+      "Optimized image loading and compression",
+      "Modern UI with smooth animations",
+      "SEO optimization",
+      "Contact form integration",
+      "Fast page load times"
+    ],
+    category: "full-stack",
+    featured: true,
+    slug: "ironworks-gym",
+    completedAt: "2025-02",
+    caseStudy: {
+      problem: "Iron Works Gym had an outdated Squarespace website that was slow, difficult to update, and didn't reflect the energy and quality of their fitness center. They needed a modern, fast, and professional web presence.",
+      solution: "Built a custom Next.js application from scratch with modern design, optimized performance, and easy content management. Handled the complete migration including domain transfer and DNS configuration.",
+      challenges: [
+        "Migrating content and maintaining SEO during platform transition",
+        "Optimizing high-resolution gym images without quality loss",
+        "Creating a design that captures the gym's energetic brand identity",
+        "Ensuring fast load times for image-heavy pages",
+        "Coordinating domain transfer with zero downtime"
+      ],
+      techDecisions: [
+        {
+          decision: "Next.js for the framework",
+          reasoning: "Provides excellent performance, SEO capabilities, and image optimization out of the box"
+        },
+        {
+          decision: "Vercel for hosting",
+          reasoning: "Seamless Next.js integration with automatic deployments and excellent CDN performance"
+        },
+        {
+          decision: "Tailwind CSS for styling",
+          reasoning: "Enables rapid development of custom designs with consistent spacing and responsive utilities"
+        },
+        {
+          decision: "Next.js Image component",
+          reasoning: "Automatic image optimization, lazy loading, and responsive sizing for the image-heavy site"
+        }
+      ],
+      learnings: [
+        "Client communication is crucial during platform migrations",
+        "Image optimization strategy should be planned from the start",
+        "Domain transfers require careful timing and DNS propagation planning",
+        "Real-world client projects require balancing technical ideals with practical timelines"
+      ],
+      timeline: "3 weeks",
+      role: "Full-stack Developer"
+    }
+  },
+  {
     title: "Fit & Fly",
     description:
       "AI-powered travel workout and meal planner for fitness-conscious travelers.",

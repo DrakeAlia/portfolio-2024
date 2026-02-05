@@ -155,7 +155,7 @@ export default function Projects() {
               key={`${project.title}-${currentPage}-${index}`}
               project={project}
               index={index}
-              shouldReduceMotion={shouldReduceMotion}
+              shouldReduceMotion={shouldReduceMotion ?? false}
             />
           ))}
         </m.div>

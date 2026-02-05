@@ -59,7 +59,7 @@ export default function Skills() {
                 animate={inView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: shouldReduceMotion ? 0.01 : 0.4, delay: shouldReduceMotion ? 0 : 0.3 + index * 0.1 }}
               >
-                <SkillBubble skill={skill} featured shouldReduceMotion={shouldReduceMotion} />
+                <SkillBubble skill={skill} featured shouldReduceMotion={shouldReduceMotion ?? false} />
               </m.div>
             ))}
           </div>
@@ -97,7 +97,7 @@ export default function Skills() {
                   {skills
                     .filter((skill) => skill.category === category)
                     .map((skill) => (
-                      <SkillBubble key={skill.name} skill={skill} shouldReduceMotion={shouldReduceMotion} />
+                      <SkillBubble key={skill.name} skill={skill} shouldReduceMotion={shouldReduceMotion ?? false} />
                     ))}
                 </div>
               </TabsContent>

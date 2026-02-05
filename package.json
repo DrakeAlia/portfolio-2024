@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "analyze": "ANALYZE=true npm run build",
-    "perf": "npm run build && node scripts/performance-check.js"
+    "perf": "npm run build && node scripts/performance-check.js",
+    "capture-screenshots": "node scripts/capture-screenshots.js"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.0",
@@ -52,6 +53,7 @@
     "eslint-config-next": "^14.2.8",
     "next-pwa": "^5.6.0",
     "postcss": "^8",
+    "puppeteer": "^23.0.0",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
