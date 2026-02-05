@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, memo, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Github, ExternalLink, Code, X, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,6 +34,7 @@ interface ProjectCardProps {
   category?: string; // Optional for categorization
 }
 
+// Move getTagColor outside component to prevent recreation on every render
 const getTagColor = (tag: string) => {
   const tagLower = tag.toLowerCase();
   if (tagLower.includes("react"))
@@ -51,7 +52,7 @@ const getTagColor = (tag: string) => {
   return "bg-secondary/50 text-secondary-foreground";
 };
 
-export default function ProjectCard({
+const ProjectCard = memo(function ProjectCard({
   title,
   description,
   image,
@@ -67,58 +68,36 @@ export default function ProjectCard({
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const { isMobile, getMotionConfig } = useMobileOptimizedMotion();
-  const motionConfig = getMotionConfig();
+  const motionConfig = useMemo(() => getMotionConfig(), [getMotionConfig]);
 
-  // This handles the slug-based navigation if you implement dedicated project pages
-  const handleViewDetails = () => {
-    if (slug) {
-      // Do nothing here as the link will handle navigation
-      return;
-    }
-  };
+  // Memoize callbacks to prevent unnecessary re-renders
+  const handleImageLoad = useCallback(() => setImageLoaded(true), []);
+  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
   return (
     <>
-      <motion.div
-        whileHover={isMobile ? motionConfig.whileHover : { 
-          y: -10,
-          scale: 1.02,
-          rotateX: 5,
-          rotateY: 5
-        }}
-        whileTap={motionConfig.whileTap}
+      <m.div
+        whileHover={isMobile ? motionConfig.whileHover : { y: -8 }}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={isMobile ? motionConfig.transition : { 
-          duration: 0.5,
-          type: "spring",
-          stiffness: 300,
-          damping: 20
-        }}
+        transition={{ duration: 0.3 }}
         viewport={{ once: true }}
         className={cn("h-full touch-optimize", isMobile && "mobile-optimize")}
-        style={isMobile ? {} : { perspective: "1000px" }}
       >
         <Card
-          className="overflow-hidden h-full flex flex-col shadow-lg hover:shadow-2xl transition-all duration-500 transform-gpu relative group"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          className="overflow-hidden h-full flex flex-col shadow-lg hover:shadow-2xl transition-all duration-300 relative group"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           data-project-title={title}
         >
-          {/* Animated background gradient */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isHovered ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-          />
           
           {/* Image container with category badge */}
           <div className="relative overflow-hidden aspect-video">
             {!imageLoaded && (
               <div className="absolute inset-0 bg-muted animate-pulse" />
             )}
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: imageLoaded ? 1 : 0 }}
               transition={{ duration: 0.5 }}
@@ -133,8 +112,8 @@ export default function ProjectCard({
               className={`w-full h-full object-cover transition-transform duration-700 ${
                 isHovered ? "scale-110" : "scale-100"
               }`}
-              onLoad={() => setImageLoaded(true)}
-              priority
+              onLoad={handleImageLoad}
+              loading="lazy"
             />
 
             {/* Category badge */}
@@ -150,7 +129,7 @@ export default function ProjectCard({
             )}
 
             {/* Hover overlay with action buttons */}
-            <motion.div
+            <m.div
               className="absolute inset-0 bg-black/50 flex items-center justify-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: isHovered ? 1 : 0 }}
@@ -158,7 +137,7 @@ export default function ProjectCard({
             >
               <div className="flex gap-2">
                 {githubUrl && (
-                  <motion.a
+                  <m.a
                     href={githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -168,10 +147,10 @@ export default function ProjectCard({
                     aria-label={`View ${title} source code on GitHub`}
                   >
                     <Github size={20} />
-                  </motion.a>
+                  </m.a>
                 )}
                 {liveUrl && (
-                  <motion.a
+                  <m.a
                     href={liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -181,10 +160,10 @@ export default function ProjectCard({
                     aria-label={`View ${title} live demo`}
                   >
                     <ExternalLink size={20} />
-                  </motion.a>
+                  </m.a>
                 )}
               </div>
-            </motion.div>
+            </m.div>
           </div>
 
           <CardContent className="flex flex-col flex-grow p-4">
@@ -193,74 +172,40 @@ export default function ProjectCard({
               {description}
             </p>
 
-            {/* Tags with interactive hover */}
+            {/* Tags - simplified without individual animations */}
             <div className="flex flex-wrap gap-2 mb-4">
               {tags.slice(0, 4).map((tag, index) => (
-                <motion.div
+                <Badge
                   key={index}
-                  whileHover={{ 
-                    scale: 1.1, 
-                    y: -3,
-                    rotateX: 10
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ 
-                    duration: 0.2,
-                    type: "spring",
-                    stiffness: 400
-                  }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  style={{ transition: `transform 0.2s ease-out ${index * 0.1}s` }}
+                  variant="secondary"
+                  className={cn(
+                    "text-xs transition-all duration-200 hover:scale-105",
+                    getTagColor(tag)
+                  )}
                 >
-                  <Badge
-                    variant="secondary"
-                    className={cn(
-                      "text-xs cursor-pointer transition-all duration-300 hover:shadow-md",
-                      getTagColor(tag)
-                    )}
-                  >
-                    {tag}
-                  </Badge>
-                </motion.div>
+                  {tag}
+                </Badge>
               ))}
               {tags.length > 4 && (
-                <motion.div
-                  whileHover={{ scale: 1.05, rotate: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Badge variant="outline" className="text-xs hover:bg-muted/80 transition-colors">
-                    +{tags.length - 4}
-                  </Badge>
-                </motion.div>
+                <Badge variant="outline" className="text-xs hover:bg-muted/80 transition-colors">
+                  +{tags.length - 4}
+                </Badge>
               )}
             </div>
 
             {/* Details dialog or link to project page */}
             {slug ? (
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ duration: 0.2 }}
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full group"
+                asChild
               >
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full group relative overflow-hidden"
-                  asChild
-                >
-                  <Link href={`/projects/${slug}`}>
-                    <motion.span
-                      className="absolute inset-0 bg-primary/10 rounded-md"
-                      initial={{ x: "-100%" }}
-                      whileHover={{ x: "0%" }}
-                      transition={{ duration: 0.3 }}
-                    />
-                    <span className="relative z-10">View Project Details</span>
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 relative z-10" />
-                  </Link>
-                </Button>
-              </motion.div>
+                <Link href={`/projects/${slug}`}>
+                  View Project Details
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
             ) : (
               <Dialog>
                 <DialogTrigger asChild>
@@ -268,7 +213,6 @@ export default function ProjectCard({
                     variant="outline"
                     size="sm"
                     className="w-full"
-                    onClick={handleViewDetails}
                   >
                     <Code className="mr-2 h-4 w-4" /> View Details
                   </Button>
@@ -277,7 +221,7 @@ export default function ProjectCard({
                   className="max-w-3xl max-h-[90vh] overflow-y-auto"
                   forceMount
                 >
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
@@ -296,6 +240,7 @@ export default function ProjectCard({
                             src={image}
                             alt={title}
                             fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
                             className="object-cover rounded-md"
                           />
                         </div>
@@ -362,13 +307,15 @@ export default function ProjectCard({
                         </div>
                       </div>
                     </div>
-                  </motion.div>
+                  </m.div>
                 </DialogContent>
               </Dialog>
             )}
           </CardContent>
         </Card>
-      </motion.div>
+      </m.div>
     </>
   );
-}
+});
+
+export default ProjectCard;

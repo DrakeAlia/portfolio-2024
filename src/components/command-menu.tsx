@@ -4,7 +4,6 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { DialogProps } from "@radix-ui/react-dialog";
-import { cn } from "@/lib/utils";
 import {
   CommandDialog,
   CommandEmpty,
@@ -15,15 +14,13 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import {
-  CircleIcon,
-  FileIcon,
-  DownloadIcon,
-  LaptopIcon,
-  MoonIcon,
-  SunIcon,
-  LayoutIcon,
-  BoxIcon,
-} from "@radix-ui/react-icons";
+  FileText as FileIcon,
+  Laptop as LaptopIcon,
+  Moon as MoonIcon,
+  Sun as SunIcon,
+  Layout as LayoutIcon,
+  Box as BoxIcon,
+} from "lucide-react";
 
 export function CommandMenu({
   className,

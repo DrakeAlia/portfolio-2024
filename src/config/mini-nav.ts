@@ -1,5 +1,6 @@
 import { useMotionValue, useTransform, MotionValue } from "framer-motion";
 import { MainNavItem, SidebarNavItem } from "@/types/nav";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 // This mini-nav configuration and utility file plays a crucial role in the application's
 // navigation system and UI interactions. It provides a centralized place for
@@ -82,7 +83,7 @@ export const miniNavConfig: MiniNavConfig = {
 };
 
 // Function to handle scrolling to sections
-export function handleScroll(sectionId: string, router: any, pathname: string) {
+export function handleScroll(sectionId: string, router: AppRouterInstance, pathname: string) {
   if (pathname === "/") {
     scrollToSection(sectionId);
   } else {

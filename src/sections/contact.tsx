@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -64,7 +64,7 @@ export default function Contact() {
   return (
     <section id="contact" className="py-12 sm:py-16 md:py-24">
       <div className="container mx-auto px-4 sm:px-6">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -76,9 +76,9 @@ export default function Contact() {
             Have a project in mind or want to discuss something? Feel free to
             reach out!
           </p>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -151,7 +151,7 @@ export default function Contact() {
                 
                 {/* Success Message */}
                 {isSuccess && (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="p-4 bg-green-100 dark:bg-green-900/20 border border-green-400 dark:border-green-400/50 text-green-700 dark:text-green-400 rounded-md"
@@ -160,12 +160,12 @@ export default function Contact() {
                       <CheckCircle className="w-5 h-5 mr-2" />
                       <span className="text-sm sm:text-base font-medium">Message sent successfully! I&apos;ll get back to you soon.</span>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )}
 
                 {/* Error Message */}
                 {error && (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="p-4 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-400/50 text-red-700 dark:text-red-400 rounded-md"
@@ -174,7 +174,7 @@ export default function Contact() {
                       <AlertCircle className="w-5 h-5 mr-2" />
                       <span className="text-sm sm:text-base font-medium">{error}</span>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )}
 
                 <Button
@@ -220,7 +220,7 @@ export default function Contact() {
               </form>
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

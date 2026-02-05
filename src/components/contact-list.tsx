@@ -1,10 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faL } from "@fortawesome/free-solid-svg-icons";
-import {
-  faGithub,
-  faLinkedin,
-  faXTwitter,
-} from "@fortawesome/free-brands-svg-icons";
+import { memo } from "react";
+import { contacts } from "@/data/contacts";
 import MotionList from "./motion-list";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,40 +10,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-type Contact = {
-  name: string;
-  className: string;
-  href: string;
-  icon: any;
-};
-const contacts: Contact[] = [
-  {
-    name: "Email",
-    className: "bg-yellow-500 hover:bg-yellow-600",
-    href: "mailto:drakealia@gmail.com",
-    icon: faEnvelope,
-  },
-  {
-    name: "LinkedIn",
-    className: "bg-blue-600 hover:bg-blue-700",
-    href: "https://www.linkedin.com/in/drake-alia/",
-    icon: faLinkedin,
-  },
-
-  {
-    name: "X",
-    className: "bg-black hover:bg-gray-800/90",
-    href: "https://x.com/Drake2Alia",
-    icon: faXTwitter,
-  },
-  {
-    name: "Github",
-    className: "bg-green-500 hover:bg-green-600",
-    href: "https://github.com/DrakeAlia",
-    icon: faGithub,
-  },
-];
-export default function ContactList({
+const ContactList = memo(function ContactList({
   delayOffset = 0,
   showWhenInView = true,
 }: {
@@ -56,10 +18,10 @@ export default function ContactList({
   showWhenInView?: boolean;
 }) {
   return (
-    <MotionList delayOffset={delayOffset} showWhenInView={showWhenInView}>
-      {contacts.map((contact, index) => (
-        <TooltipProvider delayDuration={0} key={index}>
-          <Tooltip>
+    <TooltipProvider delayDuration={0}>
+      <MotionList delayOffset={delayOffset} showWhenInView={showWhenInView}>
+        {contacts.map((contact, index) => (
+          <Tooltip key={index}>
             <TooltipTrigger asChild>
               <Button
                 className={cn(
@@ -74,7 +36,7 @@ export default function ContactList({
                   target="_blank"
                   aria-label={contact.name}
                 >
-                  <FontAwesomeIcon icon={contact.icon} className="w-fit" />
+                  <contact.icon className="w-5 h-5" />
                 </a>
               </Button>
             </TooltipTrigger>
@@ -82,8 +44,10 @@ export default function ContactList({
               <p>{contact.name}</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
-      ))}
-    </MotionList>
+        ))}
+      </MotionList>
+    </TooltipProvider>
   );
-}
+});
+
+export default ContactList;

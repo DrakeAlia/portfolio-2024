@@ -3,14 +3,13 @@
 declare global {
   interface Window {
     gtag: (command: string, ...args: any[]) => void;
-    plausible: (event: string, options?: any) => void;
+    plausible: (event: string, options?: { props?: Record<string, any> }) => void;
   }
 }
 
 import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { useEffect } from "react";
-import dynamic from "next/dynamic";
 
 export function GoogleAnalytics({
   GA_MEASUREMENT_ID,

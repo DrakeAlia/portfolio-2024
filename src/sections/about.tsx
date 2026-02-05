@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
@@ -57,7 +57,7 @@ export default function About() {
 
 
   return (
-    <motion.section
+    <m.section
       id="about"
       className="mx-auto my-12 sm:my-16 px-4 sm:px-6 md:px-8 max-w-6xl rounded-xl py-8 sm:py-12"
       variants={containerVariants}
@@ -65,48 +65,39 @@ export default function About() {
       animate="visible"
     >
       <div className="flex justify-center mb-8 sm:mb-12">
-        <motion.h2
+        <m.h2
           className="text-2xl sm:text-3xl md:text-4xl font-bold text-center relative"
           variants={itemVariants}
         >
           About Me
-          <motion.span
+          <m.span
             className="absolute bottom-0 left-0 h-0.5 sm:h-1 bg-primary w-full"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
           />
-        </motion.h2>
+        </m.h2>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
-        <motion.div
+        <m.div
           className="lg:col-span-1"
           variants={itemVariants}
           whileHover="hover"
           initial="idle"
           animate="idle"
         >
-          <motion.div variants={cardHoverVariants}>
+          <m.div variants={cardHoverVariants}>
             <Card className="h-full transition-shadow duration-300 hover:shadow-lg">
               <CardContent className="p-6 h-full flex flex-col justify-between">
                 {["paragraph1", "paragraph2", "paragraph3"].map(
-                  (key, index) => (
-                    <motion.p
+                  (key) => (
+                    <p
                       key={key}
                       className="mb-8 md:mb-10 leading-relaxed text-base sm:text-lg text-muted-foreground/90 tracking-wide"
-                      variants={itemVariants}
-                      initial="hidden"
-                      animate="visible"
-                      transition={{ delay: index * 0.3 }}
                     >
                       {key === "paragraph1" && (
-                        <motion.span
-                          className="block text-foreground"
-                          initial="initial"
-                          whileHover="hover"
-                          variants={textHighlightVariants}
-                        >
+                        <span className="block text-foreground">
                           I&apos;m a passionate and innovative Web Developer
                           from the Greater Seattle Area, specializing in modern
                           web development with React, Next.js, TypeScript, and
@@ -114,7 +105,7 @@ export default function About() {
                           for lightning-fast development, shadcn/ui for
                           beautiful components, and Framer Motion for engaging
                           animations to create exceptional user experiences.
-                        </motion.span>
+                        </span>
                       )}
                       {key === "paragraph2" && (
                         <span className="block text-foreground">
@@ -134,20 +125,20 @@ export default function About() {
                           excellence with creative problem-solving. Like a chef
                           perfecting a recipe, I carefully select the right
                           tools and techniques from TypeScript&apos;s type
-                          safety to Framer Motion&apos;s smooth animations—to
+                          safety to Framer Motion&apos;s smooth animations - to
                           create web experiences that are not just functional,
                           but delightful and memorable.
                         </span>
                       )}
-                    </motion.p>
+                    </p>
                   )
                 )}
               </CardContent>
             </Card>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           variants={itemVariants}
           className="w-full mx-auto flex flex-col items-center order-first lg:order-last"
         >
@@ -179,7 +170,8 @@ export default function About() {
                       src="/images/hero.png"
                       alt="Drake Alia - Web Developer"
                       width={450}
-                      height={400}
+                      height={563}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 450px"
                       className="rounded-lg w-full h-full object-cover"
                     />
                   </video>
@@ -190,34 +182,20 @@ export default function About() {
 
           </div>
 
-        </motion.div>
+        </m.div>
       </div>
 
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8 px-4">
-        <motion.div
-          variants={itemVariants}
-          whileHover={{ scale: shouldReduceMotion ? 1 : 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          className="w-full sm:w-auto"
+        <Button
+          variant="outline"
+          size="lg"
+          className="border-2 flex items-center justify-center gap-2 bg-background hover:bg-accent group w-full sm:w-auto touch-manipulation"
+          onClick={() => window.open("/pdf-file/resume-drake.pdf", "_blank")}
         >
-          <Button
-            variant="outline"
-            size="lg"
-            className="border-2 flex items-center justify-center gap-2 bg-background hover:bg-accent relative overflow-hidden group w-full sm:w-auto touch-manipulation"
-            onClick={() => window.open("/pdf-file/resume-drake.pdf", "_blank")}
-          >
-            <motion.div
-              className="absolute inset-0 bg-primary/10"
-              initial={{ x: "-100%" }}
-              whileHover={{ x: "100%" }}
-              transition={{ duration: 0.6 }}
-            />
-            <Eye className="h-4 w-4 transition-transform group-hover:scale-110" />
-            <span className="text-sm sm:text-base">View Resume</span>
-          </Button>
-        </motion.div>
+          <Eye className="h-4 w-4 transition-transform group-hover:scale-110" />
+          <span className="text-sm sm:text-base">View Resume</span>
+        </Button>
       </div>
-    </motion.section>
+    </m.section>
   );
 }

@@ -9,6 +9,8 @@ import { ClientWrapper } from "@/components/client-wrapper";
 import { SkipToContent } from "@/components/skip-to-content";
 import { StructuredData } from "@/components/structured-data";
 import { Analytics } from "@/components/analytics";
+import { WebVitals } from "@/components/web-vitals";
+import { PrefetchLinks } from "@/components/prefetch-links";
 import { cn } from "@/lib/utils";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -118,7 +120,9 @@ export default function RootLayout({
         )}
       >
         <StructuredData />
-        <Analytics 
+        <WebVitals />
+        <PrefetchLinks />
+        <Analytics
           googleAnalyticsId={process.env.NEXT_PUBLIC_GA_ID}
           plausibleDomain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
         />

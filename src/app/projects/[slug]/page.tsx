@@ -115,8 +115,9 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                 src={project.image}
                 alt={project.title}
                 fill
-                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                 priority
+                className="object-cover"
               />
             </div>
           </div>
@@ -230,6 +231,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                           src={otherProject.image}
                           alt={otherProject.title}
                           fill
+                          sizes="(max-width: 640px) 64px, 80px"
                           className="object-cover"
                         />
                       </div>

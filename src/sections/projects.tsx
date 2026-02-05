@@ -1,36 +1,61 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import ProjectCard from "@/components/project-card";
 import { projects } from "../lib/projects";
 import { useSwipeGesture } from "@/hooks/use-swipe-gesture";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Lazy loaded project card wrapper
+function LazyProjectCard({ project, index }: { project: any; index: number }) {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+    rootMargin: "50px",
+  });
+
+  return (
+    <m.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      transition={{
+        duration: 0.4,
+        delay: index * 0.1,
+        ease: "easeOut",
+      }}
+    >
+      {inView && <ProjectCard {...project} />}
+    </m.div>
+  );
+}
+
 export default function Projects() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isClient, setIsClient] = useState(false);
   const projectsPerPage = 6;
   const totalPages = Math.ceil(projects.length / projectsPerPage);
-  
+
   useEffect(() => {
     setIsClient(true);
   }, []);
-  
+
   const nextPage = () => {
     setCurrentPage((prev) => (prev + 1) % totalPages);
   };
-  
+
   const prevPage = () => {
     setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
   };
-  
+
   const swipeRef = useSwipeGesture({
     onSwipeLeft: nextPage,
     onSwipeRight: prevPage,
   });
-  
+
   const currentProjects = projects.slice(
     currentPage * projectsPerPage,
     (currentPage + 1) * projectsPerPage
@@ -39,7 +64,7 @@ export default function Projects() {
   return (
     <section id="projects" className="py-20">
       <div className="container mx-auto px-4">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -55,7 +80,7 @@ export default function Projects() {
               Swipe left/right on mobile or use navigation buttons • Page {currentPage + 1} of {totalPages}
             </p>
           )}
-        </motion.div>
+        </m.div>
 
         {/* Navigation buttons for desktop */}
         {isClient && totalPages > 1 && (
@@ -98,7 +123,7 @@ export default function Projects() {
         )}
 
         {/* Projects grid with swipe support */}
-        <motion.div
+        <m.div
           ref={swipeRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -106,20 +131,13 @@ export default function Projects() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 touch-pan-y"
         >
           {currentProjects.map((project, index) => (
-            <motion.div
+            <LazyProjectCard
               key={`${project.title}-${currentPage}-${index}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.4,
-                delay: index * 0.1,
-                ease: "easeOut",
-              }}
-            >
-              <ProjectCard {...project} />
-            </motion.div>
+              project={project}
+              index={index}
+            />
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

@@ -1,184 +1,159 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import ContactList from "@/components/contact-list";
-import ParallaxWrapper from "@/components/parallax-wrapper";
-import { motion, useAnimation, useScroll, useTransform } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
+import { m } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Eye } from "lucide-react";
+import { ArrowRight, Eye, ChevronDown } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function Hero() {
-  const controls = useAnimation();
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 300], [0, -50]);
-  const y2 = useTransform(scrollY, [0, 300], [0, -30]);
-
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 640);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  useEffect(() => {
-    controls.start({ opacity: 1, y: 0 });
-  }, [controls]);
-
-  const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-  };
-
-  const fadeInUpTransition = {
-    duration: 0.8,
-    ease: [0.6, -0.05, 0.01, 0.99],
-  };
-
   return (
-    <motion.section className="relative overflow-hidden py-8 sm:py-12 md:py-20">
-      <div className="container mx-auto px-4 flex flex-col items-center justify-center h-full text-center">
-        <motion.div style={{ y: y1 }}>
-          <motion.h1
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8"
-            variants={fadeInUp}
-            initial="initial"
-            animate="animate"
-            transition={fadeInUpTransition}
+    <section className="relative min-h-[90vh] flex items-center py-12 md:py-20 lg:py-24">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          {/* Content Column */}
+          <m.div
+            className="lg:col-span-7 space-y-8"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            Hello, I&apos;m Drake Alia!{" "}
-            <motion.span
-              className="inline-block"
-              animate={{ rotate: [0, 14, -8, 14, -4, 10, 0, 0] }}
-              transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1 }}
+            {/* Greeting Badge */}
+            <m.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
             >
-              👋
-            </motion.span>
-          </motion.h1>
-        </motion.div>
+              <Badge variant="secondary" className="text-sm font-normal px-4 py-1.5">
+                <span className="inline-block mr-2 animate-pulse">👋</span>
+                Hello, I&apos;m
+              </Badge>
+            </m.div>
 
-        <motion.div
-          style={{ y: y2 }}
-          className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[28rem] xl:h-[28rem] mb-6 sm:mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
-            <CardContent className="p-0 h-full">
-              <motion.div
-                className="h-full"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
+            {/* Name - Hero Text */}
+            <m.h1
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              Drake Alia
+            </m.h1>
+
+            {/* Role/Title */}
+            <m.div
+              className="space-y-3"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-primary">
+                Web Developer
+              </h2>
+              <div className="h-1 w-20 bg-primary rounded-full" />
+            </m.div>
+
+            {/* Description */}
+            <m.p
+              className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              Specializing in modern web technologies like{" "}
+              <span className="text-foreground font-medium">React</span>,{" "}
+              <span className="text-foreground font-medium">Next.js</span>, and{" "}
+              <span className="text-foreground font-medium">TypeScript</span>.
+              Building exceptional digital experiences from the Greater Seattle Area.
+            </m.p>
+
+            {/* CTA Buttons */}
+            <m.div
+              className="flex flex-col sm:flex-row gap-4 pt-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <Button size="lg" className="group text-base" asChild>
+                <a href="#projects">
+                  View My Work
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </a>
+              </Button>
+              <Button size="lg" variant="outline" className="group text-base" asChild>
+                <a href="/pdf-file/resume-drake.pdf" target="_blank">
+                  <Eye className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
+                  View Resume
+                </a>
+              </Button>
+            </m.div>
+
+            {/* Social Links */}
+            <m.div
+              className="pt-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <ContactList delayOffset={0} showWhenInView={false} />
+            </m.div>
+          </m.div>
+
+          {/* Image Column */}
+          <m.div
+            className="lg:col-span-5 flex justify-center lg:justify-end"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <div className="relative w-full max-w-md lg:max-w-lg">
+              {/* Decorative background element */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-transparent rounded-3xl blur-3xl" />
+
+              {/* Image container */}
+              <div className="relative aspect-square rounded-2xl overflow-hidden border-2 border-border/50 shadow-2xl">
                 <Image
                   src="/images/hero.png"
-                  alt="Drake Alia"
-                  width={448}
-                  height={448}
-                  className="w-full h-full object-cover rounded-lg"
+                  alt="Drake Alia - Web Developer"
+                  width={500}
+                  height={500}
+                  className="object-cover w-full h-full"
                   priority
                 />
-              </motion.div>
-            </CardContent>
-          </Card>
-        </motion.div>
+              </div>
 
-        <motion.h2
-          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-3 sm:mb-4 text-primary"
-          variants={fadeInUp}
-          initial="initial"
-          animate="animate"
-          transition={{ ...fadeInUpTransition, delay: 0.2 }}
-        >
-          A Web Developer
-        </motion.h2>
-
-        <motion.p
-          className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 text-muted-foreground max-w-xl sm:max-w-2xl"
-          variants={fadeInUp}
-          initial="initial"
-          animate="animate"
-          transition={{ ...fadeInUpTransition, delay: 0.4 }}
-        >
-          Passionate Web Developer from the Greater Seattle Area, specializing
-          in modern web technologies like React, Next.js, TypeScript, and
-          Tailwind CSS. Leveraging AI tools and cutting-edge frameworks to craft
-          engaging, responsive, and user-friendly web experiences that drive
-          results.
-        </motion.p>
-
-        {/* Resume and CTA Buttons */}
-        <motion.div
-          className="flex flex-wrap justify-center gap-4 mb-8"
-          variants={fadeInUp}
-          initial="initial"
-          animate="animate"
-          transition={{ ...fadeInUpTransition, delay: 0.5 }}
-        >
-          <Button className="group" asChild>
-            <a href="/pdf-file/resume-drake.pdf" target="_blank">
-              <Eye className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
-              View Resume
-            </a>
-          </Button>
-          <Button variant="outline" className="group" asChild>
-            <a href="#projects">
-              View Projects{" "}
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </a>
-          </Button>
-        </motion.div>
-
-        {/* Centered Social Links */}
-        <motion.div
-          className="flex justify-center w-full mb-8"
-          variants={fadeInUp}
-          initial="initial"
-          animate="animate"
-          transition={{ ...fadeInUpTransition, delay: 0.6 }}
-        >
-          <ContactList delayOffset={1.2} showWhenInView={false} />
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          className="hidden sm:flex flex-col items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
-        >
-          <p className="text-xs text-muted-foreground mb-2">
-            Scroll to explore
-          </p>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          >
-            <svg
-              width="20"
-              height="10"
-              viewBox="0 0 20 10"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1 1L10 9L19 1"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </motion.div>
-        </motion.div>
+              {/* Floating badge */}
+              <m.div
+                className="absolute -bottom-4 -right-4 bg-background border-2 border-border rounded-2xl px-6 py-4 shadow-lg"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.8 }}
+              >
+                <p className="text-sm text-muted-foreground">Based in</p>
+                <p className="text-lg font-semibold">Seattle Area</p>
+              </m.div>
+            </div>
+          </m.div>
+        </div>
       </div>
-    </motion.section>
+
+      {/* Scroll indicator */}
+      <m.div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 0.6 }}
+      >
+        <p className="text-xs text-muted-foreground tracking-wider uppercase">Scroll</p>
+        <m.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="w-5 h-5 text-muted-foreground" />
+        </m.div>
+      </m.div>
+    </section>
   );
 }

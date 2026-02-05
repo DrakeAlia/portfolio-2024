@@ -83,43 +83,26 @@ export default function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Left section */}
         <Link href="/" className="flex-shrink-0">
-          <motion.div
-            className="text-xl md:text-2xl font-bold text-primary"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
+          <div className="text-xl md:text-2xl font-bold text-primary hover:scale-105 transition-transform">
             DA
-          </motion.div>
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <motion.nav
-          className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center space-x-8 lg:space-x-12"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
+        <nav className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center space-x-8 lg:space-x-12">
           {links.map((link) => (
-            <motion.span
+            <span
               key={link}
               className="cursor-pointer text-sm font-medium hover:text-primary transition-colors duration-200"
-              variants={childVariants}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
               onClick={() => handleLinkClick(link)}
             >
               {link.charAt(0).toUpperCase() + link.slice(1)}
-            </motion.span>
+            </span>
           ))}
-        </motion.nav>
+        </nav>
 
         {/* Right section */}
-        <motion.div
-          className="flex items-center space-x-2 md:space-x-3"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
+        <div className="flex items-center space-x-2 md:space-x-3">
           {/* Desktop Social Links */}
           <div className="hidden sm:flex items-center space-x-2">
             <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
@@ -170,32 +153,29 @@ export default function Header() {
           </button>
           
           <CommandMenu className="hidden" />
-        </motion.div>
+        </div>
       </div>
 
       {/* Mobile Navigation Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
             className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur"
           >
             <div className="container mx-auto px-4 py-4">
               <nav className="flex flex-col space-y-4">
-                {links.map((link, index) => (
-                  <motion.button
+                {links.map((link) => (
+                  <button
                     key={link}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
                     className="text-left text-base font-medium hover:text-primary transition-colors duration-200 py-2 px-2 hover:bg-accent rounded-md"
                     onClick={() => handleLinkClick(link)}
                   >
                     {link.charAt(0).toUpperCase() + link.slice(1)}
-                  </motion.button>
+                  </button>
                 ))}
                 
                 {/* Mobile Social Links */}
