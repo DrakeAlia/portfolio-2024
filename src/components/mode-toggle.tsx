@@ -26,7 +26,7 @@ export function ModeToggle() {
       variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      className="w-9 px-0"
+      className="px-0"
       title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
     >
       <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />

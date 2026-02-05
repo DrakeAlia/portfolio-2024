@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, useAnimation, useInView } from "framer-motion";
+import { motion, useAnimation, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef } from "react";
 export default function MotionList({
   children,
@@ -17,6 +17,8 @@ export default function MotionList({
   const controls = useAnimation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const shouldReduceMotion = useReducedMotion();
+
   useEffect(() => {
     if (!showWhenInView) {
       controls.start("visible");
@@ -36,15 +38,17 @@ export default function MotionList({
       variants={{
         hidden: {
           opacity: 0,
-          y: 20,
+          y: shouldReduceMotion ? 0 : 20,
         },
         visible: {
           opacity: 1,
           y: 0,
-          transition: {
-            delayChildren: 0.3 + delayOffset,
-            staggerChildren: 0.1,
-          },
+          transition: shouldReduceMotion
+            ? { duration: 0.01 }
+            : {
+                delayChildren: 0.3 + delayOffset,
+                staggerChildren: 0.1,
+              },
         },
       }}
     >
@@ -52,17 +56,21 @@ export default function MotionList({
         <motion.li
           key={i}
           variants={{
-            hidden: { opacity: 0, y: 20 },
+            hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
             visible: {
               opacity: 1,
               y: 0,
             },
           }}
-          transition={{
-            type: "spring",
-            damping: 20,
-            stiffness: 100,
-          }}
+          transition={
+            shouldReduceMotion
+              ? { duration: 0.01 }
+              : {
+                  type: "spring",
+                  damping: 20,
+                  stiffness: 100,
+                }
+          }
         >
           {child}
         </motion.li>

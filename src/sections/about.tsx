@@ -11,6 +11,21 @@ import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 export default function About() {
   const shouldReduceMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [shouldPlayVideo, setShouldPlayVideo] = useState(false);
+
+  // Detect touch device and connection type
+  React.useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
+    // Check if user is on a slow connection or has data saver enabled
+    const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
+    const isSaveData = connection?.saveData;
+    const isSlowConnection = connection?.effectiveType && ['slow-2g', '2g'].includes(connection.effectiveType);
+
+    // Only autoplay video if not on slow connection, not in save data mode, and not reducing motion
+    setShouldPlayVideo(!isSaveData && !isSlowConnection && !shouldReduceMotion);
+  }, [shouldReduceMotion]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -143,29 +158,42 @@ export default function About() {
           className="w-full mx-auto flex flex-col items-center order-first lg:order-last"
         >
           <div
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseEnter={() => !isTouchDevice && setIsHovered(true)}
+            onMouseLeave={() => !isTouchDevice && setIsHovered(false)}
+            onTouchStart={() => isTouchDevice && setIsHovered(true)}
+            onTouchEnd={() => isTouchDevice && setTimeout(() => setIsHovered(false), 300)}
             className="w-full max-w-md mx-auto lg:max-w-none relative"
           >
             <CardContainer className="w-full">
-              <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full h-auto rounded-xl p-2 sm:p-3 lg:p-4 border transition-all duration-300">
+              <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full h-auto rounded-xl p-2 sm:p-3 lg:p-4 border transition-all duration-300 active:shadow-xl">
                 <CardItem
                   translateZ={
-                    shouldReduceMotion ? "0" : isHovered ? "120" : "50"
+                    shouldReduceMotion ? "0" : isHovered ? (isTouchDevice ? "80" : "120") : "50"
                   }
                   className="w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/5] transition-all duration-300 ease-out relative overflow-hidden rounded-lg"
                 >
-                  <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="metadata"
-                    className="w-full h-full object-cover rounded-lg group-hover/card:shadow-xl transition-transform duration-300"
-                    poster="/images/hero.png"
-                  >
-                    <source src="/images/water-code.mp4" type="video/mp4" />
-                    {/* Fallback for browsers that don't support video */}
+                  {shouldPlayVideo ? (
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-full object-cover rounded-lg group-hover/card:shadow-xl transition-transform duration-300"
+                      poster="/images/hero.png"
+                    >
+                      <source src="/images/water-code.mp4" type="video/mp4" />
+                      {/* Fallback for browsers that don't support video */}
+                      <Image
+                        src="/images/hero.png"
+                        alt="Drake Alia - Web Developer"
+                        width={450}
+                        height={563}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 450px"
+                        className="rounded-lg w-full h-full object-cover"
+                      />
+                    </video>
+                  ) : (
                     <Image
                       src="/images/hero.png"
                       alt="Drake Alia - Web Developer"
@@ -173,8 +201,9 @@ export default function About() {
                       height={563}
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 450px"
                       className="rounded-lg w-full h-full object-cover"
+                      priority
                     />
-                  </video>
+                  )}
 
                 </CardItem>
               </CardBody>
@@ -193,7 +222,7 @@ export default function About() {
           onClick={() => window.open("/pdf-file/resume-drake.pdf", "_blank")}
         >
           <Eye className="h-4 w-4 transition-transform group-hover:scale-110" />
-          <span className="text-sm sm:text-base">View Resume</span>
+          <span className="text-base">View Resume</span>
         </Button>
       </div>
     </m.section>

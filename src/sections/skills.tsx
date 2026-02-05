@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { m } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,6 +10,7 @@ import { skills, categories, Skill } from "@/data/skills";
 import { Sparkles } from "lucide-react";
 
 export default function Skills() {
+  const shouldReduceMotion = useReducedMotion();
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -25,10 +26,10 @@ export default function Skills() {
         {/* Header */}
         <m.div
           className="text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: shouldReduceMotion ? 0.01 : 0.6 }}
         >
           <Badge variant="outline" className="mb-4">
             <Sparkles className="w-3 h-3 mr-1" />
@@ -46,19 +47,19 @@ export default function Skills() {
         <m.div
           ref={ref}
           className="mb-12"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.2 }}
         >
           <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
             {featured.map((skill, index) => (
               <m.div
                 key={skill.name}
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.8 }}
                 animate={inView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
+                transition={{ duration: shouldReduceMotion ? 0.01 : 0.4, delay: shouldReduceMotion ? 0 : 0.3 + index * 0.1 }}
               >
-                <SkillBubble skill={skill} featured />
+                <SkillBubble skill={skill} featured shouldReduceMotion={shouldReduceMotion} />
               </m.div>
             ))}
           </div>
@@ -66,22 +67,29 @@ export default function Skills() {
 
         {/* Tabbed Categories */}
         <m.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.4 }}
         >
           <Tabs defaultValue={categories[0]} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 mb-8 h-auto gap-2 bg-transparent">
-              {categories.map((category) => (
-                <TabsTrigger
-                  key={category}
-                  value={category}
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-sm sm:text-base py-2 px-3 rounded-lg border border-border"
-                >
-                  {category.replace(" Development", "")}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+            {/* Horizontal scrollable tabs on mobile */}
+            <div className="relative mb-8 -mx-4 px-4 sm:mx-0 sm:px-0">
+              <div className="overflow-x-auto pb-2 scrollbar-hide touch-pan-x">
+                <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-3 lg:grid-cols-5 gap-3 bg-transparent">
+                  {categories.map((category) => (
+                    <TabsTrigger
+                      key={category}
+                      value={category}
+                      className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-base font-medium py-3.5 px-5 rounded-lg border-2 border-border min-h-[48px] min-w-[140px] sm:min-w-0 whitespace-nowrap transition-all hover:border-primary/50 touch-manipulation"
+                    >
+                      {category.replace(" Development", "")}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </div>
+              {/* Scroll indicator for mobile */}
+              <div className="absolute right-0 top-0 bottom-2 w-12 bg-gradient-to-l from-background to-transparent pointer-events-none sm:hidden" />
+            </div>
 
             {categories.map((category) => (
               <TabsContent key={category} value={category} className="mt-0">
@@ -89,7 +97,7 @@ export default function Skills() {
                   {skills
                     .filter((skill) => skill.category === category)
                     .map((skill) => (
-                      <SkillBubble key={skill.name} skill={skill} />
+                      <SkillBubble key={skill.name} skill={skill} shouldReduceMotion={shouldReduceMotion} />
                     ))}
                 </div>
               </TabsContent>
@@ -101,7 +109,7 @@ export default function Skills() {
   );
 }
 
-function SkillBubble({ skill, featured = false }: { skill: Skill; featured?: boolean }) {
+function SkillBubble({ skill, featured = false, shouldReduceMotion = false }: { skill: Skill; featured?: boolean; shouldReduceMotion?: boolean }) {
   const [isHovered, setIsHovered] = useState(false);
   const isPlaceholder = skill.icon.src && skill.icon.src.includes("placeholder");
 
@@ -123,7 +131,7 @@ function SkillBubble({ skill, featured = false }: { skill: Skill; featured?: boo
         } shadow-sm transition-all duration-300 hover:shadow-lg hover:border-primary ${
           featured ? "hover:scale-110" : "hover:scale-105"
         }`}
-        whileHover={{ y: -4 }}
+        whileHover={shouldReduceMotion ? {} : { y: -4 }}
       >
         <div className={`relative ${featured ? "w-10 h-10 sm:w-12 sm:h-12" : "w-8 h-8 sm:w-10 sm:h-10"}`}>
           {isPlaceholder ? (
@@ -135,13 +143,14 @@ function SkillBubble({ skill, featured = false }: { skill: Skill; featured?: boo
               width={featured ? 48 : 40}
               height={featured ? 48 : 40}
               className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
+              loading="lazy"
             />
           )}
         </div>
       </m.div>
       <span
         className={`mt-2 text-center font-medium transition-colors duration-300 ${
-          featured ? "text-sm sm:text-base" : "text-xs sm:text-sm"
+          featured ? "text-base" : "text-sm"
         } ${isHovered ? "text-primary" : "text-foreground"}`}
       >
         {skill.name}

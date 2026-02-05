@@ -80,7 +80,7 @@ export default function Header() {
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 touch-pan-y">
         {/* Left section */}
         <Link href="/" className="flex-shrink-0">
           <div className="text-xl md:text-2xl font-bold text-primary hover:scale-105 transition-transform">
@@ -102,19 +102,20 @@ export default function Header() {
         </nav>
 
         {/* Right section */}
-        <div className="flex items-center space-x-2 md:space-x-3">
+        <div className="flex items-center space-x-3 md:space-x-4">
           {/* Desktop Social Links */}
-          <div className="hidden sm:flex items-center space-x-2">
+          <div className="hidden sm:flex items-center space-x-3">
             <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
               <div
                 className={cn(
                   buttonVariants({
                     variant: "ghost",
+                    size: "icon",
                   }),
-                  "w-8 h-8 p-0 md:w-9 md:h-9"
+                  "p-0"
                 )}
               >
-                <Icons.gitHub className="h-3 w-3 md:h-4 md:w-4" />
+                <Icons.gitHub className="h-4 w-4" />
                 <span className="sr-only">GitHub</span>
               </div>
             </Link>
@@ -127,11 +128,12 @@ export default function Header() {
                 className={cn(
                   buttonVariants({
                     variant: "ghost",
+                    size: "icon",
                   }),
-                  "w-8 h-8 p-0 md:w-9 md:h-9"
+                  "p-0"
                 )}
               >
-                <Icons.twitter className="h-3 w-3 fill-current" />
+                <Icons.twitter className="h-4 w-4 fill-current" />
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
@@ -141,7 +143,7 @@ export default function Header() {
           
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 hover:bg-accent rounded-md transition-colors"
+            className="md:hidden p-3 hover:bg-accent rounded-md transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle mobile menu"
           >
@@ -171,7 +173,7 @@ export default function Header() {
                 {links.map((link) => (
                   <button
                     key={link}
-                    className="text-left text-base font-medium hover:text-primary transition-colors duration-200 py-2 px-2 hover:bg-accent rounded-md"
+                    className="text-left text-base font-medium hover:text-primary transition-colors duration-200 py-3 px-3 hover:bg-accent rounded-md min-h-[44px] flex items-center"
                     onClick={() => handleLinkClick(link)}
                   >
                     {link.charAt(0).toUpperCase() + link.slice(1)}
@@ -181,14 +183,14 @@ export default function Header() {
                 {/* Mobile Social Links */}
                 <div className="flex items-center space-x-4 pt-4 border-t border-border/40">
                   <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
-                    <div className="flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                      <Icons.gitHub className="h-4 w-4" />
+                    <div className="flex items-center space-x-2 text-base text-muted-foreground hover:text-primary transition-colors py-2 px-2 min-h-[44px]">
+                      <Icons.gitHub className="h-5 w-5" />
                       <span>GitHub</span>
                     </div>
                   </Link>
                   <Link href={siteConfig.links.twitter} target="_blank" rel="noreferrer">
-                    <div className="flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                      <Icons.twitter className="h-4 w-4 fill-current" />
+                    <div className="flex items-center space-x-2 text-base text-muted-foreground hover:text-primary transition-colors py-2 px-2 min-h-[44px]">
+                      <Icons.twitter className="h-5 w-5 fill-current" />
                       <span>Twitter</span>
                     </div>
                   </Link>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { m } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
 
 export default function Contact() {
+  const shouldReduceMotion = useReducedMotion();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -65,29 +66,29 @@ export default function Contact() {
     <section id="contact" className="py-12 sm:py-16 md:py-24">
       <div className="container mx-auto px-4 sm:px-6">
         <m.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: shouldReduceMotion ? 0.01 : 0.6 }}
           viewport={{ once: true }}
           className="text-center mb-8 sm:mb-10"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Get In Touch</h2>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto px-4">
             Have a project in mind or want to discuss something? Feel free to
             reach out!
           </p>
         </m.div>
 
         <m.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.2 }}
           viewport={{ once: true }}
           className="max-w-2xl mx-auto"
         >
           <Card className="shadow-lg">
             <CardContent className="p-4 sm:p-6">
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 touch-pan-y">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium block">
@@ -100,7 +101,7 @@ export default function Contact() {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full h-10 sm:h-11 text-base"
+                      className="w-full h-11 sm:h-12 text-base"
                       autoComplete="name"
                     />
                   </div>
@@ -116,7 +117,7 @@ export default function Contact() {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full h-10 sm:h-11 text-base"
+                      className="w-full h-11 sm:h-12 text-base"
                       autoComplete="email"
                     />
                   </div>
@@ -131,7 +132,7 @@ export default function Contact() {
                     placeholder="What is this regarding?"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    className="w-full h-10 sm:h-11 text-base"
+                    className="w-full h-11 sm:h-12 text-base"
                   />
                 </div>
                 <div className="space-y-2">
@@ -152,8 +153,9 @@ export default function Contact() {
                 {/* Success Message */}
                 {isSuccess && (
                   <m.div
-                    initial={{ opacity: 0, y: -10 }}
+                    initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -10 }}
                     animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: shouldReduceMotion ? 0.01 : 0.3 }}
                     className="p-4 bg-green-100 dark:bg-green-900/20 border border-green-400 dark:border-green-400/50 text-green-700 dark:text-green-400 rounded-md"
                   >
                     <div className="flex items-center">
@@ -166,8 +168,9 @@ export default function Contact() {
                 {/* Error Message */}
                 {error && (
                   <m.div
-                    initial={{ opacity: 0, y: -10 }}
+                    initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -10 }}
                     animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: shouldReduceMotion ? 0.01 : 0.3 }}
                     className="p-4 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-400/50 text-red-700 dark:text-red-400 rounded-md"
                   >
                     <div className="flex items-center">

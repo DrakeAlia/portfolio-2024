@@ -68,16 +68,59 @@
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+  }
+  html {
+    overflow-x: hidden;
   }
 }
 
 @layer utilities {
   /* Reduce motion for users with motion sensitivity */
   @media (prefers-reduced-motion: reduce) {
-    * {
+    *,
+    *::before,
+    *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Hover effects only on devices that support hover */
+  @media (hover: hover) and (pointer: fine) {
+    .hover-lift:hover {
+      transform: translateY(-4px);
+    }
+
+    .hover-scale:hover {
+      transform: scale(1.05);
+    }
+
+    .hover-scale-sm:hover {
+      transform: scale(1.02);
+    }
+  }
+
+  /* Touch-specific active states */
+  @media (hover: none) and (pointer: coarse) {
+    /* Disable hover-only effects on touch devices */
+    *:hover {
+      /* Prevent hover styles from sticking on touch */
+    }
+
+    /* Enhanced active states for touch feedback */
+    button:active,
+    a:active,
+    [role="button"]:active {
+      transform: scale(0.97);
+      opacity: 0.9;
+    }
+
+    .touch-active:active {
+      transform: scale(0.97);
+      opacity: 0.9;
     }
   }
 
@@ -130,6 +173,67 @@
     -webkit-user-select: none;
     user-select: none;
     touch-action: manipulation;
+  }
+
+  /* Touch action utilities */
+  .touch-pan-x {
+    touch-action: pan-x;
+  }
+
+  .touch-pan-y {
+    touch-action: pan-y;
+  }
+
+  .touch-pan-xy {
+    touch-action: pan-x pan-y;
+  }
+
+  .touch-pinch-zoom {
+    touch-action: pinch-zoom;
+  }
+
+  .touch-none {
+    touch-action: none;
+  }
+
+  /* Active state feedback for touch */
+  .touch-feedback:active {
+    transform: scale(0.97);
+    transition: transform 0.1s ease-out;
+  }
+
+  /* Ripple effect for touch (optional) */
+  .touch-ripple {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .touch-ripple::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+  }
+
+  .touch-ripple:active::after {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Hide scrollbar for horizontal scroll */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
   
   /* Mobile-friendly focus styles */

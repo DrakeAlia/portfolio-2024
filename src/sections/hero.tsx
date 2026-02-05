@@ -3,12 +3,13 @@
 import React from "react";
 import Image from "next/image";
 import ContactList from "@/components/contact-list";
-import { m } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Eye, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function Hero() {
+  const shouldReduceMotion = useReducedMotion();
   return (
     <section className="relative min-h-[90vh] flex items-center py-12 md:py-20 lg:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,15 +17,15 @@ export default function Hero() {
           {/* Content Column */}
           <m.div
             className="lg:col-span-7 space-y-8"
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: shouldReduceMotion ? 0.01 : 0.6 }}
           >
             {/* Greeting Badge */}
             <m.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.1 }}
             >
               <Badge variant="secondary" className="text-sm font-normal px-4 py-1.5">
                 <span className="inline-block mr-2 animate-pulse">👋</span>
@@ -35,9 +36,9 @@ export default function Hero() {
             {/* Name - Hero Text */}
             <m.h1
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.2 }}
             >
               Drake Alia
             </m.h1>
@@ -45,9 +46,9 @@ export default function Hero() {
             {/* Role/Title */}
             <m.div
               className="space-y-3"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.3 }}
             >
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-primary">
                 Web Developer
@@ -58,9 +59,9 @@ export default function Hero() {
             {/* Description */}
             <m.p
               className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.4 }}
             >
               Specializing in modern web technologies like{" "}
               <span className="text-foreground font-medium">React</span>,{" "}
@@ -71,18 +72,18 @@ export default function Hero() {
 
             {/* CTA Buttons */}
             <m.div
-              className="flex flex-col sm:flex-row gap-4 pt-4"
-              initial={{ opacity: 0, y: 20 }}
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4"
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
+              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.5 }}
             >
-              <Button size="lg" className="group text-base" asChild>
+              <Button size="lg" className="group text-base w-full sm:w-auto touch-manipulation" asChild>
                 <a href="#projects">
                   View My Work
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </a>
               </Button>
-              <Button size="lg" variant="outline" className="group text-base" asChild>
+              <Button size="lg" variant="outline" className="group text-base w-full sm:w-auto touch-manipulation" asChild>
                 <a href="/pdf-file/resume-drake.pdf" target="_blank">
                   <Eye className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
                   View Resume
@@ -95,7 +96,7 @@ export default function Hero() {
               className="pt-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
+              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.6 }}
             >
               <ContactList delayOffset={0} showWhenInView={false} />
             </m.div>
@@ -104,9 +105,9 @@ export default function Hero() {
           {/* Image Column */}
           <m.div
             className="lg:col-span-5 flex justify-center lg:justify-end"
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.3 }}
           >
             <div className="relative w-full max-w-md lg:max-w-lg">
               {/* Decorative background element */}
@@ -126,13 +127,13 @@ export default function Hero() {
 
               {/* Floating badge */}
               <m.div
-                className="absolute -bottom-4 -right-4 bg-background border-2 border-border rounded-2xl px-6 py-4 shadow-lg"
-                initial={{ opacity: 0, scale: 0.8 }}
+                className="absolute -bottom-3 -right-3 sm:-bottom-4 sm:-right-4 bg-background border-2 border-border rounded-xl sm:rounded-2xl px-4 py-2.5 sm:px-6 sm:py-4 shadow-lg max-w-[140px] sm:max-w-none"
+                initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
+                transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.8 }}
               >
-                <p className="text-sm text-muted-foreground">Based in</p>
-                <p className="text-lg font-semibold">Seattle Area</p>
+                <p className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Based in</p>
+                <p className="text-base sm:text-lg font-semibold whitespace-nowrap">Seattle Area</p>
               </m.div>
             </div>
           </m.div>
@@ -144,12 +145,12 @@ export default function Hero() {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.6 }}
+        transition={{ delay: shouldReduceMotion ? 0 : 1, duration: shouldReduceMotion ? 0.01 : 0.6 }}
       >
         <p className="text-xs text-muted-foreground tracking-wider uppercase">Scroll</p>
         <m.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          animate={shouldReduceMotion ? {} : { y: [0, 8, 0] }}
+          transition={shouldReduceMotion ? {} : { duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         >
           <ChevronDown className="w-5 h-5 text-muted-foreground" />
         </m.div>

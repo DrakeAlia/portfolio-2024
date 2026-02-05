@@ -25,9 +25,17 @@ export const CardContainer = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isTapped, setIsTapped] = useState(false);
+
+  // Detect touch device
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    // Disable 3D effect on touch devices
+    if (!containerRef.current || isTouchDevice) return;
     const { left, top, width, height } =
       containerRef.current.getBoundingClientRect();
     const x = (e.clientX - left - width / 2) / 25;
@@ -36,15 +44,30 @@ export const CardContainer = ({
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isTouchDevice) return;
     setIsMouseEntered(true);
     if (!containerRef.current) return;
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || isTouchDevice) return;
     setIsMouseEntered(false);
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
   };
+
+  // Touch handlers for tap interaction
+  const handleTouchStart = () => {
+    if (!isTouchDevice || !containerRef.current) return;
+    setIsTapped(true);
+    setIsMouseEntered(true);
+  };
+
+  const handleTouchEnd = () => {
+    if (!isTouchDevice || !containerRef.current) return;
+    setIsTapped(false);
+    setIsMouseEntered(false);
+  };
+
   return (
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
@@ -58,8 +81,11 @@ export const CardContainer = ({
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           className={cn(
-            "relative flex items-center justify-center transition-all duration-200 ease-linear",
+            "relative flex items-center justify-center transition-all duration-200 ease-linear touch-manipulation",
+            isTapped && "scale-[0.98]",
             className
           )}
           style={{
@@ -116,9 +142,20 @@ export const CardItem = ({
 }) => {
    const ref = useRef<HTMLDivElement>(null);
    const [isMouseEntered] = useMouseEnter();
+   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+   // Detect touch device
+   useEffect(() => {
+     setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+   }, []);
 
    const handleAnimations = useCallback(() => {
      if (!ref.current) return;
+     // Disable 3D transforms on touch devices
+     if (isTouchDevice) {
+       ref.current.style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
+       return;
+     }
      if (isMouseEntered) {
        ref.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
      } else {
@@ -126,6 +163,7 @@ export const CardItem = ({
      }
    }, [
      isMouseEntered,
+     isTouchDevice,
      translateX,
      translateY,
      translateZ,

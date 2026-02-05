@@ -79,6 +79,7 @@ const ProjectCard = memo(function ProjectCard({
     <>
       <m.div
         whileHover={isMobile ? motionConfig.whileHover : { y: -8 }}
+        whileTap={{ scale: 0.98 }}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
@@ -86,7 +87,7 @@ const ProjectCard = memo(function ProjectCard({
         className={cn("h-full touch-optimize", isMobile && "mobile-optimize")}
       >
         <Card
-          className="overflow-hidden h-full flex flex-col shadow-lg hover:shadow-2xl transition-all duration-300 relative group"
+          className="overflow-hidden h-full flex flex-col shadow-lg transition-all duration-300 relative group active:scale-[0.98] hover:shadow-2xl"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           data-project-title={title}
@@ -141,7 +142,7 @@ const ProjectCard = memo(function ProjectCard({
                     href={githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full p-2"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full p-3 min-w-[44px] min-h-[44px] flex items-center justify-center"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     aria-label={`View ${title} source code on GitHub`}
@@ -154,7 +155,7 @@ const ProjectCard = memo(function ProjectCard({
                     href={liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full p-2"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full p-3 min-w-[44px] min-h-[44px] flex items-center justify-center"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     aria-label={`View ${title} live demo`}

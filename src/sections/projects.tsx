@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { m } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import ProjectCard from "@/components/project-card";
 import { projects } from "../lib/projects";
@@ -10,7 +10,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Lazy loaded project card wrapper
-function LazyProjectCard({ project, index }: { project: any; index: number }) {
+function LazyProjectCard({ project, index, shouldReduceMotion }: { project: any; index: number; shouldReduceMotion: boolean }) {
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -20,11 +20,11 @@ function LazyProjectCard({ project, index }: { project: any; index: number }) {
   return (
     <m.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
       transition={{
-        duration: 0.4,
-        delay: index * 0.1,
+        duration: shouldReduceMotion ? 0.01 : 0.4,
+        delay: shouldReduceMotion ? 0 : index * 0.1,
         ease: "easeOut",
       }}
     >
@@ -34,8 +34,10 @@ function LazyProjectCard({ project, index }: { project: any; index: number }) {
 }
 
 export default function Projects() {
+  const shouldReduceMotion = useReducedMotion();
   const [currentPage, setCurrentPage] = useState(0);
   const [isClient, setIsClient] = useState(false);
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
   const projectsPerPage = 6;
   const totalPages = Math.ceil(projects.length / projectsPerPage);
 
@@ -45,10 +47,14 @@ export default function Projects() {
 
   const nextPage = () => {
     setCurrentPage((prev) => (prev + 1) % totalPages);
+    setSwipeDirection('left');
+    setTimeout(() => setSwipeDirection(null), 300);
   };
 
   const prevPage = () => {
     setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+    setSwipeDirection('right');
+    setTimeout(() => setSwipeDirection(null), 300);
   };
 
   const swipeRef = useSwipeGesture({
@@ -65,9 +71,9 @@ export default function Projects() {
     <section id="projects" className="py-20">
       <div className="container mx-auto px-4">
         <m.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: shouldReduceMotion ? 0.01 : 0.5 }}
           className="flex flex-col items-center justify-center space-y-4 mb-8"
         >
           <h2 className="text-4xl font-bold text-center">Projects</h2>
@@ -76,9 +82,17 @@ export default function Projects() {
             development
           </p>
           {isClient && totalPages > 1 && (
-            <p className="text-sm text-muted-foreground">
-              Swipe left/right on mobile or use navigation buttons • Page {currentPage + 1} of {totalPages}
-            </p>
+            <m.div
+              className="flex items-center gap-2 text-sm text-muted-foreground"
+              animate={shouldReduceMotion ? {} : (swipeDirection ? { x: swipeDirection === 'left' ? -10 : 10 } : { x: 0 })}
+              transition={{ duration: shouldReduceMotion ? 0.01 : 0.3 }}
+            >
+              {swipeDirection === 'right' && <span>← </span>}
+              <span className="md:hidden">Swipe left/right</span>
+              <span className="hidden md:inline">Use navigation buttons</span>
+              <span>• Page {currentPage + 1} of {totalPages}</span>
+              {swipeDirection === 'left' && <span> →</span>}
+            </m.div>
           )}
         </m.div>
 
@@ -96,16 +110,22 @@ export default function Projects() {
               Previous
             </Button>
             
-            <div className="flex gap-2">
+            <div className="flex gap-1">
               {Array.from({ length: totalPages }, (_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentPage(i)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    i === currentPage ? "bg-primary" : "bg-muted-foreground/30"
-                  }`}
+                  className="group p-2 min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation"
                   aria-label={`Go to page ${i + 1}`}
-                />
+                >
+                  <span
+                    className={`block rounded-full transition-all duration-300 ${
+                      i === currentPage
+                        ? "w-8 h-3 bg-primary"
+                        : "w-3 h-3 bg-muted-foreground/30 group-hover:bg-muted-foreground/50"
+                    }`}
+                  />
+                </button>
               ))}
             </div>
             
@@ -127,7 +147,7 @@ export default function Projects() {
           ref={swipeRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: shouldReduceMotion ? 0.01 : 0.3 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 touch-pan-y"
         >
           {currentProjects.map((project, index) => (
@@ -135,6 +155,7 @@ export default function Projects() {
               key={`${project.title}-${currentPage}-${index}`}
               project={project}
               index={index}
+              shouldReduceMotion={shouldReduceMotion}
             />
           ))}
         </m.div>

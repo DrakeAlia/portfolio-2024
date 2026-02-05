@@ -4,16 +4,17 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import About from "@/sections/about";
 import Hero from "@/sections/hero";
+import { SkillsSkeleton, ProjectsSkeleton, ContactSkeleton } from "@/components/loading-skeletons";
 
 // Lazy load below-the-fold sections
 const Skills = dynamic(() => import("@/sections/skills"), {
-  loading: () => <div className="min-h-screen" />,
+  loading: () => <SkillsSkeleton />,
 });
 const Projects = dynamic(() => import("@/sections/projects"), {
-  loading: () => <div className="min-h-screen" />,
+  loading: () => <ProjectsSkeleton />,
 });
 const Contact = dynamic(() => import("@/sections/contact"), {
-  loading: () => <div className="min-h-screen" />,
+  loading: () => <ContactSkeleton />,
 });
 
 export default function Home() {
