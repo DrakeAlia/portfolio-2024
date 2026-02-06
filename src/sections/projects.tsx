@@ -68,7 +68,7 @@ export default function Projects() {
   );
 
   return (
-    <section id="projects" className="py-20 bg-muted/30">
+    <section id="projects" className="py-12 sm:py-16 lg:py-20 xl:py-24 bg-muted/30">
       <div className="container mx-auto px-4">
         <m.div
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
@@ -76,8 +76,8 @@ export default function Projects() {
           transition={{ duration: shouldReduceMotion ? 0.01 : 0.5 }}
           className="flex flex-col items-center justify-center space-y-4 mb-8"
         >
-          <h2 className="text-4xl font-bold text-center">Projects</h2>
-          <p className="text-lg text-center text-muted-foreground max-w-2xl">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center">Projects</h2>
+          <p className="text-base sm:text-lg text-center text-muted-foreground max-w-2xl">
             Explore my recent projects showcasing my expertise in modern web
             development
           </p>

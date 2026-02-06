@@ -69,30 +69,112 @@ export function ProjectsSkeleton() {
         {/* Projects Grid Skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="overflow-hidden rounded-lg border border-border shadow-lg">
-              {/* Image Skeleton */}
-              <div className="aspect-video bg-muted animate-pulse" />
+            <div key={i} className="overflow-hidden rounded-lg border border-border shadow-lg relative">
+              {/* Featured Badge Skeleton (show on first card) */}
+              {i === 0 && (
+                <div className="absolute top-0 right-0 z-10">
+                  <div className="h-7 w-24 bg-gradient-to-r from-amber-500/30 to-orange-500/30 rounded-bl-lg animate-pulse" />
+                </div>
+              )}
+
+              {/* Image Skeleton with category badge */}
+              <div className="aspect-video bg-muted animate-pulse relative">
+                <div className="absolute top-2 left-2">
+                  <div className="h-5 w-20 bg-muted-foreground/20 rounded-full animate-pulse" />
+                </div>
+              </div>
 
               {/* Content Skeleton */}
               <div className="p-4 space-y-4">
+                {/* Title */}
                 <div className="h-6 w-3/4 bg-muted rounded animate-pulse" />
+
+                {/* Description */}
                 <div className="space-y-2">
                   <div className="h-4 w-full bg-muted rounded animate-pulse" />
                   <div className="h-4 w-5/6 bg-muted rounded animate-pulse" />
+                  <div className="h-4 w-4/6 bg-muted rounded animate-pulse" />
                 </div>
 
                 {/* Tags Skeleton */}
                 <div className="flex flex-wrap gap-2">
-                  {[...Array(3)].map((_, j) => (
+                  {[...Array(4)].map((_, j) => (
                     <div key={j} className="h-6 w-16 bg-muted rounded-full animate-pulse" />
                   ))}
                 </div>
 
-                {/* Button Skeleton */}
-                <div className="h-10 w-full bg-muted rounded-md animate-pulse" />
+                {/* Quick Action Buttons Skeleton */}
+                <div className="flex gap-2">
+                  <div className="h-9 flex-1 bg-muted rounded-md animate-pulse" />
+                  <div className="h-9 flex-1 bg-muted rounded-md animate-pulse" />
+                </div>
+
+                {/* Details Button Skeleton */}
+                <div className="h-9 w-full bg-muted/50 rounded-md animate-pulse" />
               </div>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function TestimonialsSkeleton() {
+  return (
+    <section className="py-20">
+      <div className="container mx-auto px-4">
+        {/* Header Skeleton */}
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="h-8 w-32 bg-muted rounded-full animate-pulse" />
+          </div>
+          <div className="h-10 w-64 mx-auto bg-muted rounded-md mb-4 animate-pulse" />
+          <div className="h-6 w-96 max-w-full mx-auto bg-muted rounded-md animate-pulse" />
+        </div>
+
+        {/* Testimonial Card Skeleton - centered single card */}
+        <div className="max-w-3xl mx-auto">
+          <div className="rounded-lg border border-border shadow-lg p-6 sm:p-8">
+            {/* Quote Icon */}
+            <div className="mb-4">
+              <div className="h-10 w-10 bg-muted rounded-lg animate-pulse" />
+            </div>
+
+            {/* Star Rating */}
+            <div className="flex gap-1 mb-4">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="h-4 w-4 bg-muted rounded animate-pulse" />
+              ))}
+            </div>
+
+            {/* Quote Text */}
+            <div className="space-y-3 mb-6">
+              <div className="h-5 w-full bg-muted rounded animate-pulse" />
+              <div className="h-5 w-full bg-muted rounded animate-pulse" />
+              <div className="h-5 w-4/5 bg-muted rounded animate-pulse" />
+            </div>
+
+            {/* Project Badge */}
+            <div className="mb-4">
+              <div className="h-6 w-40 bg-muted rounded-full animate-pulse" />
+            </div>
+
+            {/* Author Info */}
+            <div className="flex items-center gap-4 pt-4 border-t border-border">
+              <div className="h-12 w-12 rounded-full bg-muted animate-pulse" />
+              <div className="flex-1 space-y-2">
+                <div className="h-5 w-32 bg-muted rounded animate-pulse" />
+                <div className="h-4 w-24 bg-muted rounded animate-pulse" />
+                <div className="h-3 w-28 bg-muted rounded animate-pulse" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Skeleton */}
+        <div className="text-center mt-12">
+          <div className="h-5 w-64 mx-auto bg-muted rounded animate-pulse" />
         </div>
       </div>
     </section>

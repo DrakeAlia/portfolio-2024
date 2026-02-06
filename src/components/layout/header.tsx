@@ -6,15 +6,24 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { CommandMenu } from "../command-menu";
 import { ModeToggle } from "../mode-toggle";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Icons } from "@/components/ui/icons";
-import { buttonVariants } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Menu } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const links = ["home", "about", "skills", "projects", "contact"];
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const links = ["home", "about", "skills", "projects", "testimonials", "contact"];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,7 +34,7 @@ export default function Header() {
   }, []);
 
   const handleLinkClick = (link: string) => {
-    setIsMobileMenuOpen(false);
+    setIsSheetOpen(false);
     if (link === "home") {
       // Navigate to home page / scroll to top
       if (window.location.pathname === "/") {
@@ -47,28 +56,6 @@ export default function Header() {
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const childVariants = {
-    hidden: { y: -20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20,
-      },
-    },
-  };
 
   return (
     <motion.header
@@ -112,10 +99,10 @@ export default function Header() {
                     variant: "ghost",
                     size: "icon",
                   }),
-                  "p-0"
+                  "p-0 group"
                 )}
               >
-                <Icons.gitHub className="h-4 w-4" />
+                <Icons.gitHub className="h-4 w-4 transition-colors duration-200 group-hover:text-primary" />
                 <span className="sr-only">GitHub</span>
               </div>
             </Link>
@@ -130,76 +117,95 @@ export default function Header() {
                     variant: "ghost",
                     size: "icon",
                   }),
-                  "p-0"
+                  "p-0 group"
                 )}
               >
-                <Icons.twitter className="h-4 w-4 fill-current" />
+                <Icons.twitter className="h-4 w-4 fill-current transition-colors duration-200 group-hover:text-primary" />
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
           </div>
           
           <ModeToggle />
-          
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden p-3 hover:bg-accent rounded-md transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle mobile menu"
-          >
-            {isMobileMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </button>
-          
+
+          {/* Mobile menu sheet */}
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden"
+                aria-label="Toggle mobile menu"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+              <SheetHeader>
+                <SheetTitle className="text-left">Navigation</SheetTitle>
+                <SheetDescription className="text-left">
+                  Explore my portfolio sections
+                </SheetDescription>
+              </SheetHeader>
+
+              <div className="mt-8 flex flex-col space-y-6">
+                {/* Navigation Links */}
+                <nav className="flex flex-col space-y-2">
+                  {links.map((link) => (
+                    <Button
+                      key={link}
+                      variant="ghost"
+                      className="justify-start text-base font-medium hover:text-primary hover:bg-accent/50 transition-all duration-200"
+                      onClick={() => handleLinkClick(link)}
+                    >
+                      {link.charAt(0).toUpperCase() + link.slice(1)}
+                    </Button>
+                  ))}
+                </nav>
+
+                <Separator />
+
+                {/* Social Links */}
+                <div className="space-y-3">
+                  <p className="text-sm font-semibold text-muted-foreground">Connect</p>
+                  <div className="flex flex-col space-y-2">
+                    <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start hover:text-primary hover:bg-accent/50 transition-all duration-200"
+                        onClick={() => setIsSheetOpen(false)}
+                      >
+                        <Icons.gitHub className="h-5 w-5 mr-3" />
+                        <span>GitHub</span>
+                      </Button>
+                    </Link>
+                    <Link href={siteConfig.links.twitter} target="_blank" rel="noreferrer">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start hover:text-primary hover:bg-accent/50 transition-all duration-200"
+                        onClick={() => setIsSheetOpen(false)}
+                      >
+                        <Icons.twitter className="h-5 w-5 mr-3 fill-current" />
+                        <span>Twitter</span>
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Theme Toggle in Sheet */}
+                <div className="space-y-3">
+                  <p className="text-sm font-semibold text-muted-foreground">Theme</p>
+                  <ModeToggle />
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+
           <CommandMenu className="hidden" />
         </div>
       </div>
-
-      {/* Mobile Navigation Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur"
-          >
-            <div className="container mx-auto px-4 py-4">
-              <nav className="flex flex-col space-y-4">
-                {links.map((link) => (
-                  <button
-                    key={link}
-                    className="text-left text-base font-medium hover:text-primary transition-colors duration-200 py-3 px-3 hover:bg-accent rounded-md min-h-[44px] flex items-center"
-                    onClick={() => handleLinkClick(link)}
-                  >
-                    {link.charAt(0).toUpperCase() + link.slice(1)}
-                  </button>
-                ))}
-                
-                {/* Mobile Social Links */}
-                <div className="flex items-center space-x-4 pt-4 border-t border-border/40">
-                  <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
-                    <div className="flex items-center space-x-2 text-base text-muted-foreground hover:text-primary transition-colors py-2 px-2 min-h-[44px]">
-                      <Icons.gitHub className="h-5 w-5" />
-                      <span>GitHub</span>
-                    </div>
-                  </Link>
-                  <Link href={siteConfig.links.twitter} target="_blank" rel="noreferrer">
-                    <div className="flex items-center space-x-2 text-base text-muted-foreground hover:text-primary transition-colors py-2 px-2 min-h-[44px]">
-                      <Icons.twitter className="h-5 w-5 fill-current" />
-                      <span>Twitter</span>
-                    </div>
-                  </Link>
-                </div>
-              </nav>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </motion.header>
   );
 }

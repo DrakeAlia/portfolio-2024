@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
 import BackToTop from "@/components/back-to-top";
 import GridBackground from "@/components/grid-background";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -68,24 +69,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://drakealia.com",
+    url: "https://drakealia.dev",
     title: "Drake Alia | Full Stack Developer & UI Engineer",
     description:
       "Full Stack Developer creating modern, responsive web applications with cutting-edge technologies. Specializing in React, Next.js, TypeScript, and Node.js.",
     siteName: "Drake Alia Portfolio",
     images: [
       {
-        url: "/images/hero.png", // Your main hero image
+        url: "https://drakealia.dev/images/hero.png",
         width: 1200,
         height: 630,
-        alt: "Drake Alia - Full Stack Developer Portfolio",
+        alt: "Drake Alia - Full Stack Developer Portfolio showcasing modern web applications",
         type: "image/png",
       },
       {
-        url: "/images/hero.png", // Your profile photo
+        url: "https://drakealia.dev/images/hero.png",
         width: 400,
         height: 400,
-        alt: "Drake Alia - Professional Headshot",
+        alt: "Drake Alia - Web Developer specializing in React and Next.js",
         type: "image/png",
       },
     ],
@@ -95,8 +96,8 @@ export const metadata: Metadata = {
     site: "@Drake2Alia",
     creator: "@Drake2Alia",
     title: "Drake Alia | Full Stack Developer & UI Engineer",
-    description: "Full Stack Developer creating modern web applications with React, Next.js, and TypeScript.",
-    images: ["/images/hero.png"],
+    description: "Full Stack Developer creating modern web applications with React, Next.js, and TypeScript. Building responsive, accessible digital experiences.",
+    images: ["https://drakealia.dev/images/hero.png"],
   },
   icons: {
     icon: "/favicon.ico",
@@ -113,6 +114,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Preload critical assets */}
+        <link
+          rel="preload"
+          href="/images/hero.png"
+          as="image"
+          type="image/png"
+        />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
@@ -140,6 +150,7 @@ export default function RootLayout({
               <ClientWrapper>
                 <main className="flex-1">{children}</main>
               </ClientWrapper>
+              <Footer />
               <BackToTop />
             </div>
           </div>

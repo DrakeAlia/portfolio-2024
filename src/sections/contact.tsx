@@ -63,7 +63,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-12 sm:py-16 md:py-24">
+    <section id="contact" className="py-12 sm:py-16 lg:py-20 xl:py-24">
       <div className="container mx-auto px-4 sm:px-6">
         <m.div
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
@@ -72,8 +72,8 @@ export default function Contact() {
           viewport={{ once: true }}
           className="text-center mb-8 sm:mb-10"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Get In Touch</h2>
-          <p className="text-base text-muted-foreground max-w-2xl mx-auto px-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">Get In Touch</h2>
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
             Have a project in mind or want to discuss something? Feel free to
             reach out!
           </p>

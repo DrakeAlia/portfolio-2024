@@ -4,7 +4,7 @@ import React, { useState, memo, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { m, AnimatePresence } from "framer-motion";
-import { Github, ExternalLink, Code, X, ArrowRight } from "lucide-react";
+import { Github, ExternalLink, Code, X, ArrowRight, Star, Sparkles } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -67,13 +67,20 @@ const ProjectCard = memo(function ProjectCard({
 }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [showExpandedDescription, setShowExpandedDescription] = useState(false);
   const { isMobile, getMotionConfig } = useMobileOptimizedMotion();
   const motionConfig = useMemo(() => getMotionConfig(), [getMotionConfig]);
 
   // Memoize callbacks to prevent unnecessary re-renders
   const handleImageLoad = useCallback(() => setImageLoaded(true), []);
-  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
-  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+    setShowExpandedDescription(true);
+  }, []);
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+    setShowExpandedDescription(false);
+  }, []);
 
   return (
     <>
@@ -92,7 +99,38 @@ const ProjectCard = memo(function ProjectCard({
           onMouseLeave={handleMouseLeave}
           data-project-title={title}
         >
-          
+          {/* Featured Ribbon */}
+          {featured && (
+            <div className="absolute top-0 right-0 z-20">
+              <m.div
+                initial={{ x: 50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+                className="relative"
+              >
+                <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-1.5 rounded-bl-lg shadow-lg flex items-center gap-1.5">
+                  <Star className="h-3.5 w-3.5 fill-white" />
+                  <span className="text-xs font-semibold tracking-wide">FEATURED</span>
+                </div>
+                {/* Sparkle effect */}
+                <m.div
+                  className="absolute -top-1 -right-1"
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.7, 1, 0.7],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <Sparkles className="h-3 w-3 text-amber-300" />
+                </m.div>
+              </m.div>
+            </div>
+          )}
+
           {/* Image container with category badge */}
           <div className="relative overflow-hidden aspect-video">
             {!imageLoaded && (
@@ -169,9 +207,49 @@ const ProjectCard = memo(function ProjectCard({
 
           <CardContent className="flex flex-col flex-grow p-4">
             <h3 className="text-xl font-bold mb-2">{title}</h3>
-            <p className="text-muted-foreground mb-4 flex-grow">
-              {description}
-            </p>
+
+            {/* Description with expand on hover */}
+            <div className="mb-4 flex-grow relative">
+              <AnimatePresence mode="wait">
+                {!showExpandedDescription ? (
+                  <m.p
+                    key="short"
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-muted-foreground line-clamp-3"
+                  >
+                    {description}
+                  </m.p>
+                ) : (
+                  <m.div
+                    key="expanded"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-muted-foreground text-sm"
+                  >
+                    <p className="mb-3 font-medium text-foreground">{description}</p>
+                    <div className="space-y-1.5">
+                      <p className="text-xs font-semibold text-foreground/80">Quick Preview:</p>
+                      {features.slice(0, 3).map((feature, index) => (
+                        <m.div
+                          key={index}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.2, delay: index * 0.1 }}
+                          className="flex items-start gap-1.5"
+                        >
+                          <span className="text-primary mt-0.5">•</span>
+                          <span className="text-xs">{feature}</span>
+                        </m.div>
+                      ))}
+                    </div>
+                  </m.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Tags - simplified without individual animations */}
             <div className="flex flex-wrap gap-2 mb-4">
@@ -194,16 +272,49 @@ const ProjectCard = memo(function ProjectCard({
               )}
             </div>
 
+            {/* Quick Action Buttons */}
+            <div className="flex flex-col gap-2 mb-3">
+              <div className="flex gap-2">
+                {liveUrl && (
+                  <Button
+                    size="sm"
+                    className="flex-1 group"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(liveUrl, '_blank', 'noopener,noreferrer');
+                    }}
+                  >
+                    <ExternalLink className="mr-1.5 h-3.5 w-3.5 transition-transform group-hover:scale-110" />
+                    Live Demo
+                  </Button>
+                )}
+                {githubUrl && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="flex-1 group"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(githubUrl, '_blank', 'noopener,noreferrer');
+                    }}
+                  >
+                    <Github className="mr-1.5 h-3.5 w-3.5 transition-transform group-hover:rotate-12" />
+                    GitHub
+                  </Button>
+                )}
+              </div>
+            </div>
+
             {/* Details dialog or link to project page */}
             {slug ? (
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 className="w-full group"
                 asChild
               >
                 <Link href={`/projects/${slug}`}>
-                  View Project Details
+                  View Full Details
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
@@ -211,11 +322,11 @@ const ProjectCard = memo(function ProjectCard({
               <Dialog>
                 <DialogTrigger asChild>
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
                     className="w-full"
                   >
-                    <Code className="mr-2 h-4 w-4" /> View Details
+                    <Code className="mr-2 h-4 w-4" /> View Full Details
                   </Button>
                 </DialogTrigger>
                 <DialogContent

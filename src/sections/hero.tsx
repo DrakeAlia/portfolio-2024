@@ -12,7 +12,7 @@ import AnimatedGradient from "@/components/animated-gradient";
 export default function Hero() {
   const shouldReduceMotion = useReducedMotion();
   return (
-    <section className="relative min-h-[90vh] flex items-center py-12 md:py-20 lg:py-24">
+    <section className="relative min-h-[90vh] flex items-center py-12 sm:py-16 lg:py-20 xl:py-24">
       <AnimatedGradient />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -52,8 +52,10 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.3 }}
             >
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-primary">
-                Web Developer
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold relative">
+                <span className="bg-gradient-to-r from-primary via-orange-500 to-primary bg-[length:200%_auto] animate-gradient bg-clip-text text-transparent">
+                  Web Developer
+                </span>
               </h2>
               <div className="h-1 w-20 bg-primary rounded-full" />
             </m.div>

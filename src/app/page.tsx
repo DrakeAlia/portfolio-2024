@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import About from "@/sections/about";
 import Hero from "@/sections/hero";
 import SectionDivider from "@/components/section-divider";
-import { SkillsSkeleton, ProjectsSkeleton, ContactSkeleton } from "@/components/loading-skeletons";
+import { SkillsSkeleton, ProjectsSkeleton, TestimonialsSkeleton, ContactSkeleton } from "@/components/loading-skeletons";
 
 // Lazy load below-the-fold sections
 const Skills = dynamic(() => import("@/sections/skills"), {
@@ -13,6 +13,9 @@ const Skills = dynamic(() => import("@/sections/skills"), {
 });
 const Projects = dynamic(() => import("@/sections/projects"), {
   loading: () => <ProjectsSkeleton />,
+});
+const Testimonials = dynamic(() => import("@/sections/testimonials"), {
+  loading: () => <TestimonialsSkeleton />,
 });
 const Contact = dynamic(() => import("@/sections/contact"), {
   loading: () => <ContactSkeleton />,
@@ -41,6 +44,8 @@ export default function Home() {
       <Skills />
       <SectionDivider />
       <Projects />
+      <SectionDivider />
+      <Testimonials />
       <SectionDivider />
       <Contact />
     </>

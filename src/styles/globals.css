@@ -86,6 +86,13 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+
+    /* Disable hover transforms and animations */
+    button:hover,
+    a:hover,
+    [role="button"]:hover {
+      transform: none !important;
+    }
   }
 
   /* Hover effects only on devices that support hover */

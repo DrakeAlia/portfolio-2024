@@ -21,7 +21,7 @@ export default function Skills() {
   const featured = skills.filter((skill) => featuredSkills.includes(skill.name));
 
   return (
-    <section id="skills" className="py-16 sm:py-20 lg:py-24">
+    <section id="skills" className="py-12 sm:py-16 lg:py-20 xl:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <m.div
@@ -35,10 +35,10 @@ export default function Skills() {
             <Sparkles className="w-3 h-3 mr-1" />
             Tech Stack
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             Skills & Tools
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
             Technologies and tools I use to bring ideas to life
           </p>
         </m.div>
