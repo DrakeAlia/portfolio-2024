@@ -125,10 +125,10 @@ export default function About() {
 
       {/* Decorative shapes background */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-10 right-10 w-32 h-32 rounded-full bg-primary/5 blur-2xl" />
-        <div className="absolute bottom-20 left-10 w-40 h-40 rounded-full bg-secondary/10 blur-3xl" />
+        <div className="absolute top-10 right-0 sm:right-10 w-24 sm:w-32 h-24 sm:h-32 rounded-full bg-primary/5 blur-2xl" />
+        <div className="absolute bottom-20 left-0 sm:left-10 w-32 sm:w-40 h-32 sm:h-40 rounded-full bg-secondary/10 blur-3xl" />
         <div
-          className="absolute top-1/2 right-1/4 w-24 h-24 bg-primary/5 blur-xl rotate-45"
+          className="absolute top-1/2 right-[10%] sm:right-1/4 w-20 sm:w-24 h-20 sm:h-24 bg-primary/5 blur-xl rotate-45"
           style={{ clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)" }}
         />
       </div>
@@ -136,7 +136,7 @@ export default function About() {
       {/* Stats Grid */}
       <m.div
         variants={itemVariants}
-        className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+        className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8"
       >
         {stats.map((stat, index) => (
           <m.div

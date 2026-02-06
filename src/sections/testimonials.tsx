@@ -45,7 +45,7 @@ export default function Testimonials() {
 
         {/* Testimonials Grid */}
         <div
-          className={`grid gap-8 ${
+          className={`grid gap-4 sm:gap-8 ${
             testimonials.length === 1
               ? "max-w-3xl mx-auto"
               : testimonials.length === 2

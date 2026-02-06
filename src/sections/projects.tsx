@@ -2,33 +2,56 @@
 
 import React, { useState, useEffect } from "react";
 import { m, useReducedMotion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import ProjectCard from "@/components/project-card";
 import { projects } from "../lib/projects";
 import { useSwipeGesture } from "@/hooks/use-swipe-gesture";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Animation variants for staggered reveal
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+    scale: 0.95,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.4, 0.25, 1],
+    },
+  },
+};
+
+const cardVariantsReduced = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.01 },
+  },
+};
+
 // Lazy loaded project card wrapper
 function LazyProjectCard({ project, index, shouldReduceMotion }: { project: any; index: number; shouldReduceMotion: boolean }) {
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-    rootMargin: "50px",
-  });
-
   return (
     <m.div
-      ref={ref}
-      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-      transition={{
-        duration: shouldReduceMotion ? 0.01 : 0.4,
-        delay: shouldReduceMotion ? 0 : index * 0.1,
-        ease: "easeOut",
-      }}
+      variants={shouldReduceMotion ? cardVariantsReduced : cardVariants}
     >
-      {inView && <ProjectCard {...project} />}
+      <ProjectCard {...project} />
     </m.div>
   );
 }
@@ -122,7 +145,7 @@ export default function Projects() {
                     className={`block rounded-full transition-all duration-300 ${
                       i === currentPage
                         ? "w-8 h-3 bg-primary"
-                        : "w-3 h-3 bg-muted-foreground/30 group-hover:bg-muted-foreground/50"
+                        : "w-3 h-3 sm:w-4 sm:h-4 bg-muted-foreground/30 group-hover:bg-muted-foreground/50 group-active:scale-125"
                     }`}
                   />
                 </button>
@@ -144,10 +167,11 @@ export default function Projects() {
 
         {/* Projects grid with swipe support */}
         <m.div
+          key={`projects-page-${currentPage}`}
           ref={swipeRef}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: shouldReduceMotion ? 0.01 : 0.3 }}
+          variants={shouldReduceMotion ? undefined : containerVariants}
+          initial="hidden"
+          animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 touch-pan-y"
         >
           {currentProjects.map((project, index) => (

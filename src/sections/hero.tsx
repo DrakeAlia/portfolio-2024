@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import ContactList from "@/components/contact-list";
-import { m, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Eye, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +11,12 @@ import AnimatedGradient from "@/components/animated-gradient";
 
 export default function Hero() {
   const shouldReduceMotion = useReducedMotion();
+  const { scrollY } = useScroll();
+
+  // Parallax transforms for different elements
+  const imageY = useTransform(scrollY, [0, 800], [0, -80]);
+  const contentY = useTransform(scrollY, [0, 800], [0, -40]);
+  const decorativeY = useTransform(scrollY, [0, 800], [0, -120]);
   return (
     <section className="relative min-h-[90vh] flex items-center py-12 sm:py-16 lg:py-20 xl:py-24">
       <AnimatedGradient />
@@ -22,6 +28,7 @@ export default function Hero() {
             initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: shouldReduceMotion ? 0.01 : 0.6 }}
+            style={shouldReduceMotion ? {} : { y: contentY }}
           >
             {/* Greeting Badge */}
             <m.div
@@ -53,7 +60,7 @@ export default function Hero() {
               transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.3 }}
             >
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold relative">
-                <span className="bg-gradient-to-r from-primary via-orange-500 to-primary bg-[length:200%_auto] animate-gradient bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_auto] animate-gradient bg-clip-text text-transparent">
                   Web Developer
                 </span>
               </h2>
@@ -112,10 +119,14 @@ export default function Hero() {
             initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.3 }}
+            style={shouldReduceMotion ? {} : { y: imageY }}
           >
             <div className="relative w-full max-w-md lg:max-w-lg">
               {/* Decorative background element */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-transparent rounded-3xl blur-3xl" />
+              <m.div
+                className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-transparent rounded-3xl blur-3xl"
+                style={shouldReduceMotion ? {} : { y: decorativeY }}
+              />
 
               {/* Image container */}
               <div className="relative aspect-square rounded-2xl overflow-hidden border-2 border-border/50 shadow-2xl">
@@ -131,23 +142,22 @@ export default function Hero() {
 
               {/* Floating badge */}
               <m.div
-                className="absolute -bottom-3 -right-3 sm:-bottom-4 sm:-right-4 bg-background border-2 border-border rounded-xl sm:rounded-2xl px-4 py-2.5 sm:px-6 sm:py-4 shadow-lg max-w-[140px] sm:max-w-none"
+                className="absolute -bottom-3 -right-3 sm:-bottom-4 sm:-right-4"
                 initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.8 }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  y: shouldReduceMotion ? 0 : [0, -12, 0],
-                  rotate: shouldReduceMotion ? 0 : [0, 2, 0, -2, 0]
-                }}
-                transition={{
-                  duration: shouldReduceMotion ? 0.01 : 0.6,
-                  delay: shouldReduceMotion ? 0 : 0.8,
-                  y: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-                  rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.8 }}
               >
-                <p className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Based in</p>
-                <p className="text-base sm:text-lg font-semibold whitespace-nowrap">Seattle Area</p>
+                <m.div
+                  className="bg-background border-2 border-border rounded-xl sm:rounded-2xl px-3 py-2 sm:px-6 sm:py-4 shadow-lg max-w-[120px] xs:max-w-[140px] sm:max-w-none"
+                  animate={shouldReduceMotion ? {} : { x: [0, 8, 0, -8, 0], y: [0, -4, 0] }}
+                  transition={shouldReduceMotion ? {} : {
+                    x: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                    y: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                  }}
+                >
+                  <p className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Based in</p>
+                  <p className="text-base sm:text-lg font-semibold whitespace-nowrap">Seattle Area</p>
+                </m.div>
               </m.div>
             </div>
           </m.div>

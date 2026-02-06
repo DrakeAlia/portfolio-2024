@@ -12,6 +12,10 @@ import { StructuredData } from "@/components/structured-data";
 import { Analytics } from "@/components/analytics";
 import { WebVitals } from "@/components/web-vitals";
 import { PrefetchLinks } from "@/components/prefetch-links";
+import { PageTransition } from "@/components/page-transition";
+import { ScrollProgress } from "@/components/scroll-progress";
+import { Toaster } from "@/components/ui/sonner";
+import { CommandMenu } from "@/components/command-menu";
 import { cn } from "@/lib/utils";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -137,18 +141,23 @@ export default function RootLayout({
           plausibleDomain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
         />
         <SkipToContent />
+        <Toaster />
+        <CommandMenu />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          <ScrollProgress />
           <div vaul-drawer-wrapper="">
             <div className="relative flex min-h-screen flex-col bg-background">
               <Header />
               <GridBackground />
               <ClientWrapper>
-                <main className="flex-1">{children}</main>
+                <main className="flex-1">
+                  <PageTransition>{children}</PageTransition>
+                </main>
               </ClientWrapper>
               <Footer />
               <BackToTop />

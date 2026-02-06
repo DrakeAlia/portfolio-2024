@@ -20,7 +20,15 @@ import {
   Sun as SunIcon,
   Layout as LayoutIcon,
   Box as BoxIcon,
+  Home as HomeIcon,
+  User as UserIcon,
+  Code as CodeIcon,
+  Briefcase as BriefcaseIcon,
+  Mail as MailIcon,
+  MessageSquare as MessageSquareIcon,
+  ExternalLink as ExternalLinkIcon,
 } from "lucide-react";
+import { projects } from "@/lib/projects";
 
 export function CommandMenu({
   className,
@@ -87,26 +95,70 @@ export function CommandMenu({
 
         <CommandGroup heading="Sections">
           <CommandItem
+            value="Home"
+            onSelect={() => runCommand(() => handleScroll("hero"))}
+          >
+            <HomeIcon className="mr-2 h-4 w-4" />
+            Home
+          </CommandItem>
+          <CommandItem
             value="About"
             onSelect={() => runCommand(() => handleScroll("about"))}
           >
-            <LayoutIcon className="mr-2 h-4 w-4" />
+            <UserIcon className="mr-2 h-4 w-4" />
             About
           </CommandItem>
           <CommandItem
             value="Skills"
             onSelect={() => runCommand(() => handleScroll("skills"))}
           >
-            <BoxIcon className="mr-2 h-4 w-4" />
+            <CodeIcon className="mr-2 h-4 w-4" />
             Skills
           </CommandItem>
           <CommandItem
             value="Projects"
             onSelect={() => runCommand(() => handleScroll("projects"))}
           >
-            <FileIcon className="mr-2 h-4 w-4" />
+            <BriefcaseIcon className="mr-2 h-4 w-4" />
             Projects
           </CommandItem>
+          <CommandItem
+            value="Testimonials"
+            onSelect={() => runCommand(() => handleScroll("testimonials"))}
+          >
+            <MessageSquareIcon className="mr-2 h-4 w-4" />
+            Testimonials
+          </CommandItem>
+          <CommandItem
+            value="Contact"
+            onSelect={() => runCommand(() => handleScroll("contact"))}
+          >
+            <MailIcon className="mr-2 h-4 w-4" />
+            Contact
+          </CommandItem>
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Featured Projects">
+          {projects
+            .filter((project) => project.featured)
+            .map((project) => (
+              <CommandItem
+                key={project.slug}
+                value={project.title}
+                onSelect={() =>
+                  runCommand(() => {
+                    if (project.liveUrl) {
+                      window.open(project.liveUrl, "_blank");
+                    }
+                  })
+                }
+              >
+                <ExternalLinkIcon className="mr-2 h-4 w-4" />
+                {project.title}
+              </CommandItem>
+            ))}
         </CommandGroup>
 
         <CommandSeparator />

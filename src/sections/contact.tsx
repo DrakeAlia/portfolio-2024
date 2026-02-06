@@ -6,13 +6,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, CheckCircle, AlertCircle } from "lucide-react";
+import { Send } from "lucide-react";
+import { toast } from "sonner";
+import emailjs from "@emailjs/browser";
 
 export default function Contact() {
   const shouldReduceMotion = useReducedMotion();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,32 +31,33 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError(null);
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Send email using EmailJS
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject || "Contact Form Submission",
+          message: formData.message,
+          to_email: "drakealia@gmail.com",
         },
-        body: JSON.stringify(formData),
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+      );
+
+      toast.success("Message sent successfully!", {
+        description: "I'll get back to you as soon as possible.",
+        duration: 5000,
       });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        setIsSuccess(true);
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        
-        // Reset success state after 5 seconds
-        setTimeout(() => {
-          setIsSuccess(false);
-        }, 5000);
-      } else {
-        setError(result.error || 'Failed to send message');
-      }
+      setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
-      setError('Network error. Please try again.');
+      console.error("EmailJS error:", err);
+      toast.error("Failed to send message", {
+        description: "Please try again later or email me directly at drakealia@gmail.com",
+        duration: 5000,
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -149,41 +150,11 @@ export default function Contact() {
                     className="min-h-24 sm:min-h-32 text-base resize-none"
                   />
                 </div>
-                
-                {/* Success Message */}
-                {isSuccess && (
-                  <m.div
-                    initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: shouldReduceMotion ? 0.01 : 0.3 }}
-                    className="p-4 bg-green-100 dark:bg-green-900/20 border border-green-400 dark:border-green-400/50 text-green-700 dark:text-green-400 rounded-md"
-                  >
-                    <div className="flex items-center">
-                      <CheckCircle className="w-5 h-5 mr-2" />
-                      <span className="text-sm sm:text-base font-medium">Message sent successfully! I&apos;ll get back to you soon.</span>
-                    </div>
-                  </m.div>
-                )}
-
-                {/* Error Message */}
-                {error && (
-                  <m.div
-                    initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: shouldReduceMotion ? 0.01 : 0.3 }}
-                    className="p-4 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-400/50 text-red-700 dark:text-red-400 rounded-md"
-                  >
-                    <div className="flex items-center">
-                      <AlertCircle className="w-5 h-5 mr-2" />
-                      <span className="text-sm sm:text-base font-medium">{error}</span>
-                    </div>
-                  </m.div>
-                )}
 
                 <Button
                   type="submit"
                   className="w-full h-11 sm:h-12 text-base touch-manipulation"
-                  disabled={isSubmitting || isSuccess}
+                  disabled={isSubmitting}
                 >
                   {isSubmitting ? (
                     <>
@@ -208,11 +179,6 @@ export default function Contact() {
                         ></path>
                       </svg>
                       Sending...
-                    </>
-                  ) : isSuccess ? (
-                    <>
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      Message Sent!
                     </>
                   ) : (
                     <>

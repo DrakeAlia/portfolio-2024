@@ -53,7 +53,7 @@ export default function Footer() {
           {/* Quick Links Section */}
           <div className="flex flex-col items-center space-y-4">
             <h3 className="text-sm font-semibold text-foreground">Quick Links</h3>
-            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+            <nav className="flex flex-wrap justify-center gap-x-3 sm:gap-x-6 gap-y-1 sm:gap-y-2">
               {links.map((link) => (
                 <span
                   key={link}

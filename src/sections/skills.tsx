@@ -6,6 +6,7 @@ import { m, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { skills, categories, Skill } from "@/data/skills";
 import { Sparkles } from "lucide-react";
 
@@ -22,7 +23,8 @@ export default function Skills() {
 
   return (
     <section id="skills" className="py-12 sm:py-16 lg:py-20 xl:py-24">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <TooltipProvider delayDuration={200}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <m.div
           className="text-center mb-12"
@@ -80,7 +82,7 @@ export default function Skills() {
                     <TabsTrigger
                       key={category}
                       value={category}
-                      className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-base font-medium py-3.5 px-5 rounded-lg border-2 border-border min-h-[48px] min-w-[140px] sm:min-w-0 whitespace-nowrap transition-all hover:border-primary/50 touch-manipulation"
+                      className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-base font-medium py-3.5 px-5 rounded-lg border-2 border-border min-h-[48px] min-w-[110px] sm:min-w-0 whitespace-nowrap transition-all hover:border-primary/50 touch-manipulation"
                     >
                       {category.replace(" Development", "")}
                     </TabsTrigger>
@@ -88,7 +90,7 @@ export default function Skills() {
                 </TabsList>
               </div>
               {/* Scroll indicator for mobile */}
-              <div className="absolute right-0 top-0 bottom-2 w-12 bg-gradient-to-l from-background to-transparent pointer-events-none sm:hidden" />
+              <div className="absolute right-0 top-0 bottom-2 w-8 sm:w-12 bg-gradient-to-l from-background to-transparent pointer-events-none sm:hidden" />
             </div>
 
             {categories.map((category) => (
@@ -104,7 +106,8 @@ export default function Skills() {
             ))}
           </Tabs>
         </m.div>
-      </div>
+        </div>
+      </TooltipProvider>
     </section>
   );
 }
@@ -120,41 +123,48 @@ function SkillBubble({ skill, featured = false, shouldReduceMotion = false }: { 
   };
 
   return (
-    <div
-      className="flex flex-col items-center group cursor-pointer"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <m.div
-        className={`${dimensions[size]} flex items-center justify-center rounded-2xl bg-background border-2 ${
-          featured ? "border-primary/50" : "border-border"
-        } shadow-sm transition-all duration-300 hover:shadow-lg hover:border-primary ${
-          featured ? "hover:scale-110" : "hover:scale-105"
-        }`}
-        whileHover={shouldReduceMotion ? {} : { y: -4 }}
-      >
-        <div className={`relative ${featured ? "w-10 h-10 sm:w-12 sm:h-12" : "w-8 h-8 sm:w-10 sm:h-10"}`}>
-          {isPlaceholder ? (
-            <Sparkles className="w-full h-full text-primary" />
-          ) : (
-            <Image
-              src={skill.icon}
-              alt={skill.name}
-              width={featured ? 48 : 40}
-              height={featured ? 48 : 40}
-              className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
-              loading="lazy"
-            />
-          )}
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div
+          className="flex flex-col items-center group cursor-pointer"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <m.div
+            className={`${dimensions[size]} flex items-center justify-center rounded-2xl bg-background border-2 ${
+              featured ? "border-primary/50" : "border-border"
+            } shadow-sm transition-all duration-300 hover:shadow-lg hover:border-primary ${
+              featured ? "hover:scale-110" : "hover:scale-105"
+            }`}
+            whileHover={shouldReduceMotion ? {} : { y: -4 }}
+          >
+            <div className={`relative ${featured ? "w-10 h-10 sm:w-12 sm:h-12" : "w-8 h-8 sm:w-10 sm:h-10"}`}>
+              {isPlaceholder ? (
+                <Sparkles className="w-full h-full text-primary" />
+              ) : (
+                <Image
+                  src={skill.icon}
+                  alt={skill.name}
+                  width={featured ? 48 : 40}
+                  height={featured ? 48 : 40}
+                  className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
+                  loading="lazy"
+                />
+              )}
+            </div>
+          </m.div>
+          <span
+            className={`mt-2 text-center font-medium transition-colors duration-300 ${
+              featured ? "text-base" : "text-sm"
+            } ${isHovered ? "text-primary" : "text-foreground"}`}
+          >
+            {skill.name}
+          </span>
         </div>
-      </m.div>
-      <span
-        className={`mt-2 text-center font-medium transition-colors duration-300 ${
-          featured ? "text-base" : "text-sm"
-        } ${isHovered ? "text-primary" : "text-foreground"}`}
-      >
-        {skill.name}
-      </span>
-    </div>
+      </TooltipTrigger>
+      <TooltipContent side="top" className="max-w-[200px] text-center">
+        <p className="text-xs">{skill.description}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 }
