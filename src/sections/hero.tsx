@@ -7,11 +7,13 @@ import { m, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Eye, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import AnimatedGradient from "@/components/animated-gradient";
 
 export default function Hero() {
   const shouldReduceMotion = useReducedMotion();
   return (
     <section className="relative min-h-[90vh] flex items-center py-12 md:py-20 lg:py-24">
+      <AnimatedGradient />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Content Column */}
@@ -129,8 +131,18 @@ export default function Hero() {
               <m.div
                 className="absolute -bottom-3 -right-3 sm:-bottom-4 sm:-right-4 bg-background border-2 border-border rounded-xl sm:rounded-2xl px-4 py-2.5 sm:px-6 sm:py-4 shadow-lg max-w-[140px] sm:max-w-none"
                 initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.8 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: shouldReduceMotion ? 0 : [0, -12, 0],
+                  rotate: shouldReduceMotion ? 0 : [0, 2, 0, -2, 0]
+                }}
+                transition={{
+                  duration: shouldReduceMotion ? 0.01 : 0.6,
+                  delay: shouldReduceMotion ? 0 : 0.8,
+                  y: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+                  rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                }}
               >
                 <p className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Based in</p>
                 <p className="text-base sm:text-lg font-semibold whitespace-nowrap">Seattle Area</p>

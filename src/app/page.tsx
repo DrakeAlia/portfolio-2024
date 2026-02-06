@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import About from "@/sections/about";
 import Hero from "@/sections/hero";
+import SectionDivider from "@/components/section-divider";
 import { SkillsSkeleton, ProjectsSkeleton, ContactSkeleton } from "@/components/loading-skeletons";
 
 // Lazy load below-the-fold sections
@@ -34,9 +35,13 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <SectionDivider />
       <About />
+      <SectionDivider />
       <Skills />
+      <SectionDivider />
       <Projects />
+      <SectionDivider />
       <Contact />
     </>
   );
