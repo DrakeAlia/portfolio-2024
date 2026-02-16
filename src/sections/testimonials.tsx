@@ -28,7 +28,17 @@ export default function Testimonials() {
         >
           <div className="flex items-center justify-center gap-2 mb-4">
             <Badge variant="secondary" className="text-sm px-4 py-2">
-              <MessageSquareQuote className="h-4 w-4 mr-2" />
+              <m.div
+                className="inline-block mr-2"
+                animate={shouldReduceMotion ? {} : { scale: [1, 1.1, 1] }}
+                transition={shouldReduceMotion ? {} : {
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <MessageSquareQuote className="h-4 w-4" />
+              </m.div>
               Testimonials
             </Badge>
           </div>
@@ -54,14 +64,23 @@ export default function Testimonials() {
           }`}
         >
           {testimonials.map((testimonial, index) => (
-            <TestimonialCard
+            <m.div
               key={testimonial.id}
-              quote={testimonial.quote}
-              author={testimonial.author}
-              project={testimonial.project}
-              rating={testimonial.rating}
-              delay={shouldReduceMotion ? 0 : index * 0.1}
-            />
+              animate={shouldReduceMotion ? {} : { y: [0, -5, 0] }}
+              transition={shouldReduceMotion ? {} : {
+                duration: 3.5 + index * 0.7,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <TestimonialCard
+                quote={testimonial.quote}
+                author={testimonial.author}
+                project={testimonial.project}
+                rating={testimonial.rating}
+                delay={shouldReduceMotion ? 0 : index * 0.1}
+              />
+            </m.div>
           ))}
         </div>
 

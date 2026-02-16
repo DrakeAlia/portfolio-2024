@@ -11,6 +11,7 @@ export interface Project {
   slug?: string;
   category?: string;
   completedAt?: string;
+  completedDate?: string;
   caseStudy?: {
     problem: string;
     solution: string;
@@ -47,7 +48,8 @@ export const projects = [
     category: "full-stack",
     featured: true,
     slug: "ironworks-gym",
-    completedAt: "2025-02",
+    completedAt: "2026-02",
+    completedDate: "February 2026",
     caseStudy: {
       problem: "Iron Works Gym had an outdated Squarespace website that was slow, difficult to update, and didn't reflect the energy and quality of their fitness center. They needed a modern, fast, and professional web presence.",
       solution: "Built a custom Next.js application from scratch with modern design, optimized performance, and easy content management. Handled the complete migration including domain transfer and DNS configuration.",
@@ -118,6 +120,7 @@ export const projects = [
     featured: true,
     slug: "fit-and-fly",
     completedAt: "2025-06",
+    completedDate: "June 2025",
     caseStudy: {
       problem:
         "Travelers often struggle to maintain their fitness routines and healthy eating habits while traveling, lacking personalized guidance for their specific destinations and available resources.",
@@ -170,59 +173,60 @@ export const projects = [
     },
   },
   {
-    title: "InfinitePages",
-    description:
-      "A full-stack application for reviewing books and sharing them with others.",
-    image: "/images/cover-book-reviews.png",
+    title: "VitaFlow",
+    description: "A modern pharmacy and healthcare provider website.",
+    image: "/images/cover-vitaflow.png",
     longDescription:
-      "This full-stack application allows users to manage and share book reviews. Users can create an account, add books to their collection, and write reviews. The application is built with Next.js, TypeScript, MongoDB, and Tailwind CSS.",
-    liveUrl: "https://book-reviews-orcin.vercel.app/",
-    githubUrl: "https://github.com/DrakeAlia/book-reviews",
-    tags: ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
+      "Designed and developed a fully-functional front-end website for VitaFlow pharmacy using Next.js and React. The site features responsive design, interactive UI components with Framer Motion animations, and a comprehensive service showcase that effectively communicates VitaFlow's healthcare offerings and brand identity.",
+    liveUrl: "https://vitaflow.vercel.app/",
+    githubUrl: "https://github.com/DrakeAlia/vitaflow",
+    tags: ["Next.js", "React", "Tailwind CSS", "shadcn/ui", "Framer Motion"],
     features: [
-      "User authentication",
-      "Database integration",
-      "Responsive layout",
+      "Responsive design with grid and flex layouts",
+      "Interactive animations and transitions",
+      "Component-based architecture",
+      "Modern UI with hover effects and cards",
     ],
-    category: "full-stack",
+    category: "front-end",
     featured: true,
-    slug: "infinitepages",
-    completedAt: "2024-01",
+    slug: "vitaflow",
+    completedAt: "2025-03",
+    completedDate: "March 2025",
     caseStudy: {
       problem:
-        "Book enthusiasts needed a platform to track, review, and share their reading experiences with a community of like-minded readers.",
+        "VitaFlow needed a modern, trustworthy online presence that would effectively communicate their healthcare services while building patient confidence and encouraging engagement.",
       solution:
-        "Built a full-stack web application with user authentication, book management, and social features for sharing reviews and discovering new books.",
+        "Developed a comprehensive pharmacy website with intuitive navigation, service showcases, and professional design that establishes credibility and improves patient access to information.",
       challenges: [
-        "Implementing secure user authentication and session management",
-        "Designing an intuitive book search and categorization system",
-        "Creating responsive layouts that work across all devices",
-        "Optimizing database queries for fast book searches",
+        "Balancing professional healthcare aesthetics with modern web design",
+        "Creating clear information hierarchy for complex medical services",
+        "Ensuring accessibility compliance for healthcare websites",
+        "Optimizing performance while maintaining rich visual elements",
       ],
       techDecisions: [
         {
-          decision: "Next.js for full-stack framework",
+          decision: "Next.js with static generation",
           reasoning:
-            "Provides server-side rendering, API routes, and excellent developer experience for React applications",
+            "Ensures fast loading times and SEO optimization crucial for healthcare provider discovery",
         },
         {
-          decision: "MongoDB for database",
+          decision: "Component-based architecture",
           reasoning:
-            "Flexible document structure perfect for storing varied book metadata and user-generated content",
+            "Enables consistent branding across all service pages and simplifies content management",
         },
         {
-          decision: "TypeScript for type safety",
+          decision: "Framer Motion for subtle animations",
           reasoning:
-            "Reduces runtime errors and improves development experience with better IDE support",
+            "Adds professional polish without compromising the serious nature of healthcare services",
         },
       ],
       learnings: [
-        "Importance of user feedback in UI/UX design iterations",
-        "Database indexing strategies for search performance",
-        "Mobile-first design principles for better accessibility",
+        "Healthcare websites require extra attention to accessibility standards",
+        "Trust indicators are crucial for medical service providers",
+        "Performance optimization directly impacts user confidence",
       ],
-      timeline: "3 months",
-      role: "Full-stack Developer & Designer",
+      timeline: "3 weeks",
+      role: "Lead Frontend Developer & UX Designer",
     },
   },
   {
@@ -248,7 +252,8 @@ export const projects = [
     category: "front-end",
     featured: false,
     slug: "green-thumb",
-    completedAt: "2024-03",
+    completedAt: "2025-02",
+    completedDate: "February 2025",
     caseStudy: {
       problem:
         "Plant enthusiasts struggled to maintain proper care schedules and monitor their plants remotely, leading to plant health issues and frequent plant loss.",
@@ -287,59 +292,60 @@ export const projects = [
     },
   },
   {
-    title: "VitaFlow",
-    description: "A modern pharmacy and healthcare provider website.",
-    image: "/images/cover-vitaflow.png",
+    title: "InfinitePages",
+    description:
+      "A full-stack application for reviewing books and sharing them with others.",
+    image: "/images/cover-book-reviews.png",
     longDescription:
-      "Designed and developed a fully-functional front-end website for VitaFlow pharmacy using Next.js and React. The site features responsive design, interactive UI components with Framer Motion animations, and a comprehensive service showcase that effectively communicates VitaFlow's healthcare offerings and brand identity.",
-    liveUrl: "https://vitaflow.vercel.app/",
-    githubUrl: "https://github.com/DrakeAlia/vitaflow",
-    tags: ["Next.js", "React", "Tailwind CSS", "shadcn/ui", "Framer Motion"],
+      "This full-stack application allows users to manage and share book reviews. Users can create an account, add books to their collection, and write reviews. The application is built with Next.js, TypeScript, MongoDB, and Tailwind CSS.",
+    liveUrl: "https://book-reviews-orcin.vercel.app/",
+    githubUrl: "https://github.com/DrakeAlia/book-reviews",
+    tags: ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
     features: [
-      "Responsive design with grid and flex layouts",
-      "Interactive animations and transitions",
-      "Component-based architecture",
-      "Modern UI with hover effects and cards",
+      "User authentication",
+      "Database integration",
+      "Responsive layout",
     ],
-    category: "front-end",
+    category: "full-stack",
     featured: true,
-    slug: "vitaflow",
-    completedAt: "2024-03",
+    slug: "infinitepages",
+    completedAt: "2024-10",
+    completedDate: "October 2024",
     caseStudy: {
       problem:
-        "VitaFlow needed a modern, trustworthy online presence that would effectively communicate their healthcare services while building patient confidence and encouraging engagement.",
+        "Book enthusiasts needed a platform to track, review, and share their reading experiences with a community of like-minded readers.",
       solution:
-        "Developed a comprehensive pharmacy website with intuitive navigation, service showcases, and professional design that establishes credibility and improves patient access to information.",
+        "Built a full-stack web application with user authentication, book management, and social features for sharing reviews and discovering new books.",
       challenges: [
-        "Balancing professional healthcare aesthetics with modern web design",
-        "Creating clear information hierarchy for complex medical services",
-        "Ensuring accessibility compliance for healthcare websites",
-        "Optimizing performance while maintaining rich visual elements",
+        "Implementing secure user authentication and session management",
+        "Designing an intuitive book search and categorization system",
+        "Creating responsive layouts that work across all devices",
+        "Optimizing database queries for fast book searches",
       ],
       techDecisions: [
         {
-          decision: "Next.js with static generation",
+          decision: "Next.js for full-stack framework",
           reasoning:
-            "Ensures fast loading times and SEO optimization crucial for healthcare provider discovery",
+            "Provides server-side rendering, API routes, and excellent developer experience for React applications",
         },
         {
-          decision: "Component-based architecture",
+          decision: "MongoDB for database",
           reasoning:
-            "Enables consistent branding across all service pages and simplifies content management",
+            "Flexible document structure perfect for storing varied book metadata and user-generated content",
         },
         {
-          decision: "Framer Motion for subtle animations",
+          decision: "TypeScript for type safety",
           reasoning:
-            "Adds professional polish without compromising the serious nature of healthcare services",
+            "Reduces runtime errors and improves development experience with better IDE support",
         },
       ],
       learnings: [
-        "Healthcare websites require extra attention to accessibility standards",
-        "Trust indicators are crucial for medical service providers",
-        "Performance optimization directly impacts user confidence",
+        "Importance of user feedback in UI/UX design iterations",
+        "Database indexing strategies for search performance",
+        "Mobile-first design principles for better accessibility",
       ],
-      timeline: "3 weeks",
-      role: "Lead Frontend Developer & UX Designer",
+      timeline: "3 months",
+      role: "Full-stack Developer & Designer",
     },
   },
 ];

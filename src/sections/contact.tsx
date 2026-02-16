@@ -73,7 +73,17 @@ export default function Contact() {
           viewport={{ once: true }}
           className="text-center mb-8 sm:mb-10"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">Get In Touch</h2>
+          <m.h2
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4"
+            animate={shouldReduceMotion ? {} : { y: [0, -3, 0] }}
+            transition={shouldReduceMotion ? {} : {
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            Get In Touch
+          </m.h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
             Have a project in mind or want to discuss something? Feel free to
             reach out!
@@ -87,7 +97,15 @@ export default function Contact() {
           viewport={{ once: true }}
           className="max-w-2xl mx-auto"
         >
-          <Card className="shadow-lg">
+          <m.div
+            animate={shouldReduceMotion ? {} : { y: [0, -6, 0] }}
+            transition={shouldReduceMotion ? {} : {
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <Card className="shadow-lg">
             <CardContent className="p-4 sm:p-6">
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 touch-pan-y">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -151,44 +169,60 @@ export default function Contact() {
                   />
                 </div>
 
-                <Button
-                  type="submit"
-                  className="w-full h-11 sm:h-12 text-base touch-manipulation"
-                  disabled={isSubmitting}
+                <m.div
+                  animate={shouldReduceMotion ? {} : {
+                    boxShadow: [
+                      '0 0 0px hsl(var(--primary))',
+                      '0 0 15px hsl(var(--primary) / 0.4)',
+                      '0 0 0px hsl(var(--primary))'
+                    ]
+                  }}
+                  transition={shouldReduceMotion ? {} : {
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
                 >
-                  {isSubmitting ? (
-                    <>
-                      <svg
-                        className="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" /> Send Message
-                    </>
-                  )}
-                </Button>
+                  <Button
+                    type="submit"
+                    className="w-full h-11 sm:h-12 text-base touch-manipulation"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="mr-2 h-4 w-4" /> Send Message
+                      </>
+                    )}
+                  </Button>
+                </m.div>
               </form>
             </CardContent>
           </Card>
+          </m.div>
         </m.div>
       </div>
     </section>

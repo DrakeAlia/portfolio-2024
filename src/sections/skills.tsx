@@ -53,15 +53,20 @@ export default function Skills() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.2 }}
         >
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+          <div className="grid grid-cols-3 sm:flex sm:flex-wrap justify-center gap-4 sm:gap-6 max-w-md sm:max-w-none mx-auto">
             {featured.map((skill, index) => (
               <m.div
                 key={skill.name}
+                className="flex justify-center"
                 initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.8 }}
-                animate={inView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: shouldReduceMotion ? 0.01 : 0.4, delay: shouldReduceMotion ? 0 : 0.3 + index * 0.1 }}
+                animate={shouldReduceMotion ? (inView ? { opacity: 1, scale: 1 } : {}) : (inView ? { opacity: 1, scale: 1, y: [0, -6, 0] } : {})}
+                transition={shouldReduceMotion ? { duration: 0.01 } : {
+                  opacity: { duration: 0.4, delay: 0.3 + index * 0.08 },
+                  scale: { type: "spring", stiffness: 200, damping: 15, delay: 0.3 + index * 0.08 },
+                  y: { duration: 2.5 + index * 0.4, repeat: Infinity, ease: "easeInOut" }
+                }}
               >
-                <SkillBubble skill={skill} featured shouldReduceMotion={shouldReduceMotion ?? false} />
+                <SkillBubble skill={skill} featured shouldReduceMotion={shouldReduceMotion ?? false} index={index} />
               </m.div>
             ))}
           </div>
@@ -95,12 +100,52 @@ export default function Skills() {
 
             {categories.map((category) => (
               <TabsContent key={category} value={category} className="mt-0">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
+                <div className="relative overflow-hidden">
+                  {/* Horizontal shimmer scan effect */}
+                  <m.div
+                    className="absolute top-0 h-full pointer-events-none z-10"
+                    style={{
+                      width: '100px',
+                      background: 'linear-gradient(90deg, transparent 0%, hsl(var(--primary) / 0.1) 50%, transparent 100%)'
+                    }}
+                    animate={shouldReduceMotion ? {} : {
+                      x: ['-100px', 'calc(100% + 100px)']
+                    }}
+                    transition={shouldReduceMotion ? {} : {
+                      duration: 6,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  />
+                  <m.div
+                    className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4"
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: {
+                        opacity: 1,
+                        transition: {
+                          staggerChildren: shouldReduceMotion ? 0 : 0.05,
+                        },
+                      },
+                    }}
+                  >
                   {skills
                     .filter((skill) => skill.category === category)
-                    .map((skill) => (
-                      <SkillBubble key={skill.name} skill={skill} shouldReduceMotion={shouldReduceMotion ?? false} />
+                    .map((skill, index) => (
+                      <m.div
+                        key={skill.name}
+                        className="flex justify-center"
+                        variants={{
+                          hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+                          visible: { opacity: 1, y: 0 },
+                        }}
+                      >
+                        <SkillBubble skill={skill} shouldReduceMotion={shouldReduceMotion ?? false} index={index} />
+                      </m.div>
                     ))}
+                  </m.div>
                 </div>
               </TabsContent>
             ))}
@@ -112,33 +157,50 @@ export default function Skills() {
   );
 }
 
-function SkillBubble({ skill, featured = false, shouldReduceMotion = false }: { skill: Skill; featured?: boolean; shouldReduceMotion?: boolean }) {
+function SkillBubble({ skill, featured = false, shouldReduceMotion = false, index = 0 }: { skill: Skill; featured?: boolean; shouldReduceMotion?: boolean; index?: number }) {
   const [isHovered, setIsHovered] = useState(false);
   const isPlaceholder = skill.icon.src && skill.icon.src.includes("placeholder");
 
   const size = featured ? "lg" : "md";
   const dimensions = {
-    lg: "w-20 h-20 sm:w-24 sm:h-24",
-    md: "w-16 h-16 sm:w-20 sm:h-20",
+    lg: "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24",
+    md: "w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20",
   };
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <div
-          className="flex flex-col items-center group cursor-pointer"
+          className="flex flex-col items-center group cursor-pointer w-full max-w-[100px] sm:max-w-[120px]"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
           <m.div
-            className={`${dimensions[size]} flex items-center justify-center rounded-2xl bg-background border-2 ${
-              featured ? "border-primary/50" : "border-border"
-            } shadow-sm transition-all duration-300 hover:shadow-lg hover:border-primary ${
-              featured ? "hover:scale-110" : "hover:scale-105"
-            }`}
-            whileHover={shouldReduceMotion ? {} : { y: -4 }}
+            className={`${dimensions[size]} flex items-center justify-center rounded-xl sm:rounded-2xl bg-background shadow-sm transition-all duration-300 hover:shadow-lg`}
+            style={featured ? {
+              borderWidth: '2px',
+              borderStyle: 'solid',
+            } : {
+              borderWidth: '2px',
+              borderStyle: 'solid',
+              borderColor: 'hsl(var(--border))'
+            }}
+            animate={shouldReduceMotion ? {} : (featured ? {
+              borderColor: ['hsl(var(--primary) / 0.3)', 'hsl(var(--primary) / 0.7)', 'hsl(var(--primary) / 0.3)']
+            } : {})}
+            transition={shouldReduceMotion ? {} : (featured ? {
+              borderColor: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+            } : {})}
+            whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.05 }}
+            whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
           >
-            <div className={`relative ${featured ? "w-10 h-10 sm:w-12 sm:h-12" : "w-8 h-8 sm:w-10 sm:h-10"}`}>
+            <m.div
+              className={`relative mx-auto ${featured ? "w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" : "w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10"}`}
+              animate={shouldReduceMotion ? {} : (!featured ? { scale: [1, 1.04, 1] } : {})}
+              transition={shouldReduceMotion ? {} : (!featured ? {
+                scale: { duration: 3 + (index % 3) * 0.5, repeat: Infinity, ease: "easeInOut" }
+              } : {})}
+            >
               {isPlaceholder ? (
                 <Sparkles className="w-full h-full text-primary" />
               ) : (
@@ -151,11 +213,11 @@ function SkillBubble({ skill, featured = false, shouldReduceMotion = false }: { 
                   loading="lazy"
                 />
               )}
-            </div>
+            </m.div>
           </m.div>
           <span
             className={`mt-2 text-center font-medium transition-colors duration-300 ${
-              featured ? "text-base" : "text-sm"
+              featured ? "text-xs sm:text-sm md:text-base" : "text-[11px] sm:text-xs md:text-sm"
             } ${isHovered ? "text-primary" : "text-foreground"}`}
           >
             {skill.name}

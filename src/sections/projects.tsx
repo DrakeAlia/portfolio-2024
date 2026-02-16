@@ -25,11 +25,13 @@ const cardVariants = {
     opacity: 0,
     y: 30,
     scale: 0.95,
+    filter: "blur(4px)",
   },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
+    filter: "blur(0px)",
     transition: {
       duration: 0.5,
       ease: [0.25, 0.4, 0.25, 1],
@@ -38,9 +40,10 @@ const cardVariants = {
 };
 
 const cardVariantsReduced = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 0, filter: "blur(0px)" },
   visible: {
     opacity: 1,
+    filter: "blur(0px)",
     transition: { duration: 0.01 },
   },
 };
@@ -50,6 +53,8 @@ function LazyProjectCard({ project, index, shouldReduceMotion }: { project: any;
   return (
     <m.div
       variants={shouldReduceMotion ? cardVariantsReduced : cardVariants}
+      whileHover={shouldReduceMotion ? {} : { y: -8 }}
+      transition={{ duration: 0.3 }}
     >
       <ProjectCard {...project} />
     </m.div>
@@ -95,7 +100,8 @@ export default function Projects() {
       <div className="container mx-auto px-4">
         <m.div
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: shouldReduceMotion ? 0.01 : 0.5 }}
           className="flex flex-col items-center justify-center space-y-4 mb-8"
         >
@@ -171,7 +177,8 @@ export default function Projects() {
           ref={swipeRef}
           variants={shouldReduceMotion ? undefined : containerVariants}
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 touch-pan-y"
         >
           {currentProjects.map((project, index) => (

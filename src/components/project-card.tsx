@@ -4,7 +4,7 @@ import React, { useState, memo, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { m, AnimatePresence } from "framer-motion";
-import { Github, ExternalLink, Code, X, ArrowRight, Star, Sparkles } from "lucide-react";
+import { Github, ExternalLink, Code, X, ArrowRight, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +32,7 @@ interface ProjectCardProps {
   longDescription: string;
   slug?: string; // Optional for linking to dedicated project pages
   category?: string; // Optional for categorization
+  completedDate?: string; // Optional completion date display
 }
 
 // Move getTagColor outside component to prevent recreation on every render
@@ -64,6 +65,7 @@ const ProjectCard = memo(function ProjectCard({
   slug,
   category = "project",
   featured = false,
+  completedDate,
 }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -99,39 +101,7 @@ const ProjectCard = memo(function ProjectCard({
           onMouseLeave={handleMouseLeave}
           data-project-title={title}
         >
-          {/* Featured Ribbon */}
-          {featured && (
-            <div className="absolute top-0 right-0 z-20">
-              <m.div
-                initial={{ x: 50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.2 }}
-                className="relative"
-              >
-                <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-1.5 rounded-bl-lg shadow-lg flex items-center gap-1.5">
-                  <Star className="h-3.5 w-3.5 fill-white" />
-                  <span className="text-xs font-semibold tracking-wide">FEATURED</span>
-                </div>
-                {/* Sparkle effect */}
-                <m.div
-                  className="absolute -top-1 -right-1"
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.7, 1, 0.7],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <Sparkles className="h-3 w-3 text-amber-300" />
-                </m.div>
-              </m.div>
-            </div>
-          )}
-
-          {/* Image container with category badge */}
+          {/* Image container */}
           <div className="relative overflow-hidden aspect-video">
             {!imageLoaded && (
               <div className="absolute inset-0 bg-muted animate-pulse" />
@@ -154,18 +124,6 @@ const ProjectCard = memo(function ProjectCard({
               onLoad={handleImageLoad}
               loading="lazy"
             />
-
-            {/* Category badge */}
-            {category && (
-              <div className="absolute top-2 left-2 z-10">
-                <Badge
-                  variant="secondary"
-                  className="capitalize text-xs font-medium"
-                >
-                  {category.replace("-", " ")}
-                </Badge>
-              </div>
-            )}
 
             {/* Hover overlay with action buttons */}
             <m.div
@@ -212,15 +170,22 @@ const ProjectCard = memo(function ProjectCard({
             <div className="mb-4 flex-grow relative">
               <AnimatePresence mode="wait">
                 {!showExpandedDescription ? (
-                  <m.p
-                    key="short"
-                    initial={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="text-muted-foreground line-clamp-3"
-                  >
-                    {description}
-                  </m.p>
+                  <m.div key="short">
+                    <m.p
+                      initial={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="text-muted-foreground line-clamp-3"
+                    >
+                      {description}
+                    </m.p>
+                    {completedDate && (
+                      <p className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1.5 mt-2">
+                        <Calendar className="h-3.5 w-3.5 flex-shrink-0" />
+                        Completed {completedDate}
+                      </p>
+                    )}
+                  </m.div>
                 ) : (
                   <m.div
                     key="expanded"
@@ -231,6 +196,12 @@ const ProjectCard = memo(function ProjectCard({
                     className="text-muted-foreground text-sm"
                   >
                     <p className="mb-3 font-medium text-foreground">{description}</p>
+                    {completedDate && (
+                      <p className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1.5 mb-3">
+                        <Calendar className="h-3.5 w-3.5 flex-shrink-0" />
+                        Completed {completedDate}
+                      </p>
+                    )}
                     <div className="space-y-1.5">
                       <p className="text-xs font-semibold text-foreground/80">Quick Preview:</p>
                       {features.slice(0, 3).map((feature, index) => (

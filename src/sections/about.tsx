@@ -15,9 +15,11 @@ import {
   Building2,
   ArrowRight
 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 
 export default function About() {
   const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -31,14 +33,15 @@ export default function About() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20, filter: shouldReduceMotion ? "blur(0px)" : "blur(4px)" },
     visible: {
       opacity: 1,
       y: 0,
+      filter: "blur(0px)",
       transition: {
         type: "spring",
-        stiffness: 400,
-        damping: 30,
+        stiffness: 300,
+        damping: 24,
       },
     },
   };
@@ -105,7 +108,8 @@ export default function About() {
       className="py-12 sm:py-16 lg:py-20 xl:py-24"
       variants={containerVariants}
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-50px" }}
     >
       <div className="container mx-auto px-4 sm:px-6 md:px-8 max-w-6xl rounded-xl py-8 sm:py-12 bg-muted/30">
       <div className="flex justify-center mb-8 sm:mb-12">
@@ -142,20 +146,31 @@ export default function About() {
           <m.div
             key={stat.label}
             variants={itemVariants}
-            whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.02 }}
-            transition={{ duration: 0.2 }}
+            whileHover={shouldReduceMotion || isMobile ? {} : { y: -4, scale: 1.02 }}
+            animate={shouldReduceMotion || isMobile ? {} : { y: [0, -4, 0] }}
+            transition={shouldReduceMotion || isMobile ? { duration: 0.2 } : {
+              y: { duration: 3 + index * 0.5, repeat: Infinity, ease: "easeInOut" },
+              scale: { duration: 0.2 }
+            }}
           >
             <Card className="relative overflow-hidden group cursor-default">
-              <CardContent className="p-4 sm:p-6">
+              <CardContent className="p-3 sm:p-4 md:p-6">
                 <div className="flex flex-col items-center text-center space-y-2">
-                  <div className={`${stat.color} p-3 rounded-lg bg-muted/50 group-hover:scale-110 transition-transform duration-300`}>
+                  <m.div
+                    className={`${stat.color} p-2.5 sm:p-3 rounded-lg bg-muted/50 transition-transform duration-300`}
+                    whileHover={shouldReduceMotion ? {} : { rotate: [0, -10, 10, 0] }}
+                    animate={shouldReduceMotion || isMobile ? {} : { rotate: [0, 5, 0, -5, 0] }}
+                    transition={shouldReduceMotion || isMobile ? { duration: 0.4 } : {
+                      rotate: { duration: 4 + index * 0.3, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                  >
                     <stat.icon className="h-5 w-5 sm:h-6 sm:w-6" />
-                  </div>
+                  </m.div>
                   <div className="space-y-1">
-                    <p className="text-xs sm:text-sm text-muted-foreground font-medium">
+                    <p className="text-[11px] sm:text-xs md:text-sm text-muted-foreground font-medium leading-tight">
                       {stat.label}
                     </p>
-                    <p className="text-sm sm:text-base font-bold text-foreground">
+                    <p className="text-xs sm:text-sm md:text-base font-bold text-foreground leading-tight">
                       {stat.value}
                     </p>
                   </div>
@@ -169,13 +184,28 @@ export default function About() {
       {/* Main Content */}
       <div className="relative">
         <m.div variants={itemVariants}>
-          <Card className="relative z-10 transition-shadow duration-300 hover:shadow-lg">
-            <CardContent className="p-6 sm:p-8 space-y-6">
+          <Card className="relative z-10 transition-shadow duration-300 hover:shadow-lg overflow-hidden">
+            {/* Pulsing border glow overlay */}
+            <m.div
+              className="absolute inset-0 pointer-events-none rounded-lg"
+              style={{
+                boxShadow: '0 0 20px hsl(var(--primary) / 0.15)'
+              }}
+              animate={shouldReduceMotion ? {} : {
+                opacity: [0, 0.3, 0]
+              }}
+              transition={shouldReduceMotion ? {} : {
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            <CardContent className="p-5 sm:p-6 md:p-8 space-y-6">
               <div className="space-y-4">
                 <h3 className="text-xl sm:text-2xl font-semibold text-foreground">
                   Hello! I&apos;m Drake 👋
                 </h3>
-                <p className="leading-relaxed text-base sm:text-lg text-muted-foreground">
+                <p className="leading-relaxed text-sm sm:text-base md:text-lg text-muted-foreground">
                   A passionate <span className="text-foreground font-semibold">Web Developer</span> from the Greater Seattle Area,
                   specializing in modern web development with <span className="text-primary font-medium">React</span>, <span className="text-primary font-medium">Next.js</span>, and <span className="text-primary font-medium">TypeScript</span>.
                   I create exceptional user experiences using cutting-edge tools like Vite, shadcn/ui, and Framer Motion.
@@ -183,7 +213,7 @@ export default function About() {
               </div>
 
               <div className="space-y-4">
-                <p className="leading-relaxed text-base sm:text-lg text-muted-foreground">
+                <p className="leading-relaxed text-sm sm:text-base md:text-lg text-muted-foreground">
                   I embrace the future of development by integrating AI tools like <span className="text-foreground font-medium">Claude</span> and <span className="text-foreground font-medium">Cursor AI</span> into my workflow.
                   From dynamic applications with seamless interactions to pixel-perfect responsive designs,
                   I deliver innovative solutions that exceed expectations.
@@ -210,15 +240,19 @@ export default function About() {
               className="relative"
             >
               <Card className="h-full">
-                <CardContent className="p-4 flex flex-col items-center text-center space-y-3">
-                  <div className={`p-3 rounded-full ${step.color}`}>
-                    <step.icon className="h-5 w-5" />
-                  </div>
+                <CardContent className="p-3 sm:p-4 flex flex-col items-center text-center space-y-3">
+                  <m.div
+                    className={`p-2.5 sm:p-3 rounded-full ${step.color}`}
+                    whileHover={shouldReduceMotion ? {} : { rotate: 360 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <step.icon className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </m.div>
                   <div className="space-y-1">
-                    <p className="text-sm font-semibold text-foreground">
+                    <p className="text-xs sm:text-sm font-semibold text-foreground">
                       {step.title}
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-[11px] sm:text-xs text-muted-foreground">
                       {step.description}
                     </p>
                   </div>
@@ -242,6 +276,10 @@ export default function About() {
         <m.div
           whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
           whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
+          animate={shouldReduceMotion ? {} : { scale: [1, 1.01, 1] }}
+          transition={shouldReduceMotion ? {} : {
+            scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+          }}
         >
           <Button
             size="lg"
@@ -255,7 +293,7 @@ export default function About() {
                 backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
               }}
               transition={shouldReduceMotion ? {} : {
-                duration: 3,
+                duration: 2,
                 repeat: Infinity,
                 ease: "linear"
               }}

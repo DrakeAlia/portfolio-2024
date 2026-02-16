@@ -8,9 +8,11 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Eye, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import AnimatedGradient from "@/components/animated-gradient";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 
 export default function Hero() {
   const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
   const { scrollY } = useScroll();
 
   // Parallax transforms for different elements
@@ -32,8 +34,8 @@ export default function Hero() {
           >
             {/* Greeting Badge */}
             <m.div
-              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10, filter: shouldReduceMotion ? "blur(0px)" : "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.1 }}
             >
               <Badge variant="secondary" className="text-sm font-normal px-4 py-1.5">
@@ -43,36 +45,53 @@ export default function Hero() {
             </m.div>
 
             {/* Name - Hero Text */}
-            <m.h1
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight"
-              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.2 }}
-            >
-              Drake Alia
-            </m.h1>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight">
+              {"Drake Alia".split("").map((char, index) => (
+                <m.span
+                  key={index}
+                  initial={{ opacity: 0, rotateX: shouldReduceMotion ? 0 : 90 }}
+                  animate={{ opacity: 1, rotateX: 0 }}
+                  transition={{
+                    duration: shouldReduceMotion ? 0.01 : 0.4,
+                    delay: shouldReduceMotion ? 0 : 0.2 + index * 0.04,
+                  }}
+                  style={{ display: "inline-block" }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </m.span>
+              ))}
+            </h1>
 
             {/* Role/Title */}
             <m.div
               className="space-y-3"
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.3 }}
+              animate={shouldReduceMotion || isMobile ? { opacity: 1, y: 0 } : { opacity: [0.9, 1, 0.9], y: 0 }}
+              transition={shouldReduceMotion || isMobile ? { duration: 0.01, delay: 0 } : {
+                opacity: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.7 },
+                y: { duration: 0.6, delay: 0.7 }
+              }}
             >
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold relative">
                 <span className="bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_auto] animate-gradient bg-clip-text text-transparent">
                   Web Developer
                 </span>
               </h2>
-              <div className="h-1 w-20 bg-primary rounded-full" />
+              <m.div
+                className="h-1 w-20 bg-primary rounded-full"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.9 }}
+                style={{ originX: 0 }}
+              />
             </m.div>
 
             {/* Description */}
             <m.p
               className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl"
-              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.4 }}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20, filter: shouldReduceMotion ? "blur(0px)" : "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 1.0 }}
             >
               Specializing in modern web technologies like{" "}
               <span className="text-foreground font-medium">React</span>,{" "}
@@ -86,28 +105,41 @@ export default function Hero() {
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4"
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.5 }}
+              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 1.1 }}
             >
-              <Button size="lg" className="group text-base w-full sm:w-auto touch-manipulation" asChild>
-                <a href="#projects">
-                  View My Work
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </a>
-              </Button>
-              <Button size="lg" variant="outline" className="group text-base w-full sm:w-auto touch-manipulation" asChild>
-                <a href="/pdf-file/resume-drake.pdf" target="_blank">
-                  <Eye className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
-                  View Resume
-                </a>
-              </Button>
+              <m.div
+                whileHover={shouldReduceMotion ? {} : { scale: 1.03 }}
+                whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
+              >
+                <Button size="lg" className="group text-base w-full sm:w-auto touch-manipulation" asChild>
+                  <a href="#projects">
+                    View My Work
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  </a>
+                </Button>
+              </m.div>
+              <m.div
+                whileHover={shouldReduceMotion ? {} : { scale: 1.03 }}
+                whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
+              >
+                <Button size="lg" variant="outline" className="group text-base w-full sm:w-auto touch-manipulation" asChild>
+                  <a href="/pdf-file/resume-drake.pdf" target="_blank">
+                    <Eye className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
+                    View Resume
+                  </a>
+                </Button>
+              </m.div>
             </m.div>
 
             {/* Social Links */}
             <m.div
               className="pt-4"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.6 }}
+              animate={shouldReduceMotion || isMobile ? { opacity: 1 } : { opacity: 1, scale: [1, 1.03, 1] }}
+              transition={shouldReduceMotion || isMobile ? { duration: 0.01, delay: 0 } : {
+                opacity: { duration: 0.6, delay: 1.2 },
+                scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+              }}
             >
               <ContactList delayOffset={0} showWhenInView={false} />
             </m.div>
@@ -128,8 +160,41 @@ export default function Hero() {
                 style={shouldReduceMotion ? {} : { y: decorativeY }}
               />
 
+              {/* Rotating glow effect */}
+              <m.div
+                className="absolute -inset-5 rounded-full blur-2xl hidden lg:block"
+                style={{
+                  background: 'radial-gradient(circle, hsl(var(--primary) / 0.35) 0%, transparent 70%)'
+                }}
+                animate={shouldReduceMotion ? {} : {
+                  rotate: [0, 360],
+                  scale: [1, 1.15, 1]
+                }}
+                transition={shouldReduceMotion ? {} : {
+                  rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+                  scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                }}
+              />
+
               {/* Image container */}
-              <div className="relative aspect-square rounded-2xl overflow-hidden border-2 border-border/50 shadow-2xl">
+              <m.div
+                className="relative aspect-square rounded-2xl overflow-hidden border-2 border-border/50 shadow-2xl"
+                whileHover={shouldReduceMotion ? {} : { scale: 1.02, rotate: 1 }}
+                animate={shouldReduceMotion ? {} : isMobile ? {
+                  y: [0, -8, 0]
+                } : {
+                  y: [0, -12, 0],
+                  rotate: [0, 2, 0, -2, 0],
+                  scale: [1, 1.03, 1]
+                }}
+                transition={shouldReduceMotion ? { duration: 0.3 } : isMobile ? {
+                  y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+                } : {
+                  y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+                  rotate: { duration: 8, repeat: Infinity, ease: "easeInOut" },
+                  scale: { duration: 7, repeat: Infinity, ease: "easeInOut" }
+                }}
+              >
                 <Image
                   src="/images/hero.png"
                   alt="Drake Alia - Web Developer"
@@ -138,21 +203,32 @@ export default function Hero() {
                   className="object-cover w-full h-full"
                   priority
                 />
-              </div>
+              </m.div>
 
               {/* Floating badge */}
               <m.div
                 className="absolute -bottom-3 -right-3 sm:-bottom-4 sm:-right-4"
                 initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.8 }}
+                transition={shouldReduceMotion ? { duration: 0.01 } : { type: "spring", stiffness: 200, damping: 15, delay: 0.8 }}
               >
                 <m.div
                   className="bg-background border-2 border-border rounded-xl sm:rounded-2xl px-3 py-2 sm:px-6 sm:py-4 shadow-lg max-w-[120px] xs:max-w-[140px] sm:max-w-none"
-                  animate={shouldReduceMotion ? {} : { x: [0, 8, 0, -8, 0], y: [0, -4, 0] }}
-                  transition={shouldReduceMotion ? {} : {
-                    x: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                    y: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                  animate={shouldReduceMotion ? {} : isMobile ? {
+                    y: [0, -5, 0]
+                  } : {
+                    x: [0, 12, 0, -12, 0],
+                    y: [0, -8, 4, -8, 0],
+                    rotate: [0, 3, 0, -3, 0],
+                    scale: [1, 1.04, 1]
+                  }}
+                  transition={shouldReduceMotion ? {} : isMobile ? {
+                    y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                  } : {
+                    x: { duration: 5, repeat: Infinity, ease: "easeInOut" },
+                    y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                    rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+                    scale: { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
                   }}
                 >
                   <p className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Based in</p>
