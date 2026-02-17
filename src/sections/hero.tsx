@@ -207,11 +207,11 @@ export default function Hero() {
               {/* Outer wrapper for desktop-only rotate/scale */}
               <m.div
                 className="relative"
-                animate={shouldReduceMotion || isMobile ? {} : {
+                animate={shouldReduceMotion || isMobile || !mounted ? {} : {
                   rotate: [0, 1.5, 0, -1.5, 0],
                   scale: [1, 1.02, 1],
                 }}
-                transition={shouldReduceMotion || isMobile ? {} : {
+                transition={shouldReduceMotion || isMobile || !mounted ? {} : {
                   rotate: { duration: 8, repeat: Infinity, ease: "easeInOut" },
                   scale: { duration: 7, repeat: Infinity, ease: "easeInOut" },
                 }}
@@ -219,18 +219,18 @@ export default function Hero() {
                 {/* Inner container with the float that works everywhere */}
                 <m.div
                   className="relative aspect-square rounded-2xl overflow-hidden border-2 border-border/50 shadow-2xl"
-                  animate={{
+                  animate={mounted ? {
                     y: [0, -10, 0],
                     boxShadow: [
                       "0 20px 40px hsl(var(--foreground) / 0.05)",
                       "0 30px 60px hsl(var(--foreground) / 0.12)",
                       "0 20px 40px hsl(var(--foreground) / 0.05)"
                     ]
-                  }}
-                  transition={{
+                  } : {}}
+                  transition={mounted ? {
                     y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
                     boxShadow: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-                  }}
+                  } : {}}
                   whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
                 >
                   <Image
@@ -253,11 +253,11 @@ export default function Hero() {
               >
                 {/* Outer wrapper for desktop-only rotate/scale */}
                 <m.div
-                  animate={shouldReduceMotion || isMobile ? {} : {
+                  animate={shouldReduceMotion || isMobile || !mounted ? {} : {
                     rotate: [0, 3, 0, -3, 0],
                     scale: [1, 1.04, 1],
                   }}
-                  transition={shouldReduceMotion || isMobile ? {} : {
+                  transition={shouldReduceMotion || isMobile || !mounted ? {} : {
                     rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" },
                     scale: { duration: 3.5, repeat: Infinity, ease: "easeInOut" },
                   }}
@@ -265,11 +265,11 @@ export default function Hero() {
                   {/* Inner badge with always-on y/x float */}
                   <m.div
                     className="bg-background border-2 border-border rounded-xl sm:rounded-2xl px-3 py-2 sm:px-6 sm:py-4 shadow-lg max-w-[120px] xs:max-w-[140px] sm:max-w-none"
-                    animate={{ y: [0, -6, 0], x: [0, 4, 0, -4, 0] }}
-                    transition={{
+                    animate={mounted ? { y: [0, -6, 0], x: [0, 4, 0, -4, 0] } : {}}
+                    transition={mounted ? {
                       y: { duration: 3.5, repeat: Infinity, ease: "easeInOut" },
                       x: { duration: 5, repeat: Infinity, ease: "easeInOut" },
-                    }}
+                    } : {}}
                   >
                     <p className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Based in</p>
                     <p className="text-base sm:text-lg font-semibold whitespace-nowrap">Seattle Area</p>
