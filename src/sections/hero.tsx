@@ -12,7 +12,7 @@ import { useIsMobile } from "@/hooks/use-is-mobile";
 
 export default function Hero() {
   const shouldReduceMotion = useReducedMotion();
-  const isMobile = useIsMobile();
+  const { isMobile, mounted } = useIsMobile();
   const { scrollY } = useScroll();
 
   // Parallax transforms for different elements
@@ -35,8 +35,17 @@ export default function Hero() {
             {/* Greeting Badge */}
             <m.div
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10, filter: shouldReduceMotion ? "blur(0px)" : "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.1 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                filter: "blur(0px)",
+                x: shouldReduceMotion ? 0 : [0, 3, 0, -3, 0],
+              }}
+              transition={{
+                duration: shouldReduceMotion ? 0.01 : 0.6,
+                delay: shouldReduceMotion ? 0 : 0.1,
+                x: shouldReduceMotion ? {} : { duration: 4, repeat: Infinity, ease: "easeInOut" }
+              }}
             >
               <Badge variant="secondary" className="text-sm font-normal px-4 py-1.5">
                 <span className="inline-block mr-2 animate-pulse">👋</span>
@@ -50,10 +59,20 @@ export default function Hero() {
                 <m.span
                   key={index}
                   initial={{ opacity: 0, rotateX: shouldReduceMotion ? 0 : 90 }}
-                  animate={{ opacity: 1, rotateX: 0 }}
+                  animate={{
+                    opacity: 1,
+                    rotateX: 0,
+                    y: shouldReduceMotion ? 0 : [0, -2, 0]
+                  }}
                   transition={{
                     duration: shouldReduceMotion ? 0.01 : 0.4,
                     delay: shouldReduceMotion ? 0 : 0.2 + index * 0.04,
+                    y: shouldReduceMotion ? {} : {
+                      duration: 2 + index * 0.15,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 1.5 + index * 0.08
+                    }
                   }}
                   style={{ display: "inline-block" }}
                 >
@@ -110,6 +129,14 @@ export default function Hero() {
               <m.div
                 whileHover={shouldReduceMotion ? {} : { scale: 1.03 }}
                 whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
+                animate={shouldReduceMotion ? {} : {
+                  boxShadow: [
+                    "0 0 0px hsl(var(--primary) / 0)",
+                    "0 0 20px hsl(var(--primary) / 0.3)",
+                    "0 0 0px hsl(var(--primary) / 0)"
+                  ]
+                }}
+                transition={{ boxShadow: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 2 } }}
               >
                 <Button size="lg" className="group text-base w-full sm:w-auto touch-manipulation" asChild>
                   <a href="#projects">
@@ -151,7 +178,7 @@ export default function Hero() {
             initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.3 }}
-            style={shouldReduceMotion ? {} : { y: imageY }}
+            style={{}}
           >
             <div className="relative w-full max-w-md lg:max-w-lg">
               {/* Decorative background element */}
@@ -177,32 +204,44 @@ export default function Hero() {
               />
 
               {/* Image container */}
+              {/* Outer wrapper for desktop-only rotate/scale */}
               <m.div
-                className="relative aspect-square rounded-2xl overflow-hidden border-2 border-border/50 shadow-2xl"
-                whileHover={shouldReduceMotion ? {} : { scale: 1.02, rotate: 1 }}
-                animate={shouldReduceMotion ? {} : isMobile ? {
-                  y: [0, -8, 0]
-                } : {
-                  y: [0, -12, 0],
-                  rotate: [0, 2, 0, -2, 0],
-                  scale: [1, 1.03, 1]
+                className="relative"
+                animate={shouldReduceMotion || isMobile ? {} : {
+                  rotate: [0, 1.5, 0, -1.5, 0],
+                  scale: [1, 1.02, 1],
                 }}
-                transition={shouldReduceMotion ? { duration: 0.3 } : isMobile ? {
-                  y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-                } : {
-                  y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+                transition={shouldReduceMotion || isMobile ? {} : {
                   rotate: { duration: 8, repeat: Infinity, ease: "easeInOut" },
-                  scale: { duration: 7, repeat: Infinity, ease: "easeInOut" }
+                  scale: { duration: 7, repeat: Infinity, ease: "easeInOut" },
                 }}
               >
-                <Image
-                  src="/images/hero.png"
-                  alt="Drake Alia - Web Developer"
-                  width={500}
-                  height={500}
-                  className="object-cover w-full h-full"
-                  priority
-                />
+                {/* Inner container with the float that works everywhere */}
+                <m.div
+                  className="relative aspect-square rounded-2xl overflow-hidden border-2 border-border/50 shadow-2xl"
+                  animate={{
+                    y: [0, -10, 0],
+                    boxShadow: [
+                      "0 20px 40px rgba(0,0,0,0.1)",
+                      "0 30px 60px rgba(0,0,0,0.2)",
+                      "0 20px 40px rgba(0,0,0,0.1)"
+                    ]
+                  }}
+                  transition={{
+                    y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+                    boxShadow: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+                  }}
+                  whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
+                >
+                  <Image
+                    src="/images/hero.png"
+                    alt="Drake Alia - Web Developer"
+                    width={500}
+                    height={500}
+                    className="object-cover w-full h-full"
+                    priority
+                  />
+                </m.div>
               </m.div>
 
               {/* Floating badge */}
@@ -212,27 +251,29 @@ export default function Hero() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={shouldReduceMotion ? { duration: 0.01 } : { type: "spring", stiffness: 200, damping: 15, delay: 0.8 }}
               >
+                {/* Outer wrapper for desktop-only rotate/scale */}
                 <m.div
-                  className="bg-background border-2 border-border rounded-xl sm:rounded-2xl px-3 py-2 sm:px-6 sm:py-4 shadow-lg max-w-[120px] xs:max-w-[140px] sm:max-w-none"
-                  animate={shouldReduceMotion ? {} : isMobile ? {
-                    y: [0, -5, 0]
-                  } : {
-                    x: [0, 12, 0, -12, 0],
-                    y: [0, -8, 4, -8, 0],
+                  animate={shouldReduceMotion || isMobile ? {} : {
                     rotate: [0, 3, 0, -3, 0],
-                    scale: [1, 1.04, 1]
+                    scale: [1, 1.04, 1],
                   }}
-                  transition={shouldReduceMotion ? {} : isMobile ? {
-                    y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                  } : {
-                    x: { duration: 5, repeat: Infinity, ease: "easeInOut" },
-                    y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                  transition={shouldReduceMotion || isMobile ? {} : {
                     rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-                    scale: { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
+                    scale: { duration: 3.5, repeat: Infinity, ease: "easeInOut" },
                   }}
                 >
-                  <p className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Based in</p>
-                  <p className="text-base sm:text-lg font-semibold whitespace-nowrap">Seattle Area</p>
+                  {/* Inner badge with always-on y/x float */}
+                  <m.div
+                    className="bg-background border-2 border-border rounded-xl sm:rounded-2xl px-3 py-2 sm:px-6 sm:py-4 shadow-lg max-w-[120px] xs:max-w-[140px] sm:max-w-none"
+                    animate={{ y: [0, -6, 0], x: [0, 4, 0, -4, 0] }}
+                    transition={{
+                      y: { duration: 3.5, repeat: Infinity, ease: "easeInOut" },
+                      x: { duration: 5, repeat: Infinity, ease: "easeInOut" },
+                    }}
+                  >
+                    <p className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Based in</p>
+                    <p className="text-base sm:text-lg font-semibold whitespace-nowrap">Seattle Area</p>
+                  </m.div>
                 </m.div>
               </m.div>
             </div>
@@ -249,7 +290,7 @@ export default function Hero() {
       >
         <p className="text-xs text-muted-foreground tracking-wider uppercase">Scroll</p>
         <m.div
-          animate={shouldReduceMotion ? {} : { y: [0, 8, 0] }}
+          animate={shouldReduceMotion ? {} : { y: [0, 8, 0], opacity: [0.5, 1, 0.5] }}
           transition={shouldReduceMotion ? {} : { duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         >
           <ChevronDown className="w-5 h-5 text-muted-foreground" />
