@@ -22,7 +22,7 @@ export default function Skills() {
   const featured = skills.filter((skill) => featuredSkills.includes(skill.name));
 
   return (
-    <section id="skills" className="py-12 sm:py-16 lg:py-20 xl:py-24">
+    <section id="skills" className="py-12 sm:py-16 lg:py-20 xl:py-24 overflow-visible">
       <TooltipProvider delayDuration={200}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -48,12 +48,12 @@ export default function Skills() {
         {/* Featured Skills */}
         <m.div
           ref={ref}
-          className="mb-12"
+          className="mb-12 pt-2"
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.2 }}
         >
-          <div className="grid grid-cols-3 sm:flex sm:flex-wrap justify-center gap-4 sm:gap-6 max-w-md sm:max-w-none mx-auto">
+          <div className="grid grid-cols-3 sm:flex sm:flex-wrap justify-center gap-4 sm:gap-6 max-w-md sm:max-w-none mx-auto pt-4">
             {featured.map((skill, index) => (
               <m.div
                 key={skill.name}
@@ -78,7 +78,7 @@ export default function Skills() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.4 }}
         >
-          <Tabs defaultValue={categories[0]} className="w-full">
+          <Tabs defaultValue={categories[0]} className="w-full overflow-visible">
             {/* Horizontal scrollable tabs on mobile */}
             <div className="relative mb-8 -mx-4 px-4 sm:mx-0 sm:px-0">
               <div className="overflow-x-auto pb-2 scrollbar-hide touch-pan-x">
@@ -99,26 +99,10 @@ export default function Skills() {
             </div>
 
             {categories.map((category) => (
-              <TabsContent key={category} value={category} className="mt-0">
-                <div className="relative overflow-hidden">
-                  {/* Horizontal shimmer scan effect */}
+              <TabsContent key={category} value={category} className="mt-0 overflow-visible">
+                <div>
                   <m.div
-                    className="absolute top-0 h-full pointer-events-none z-10"
-                    style={{
-                      width: '100px',
-                      background: 'linear-gradient(90deg, transparent 0%, hsl(var(--primary) / 0.1) 50%, transparent 100%)'
-                    }}
-                    animate={shouldReduceMotion ? {} : {
-                      x: ['-100px', 'calc(100% + 100px)']
-                    }}
-                    transition={shouldReduceMotion ? {} : {
-                      duration: 6,
-                      repeat: Infinity,
-                      ease: "linear"
-                    }}
-                  />
-                  <m.div
-                    className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4"
+                    className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4 py-4"
                     initial="hidden"
                     animate="visible"
                     variants={{
@@ -224,7 +208,7 @@ function SkillBubble({ skill, featured = false, shouldReduceMotion = false, inde
           </span>
         </div>
       </TooltipTrigger>
-      <TooltipContent side="top" className="max-w-[200px] text-center">
+      <TooltipContent side="top" className="max-w-[200px] text-center z-50">
         <p className="text-xs">{skill.description}</p>
       </TooltipContent>
     </Tooltip>
