@@ -20,7 +20,7 @@ export default function Hero() {
   const contentY = useTransform(scrollY, [0, 800], [0, -40]);
   const decorativeY = useTransform(scrollY, [0, 800], [0, -120]);
   return (
-    <section className="relative min-h-[90vh] flex items-center py-12 sm:py-16 lg:py-20 xl:py-24">
+    <section className="relative min-h-[90vh] flex items-center py-12 sm:py-16 lg:py-20 xl:py-24 overflow-hidden">
       <AnimatedGradient />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -180,7 +180,7 @@ export default function Hero() {
             transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.3 }}
             style={{}}
           >
-            <div className="relative w-full max-w-md lg:max-w-lg">
+            <div className="relative w-full max-w-md lg:max-w-lg pr-6 sm:pr-8 pb-6 sm:pb-8">
               {/* Decorative background element */}
               <m.div
                 className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-transparent rounded-3xl blur-3xl"
@@ -222,9 +222,9 @@ export default function Hero() {
                   animate={{
                     y: [0, -10, 0],
                     boxShadow: [
-                      "0 20px 40px rgba(0,0,0,0.1)",
-                      "0 30px 60px rgba(0,0,0,0.2)",
-                      "0 20px 40px rgba(0,0,0,0.1)"
+                      "0 20px 40px hsl(var(--foreground) / 0.05)",
+                      "0 30px 60px hsl(var(--foreground) / 0.12)",
+                      "0 20px 40px hsl(var(--foreground) / 0.05)"
                     ]
                   }}
                   transition={{

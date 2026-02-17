@@ -19,7 +19,7 @@ import { useIsMobile } from "@/hooks/use-is-mobile";
 
 export default function About() {
   const shouldReduceMotion = useReducedMotion();
-  const isMobile = useIsMobile();
+  const { isMobile } = useIsMobile();
 
   const containerVariants = {
     hidden: { opacity: 0 },

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -19,6 +19,7 @@ interface ProjectPageProps {
 }
 
 export default function ProjectPage({ params }: ProjectPageProps) {
+  const router = useRouter();
   const project = projects.find((p) => p.slug === params.slug);
 
   if (!project) {
@@ -37,11 +38,25 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           transition={{ duration: 0.5 }}
           className="mb-6 sm:mb-8"
         >
-          <Button variant="ghost" asChild className="group touch-manipulation">
-            <Link href="/#projects">
-              <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
-              Back to Projects
-            </Link>
+          <Button
+            variant="ghost"
+            className="group touch-manipulation"
+            onClick={() => {
+              router.push("/");
+              setTimeout(() => {
+                const el = document.getElementById("projects");
+                if (el) {
+                  el.scrollIntoView({ behavior: "smooth" });
+                }
+                // Clean up the URL hash if present
+                if (window.location.hash) {
+                  window.history.replaceState(null, "", window.location.pathname);
+                }
+              }, 300);
+            }}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+            Back to Projects
           </Button>
         </motion.div>
 

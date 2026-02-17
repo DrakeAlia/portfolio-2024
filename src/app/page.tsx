@@ -31,6 +31,8 @@ export default function Home() {
         if (element) {
           element.scrollIntoView({ behavior: "smooth" });
         }
+        // Clean the hash from the URL after scrolling
+        window.history.replaceState(null, "", window.location.pathname);
       }, 100); // Small delay to ensure page is fully loaded
     }
   }, []);

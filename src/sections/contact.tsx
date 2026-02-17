@@ -73,17 +73,9 @@ export default function Contact() {
           viewport={{ once: true }}
           className="text-center mb-8 sm:mb-10"
         >
-          <m.h2
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4"
-            animate={shouldReduceMotion ? {} : { y: [0, -3, 0] }}
-            transition={shouldReduceMotion ? {} : {
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
             Get In Touch
-          </m.h2>
+          </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
             Have a project in mind or want to discuss something? Feel free to
             reach out!
@@ -97,15 +89,7 @@ export default function Contact() {
           viewport={{ once: true }}
           className="max-w-2xl mx-auto"
         >
-          <m.div
-            animate={shouldReduceMotion ? {} : { y: [0, -6, 0] }}
-            transition={shouldReduceMotion ? {} : {
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            <Card className="shadow-lg">
+          <Card className="shadow-lg">
             <CardContent className="p-4 sm:p-6">
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 touch-pan-y">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -222,7 +206,6 @@ export default function Contact() {
               </form>
             </CardContent>
           </Card>
-          </m.div>
         </m.div>
       </div>
     </section>
