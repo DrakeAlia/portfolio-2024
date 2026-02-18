@@ -9,7 +9,7 @@ import { ModeToggle } from "../mode-toggle";
 import { motion } from "framer-motion";
 import { Icons } from "@/components/ui/icons";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, Linkedin } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -106,6 +106,20 @@ export default function Header() {
                 <span className="sr-only">GitHub</span>
               </div>
             </Link>
+            <Link href="https://www.linkedin.com/in/drake-alia/" target="_blank" rel="noreferrer">
+              <div
+                className={cn(
+                  buttonVariants({
+                    variant: "ghost",
+                    size: "icon",
+                  }),
+                  "p-0 group"
+                )}
+              >
+                <Linkedin className="h-4 w-4 transition-colors duration-200 group-hover:text-primary" />
+                <span className="sr-only">LinkedIn</span>
+              </div>
+            </Link>
             <Link
               href={siteConfig.links.twitter}
               target="_blank"
@@ -177,6 +191,16 @@ export default function Header() {
                       >
                         <Icons.gitHub className="h-5 w-5 mr-3" />
                         <span>GitHub</span>
+                      </Button>
+                    </Link>
+                    <Link href="https://www.linkedin.com/in/drake-alia/" target="_blank" rel="noreferrer">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start hover:text-primary hover:bg-accent/50 transition-all duration-200"
+                        onClick={() => setIsSheetOpen(false)}
+                      >
+                        <Linkedin className="h-5 w-5 mr-3" />
+                        <span>LinkedIn</span>
                       </Button>
                     </Link>
                     <Link href={siteConfig.links.twitter} target="_blank" rel="noreferrer">

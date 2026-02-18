@@ -81,7 +81,7 @@ export default function Skills() {
           <Tabs defaultValue={categories[0]} className="w-full overflow-visible">
             {/* Horizontal scrollable tabs on mobile */}
             <div className="relative mb-8 -mx-4 px-4 sm:mx-0 sm:px-0">
-              <div className="overflow-x-auto pb-2 scrollbar-hide touch-pan-x">
+              <div className="overflow-x-auto pb-2 pt-1 pr-8 scrollbar-hide touch-pan-x">
                 <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-3 lg:grid-cols-5 gap-3 bg-transparent">
                   {categories.map((category) => (
                     <TabsTrigger
@@ -95,7 +95,7 @@ export default function Skills() {
                 </TabsList>
               </div>
               {/* Scroll indicator for mobile */}
-              <div className="absolute right-0 top-0 bottom-2 w-8 sm:w-12 bg-gradient-to-l from-background to-transparent pointer-events-none sm:hidden" />
+              <div className="absolute right-0 top-0 bottom-2 w-16 bg-gradient-to-l from-background via-background/80 to-transparent pointer-events-none sm:hidden" />
             </div>
 
             {categories.map((category) => (
@@ -142,7 +142,6 @@ export default function Skills() {
 }
 
 function SkillBubble({ skill, featured = false, shouldReduceMotion = false, index = 0 }: { skill: Skill; featured?: boolean; shouldReduceMotion?: boolean; index?: number }) {
-  const [isHovered, setIsHovered] = useState(false);
   const isPlaceholder = skill.icon.src && skill.icon.src.includes("placeholder");
 
   const size = featured ? "lg" : "md";
@@ -156,8 +155,6 @@ function SkillBubble({ skill, featured = false, shouldReduceMotion = false, inde
       <TooltipTrigger asChild>
         <div
           className="flex flex-col items-center group cursor-pointer w-full max-w-[100px] sm:max-w-[120px]"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
         >
           <m.div
             className={`${dimensions[size]} flex items-center justify-center rounded-xl sm:rounded-2xl bg-background shadow-sm transition-all duration-300 hover:shadow-lg`}
@@ -202,7 +199,7 @@ function SkillBubble({ skill, featured = false, shouldReduceMotion = false, inde
           <span
             className={`mt-2 text-center font-medium transition-colors duration-300 ${
               featured ? "text-xs sm:text-sm md:text-base" : "text-[11px] sm:text-xs md:text-sm"
-            } ${isHovered ? "text-primary" : "text-foreground"}`}
+            } text-foreground group-hover:text-primary`}
           >
             {skill.name}
           </span>

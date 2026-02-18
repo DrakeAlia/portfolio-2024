@@ -6,7 +6,7 @@ import { siteConfig } from "@/config/site";
 import { Icons } from "@/components/ui/icons";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Github, Linkedin, Twitter } from "lucide-react";
+import { Github, Linkedin } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -123,7 +123,7 @@ export default function Footer() {
                     "group"
                   )}
                 >
-                  <Twitter className="h-5 w-5 transition-colors duration-200 group-hover:text-primary" />
+                  <Icons.twitter className="h-5 w-5 fill-current transition-colors duration-200 group-hover:text-primary" />
                   <span className="sr-only">Twitter</span>
                 </div>
               </Link>

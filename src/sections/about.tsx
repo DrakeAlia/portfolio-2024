@@ -50,26 +50,44 @@ export default function About() {
     {
       icon: Briefcase,
       label: "Experience",
-      value: "3+ Years",
+      value: "4+ Years",
       color: "text-blue-500",
+      mobileHidden: false,
     },
     {
       icon: FolderGit2,
-      label: "Projects",
-      value: "10+ Completed",
+      label: "Personal Projects",
+      value: "5+ Built",
       color: "text-green-500",
+      mobileHidden: false,
     },
     {
       icon: Code2,
       label: "Tech Stack",
-      value: "React, Next.js, TypeScript",
+      value: "React, Next.js, TS",
       color: "text-purple-500",
+      mobileHidden: false,
     },
     {
       icon: MapPin,
       label: "Location",
-      value: "Seattle Area",
+      value: "Greater Seattle Area",
       color: "text-orange-500",
+      mobileHidden: false,
+    },
+    {
+      icon: Building2,
+      label: "Client Projects",
+      value: "1 Delivered",
+      color: "text-amber-500",
+      mobileHidden: true,
+    },
+    {
+      icon: Award,
+      label: "Focus",
+      value: "UI & Frontend",
+      color: "text-cyan-500",
+      mobileHidden: true,
     },
   ];
 
@@ -140,11 +158,12 @@ export default function About() {
       {/* Stats Grid */}
       <m.div
         variants={itemVariants}
-        className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8"
+        className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-8"
       >
         {stats.map((stat, index) => (
           <m.div
             key={stat.label}
+            className={stat.mobileHidden ? "hidden sm:block" : ""}
             variants={itemVariants}
             whileHover={shouldReduceMotion || isMobile ? {} : { y: -4, scale: 1.02 }}
             animate={shouldReduceMotion || isMobile ? {} : { y: [0, -4, 0] }}
@@ -153,8 +172,8 @@ export default function About() {
               scale: { duration: 0.2 }
             }}
           >
-            <Card className="relative overflow-hidden group cursor-default">
-              <CardContent className="p-3 sm:p-4 md:p-6">
+            <Card className="relative overflow-hidden group cursor-default h-full">
+              <CardContent className="p-3 sm:p-4 md:p-6 h-full flex items-center justify-center">
                 <div className="flex flex-col items-center text-center space-y-2">
                   <m.div
                     className={`${stat.color} p-2.5 sm:p-3 rounded-lg bg-muted/50 transition-transform duration-300`}
