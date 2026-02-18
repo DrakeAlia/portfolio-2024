@@ -1,10 +1,12 @@
-import { Mail, Linkedin, Twitter, Github, LucideIcon } from "lucide-react";
+import { Mail, Linkedin, Github, LucideIcon } from "lucide-react";
+import { Icons } from "@/components/ui/icons";
+import React from "react";
 
 export type Contact = {
   name: string;
   className: string;
   href: string;
-  icon: LucideIcon;
+  icon: LucideIcon | React.ComponentType<{ className?: string }>;
 };
 
 export const contacts: Contact[] = [
@@ -24,7 +26,7 @@ export const contacts: Contact[] = [
     name: "X",
     className: "bg-black hover:bg-gray-800/90",
     href: "https://x.com/Drake2Alia",
-    icon: Twitter,
+    icon: Icons.twitter,
   },
   {
     name: "Github",

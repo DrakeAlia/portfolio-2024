@@ -50,7 +50,7 @@ const ContactList = memo(function ContactList({
                     onClick={copyEmailToClipboard}
                     aria-label="Copy email address"
                   >
-                    <contact.icon className="w-5 h-5" />
+                    <contact.icon className={cn("w-5 h-5", contact.name === "X" && "fill-current")} />
                   </Button>
                 ) : (
                   <Button
@@ -66,7 +66,7 @@ const ContactList = memo(function ContactList({
                       target="_blank"
                       aria-label={contact.name}
                     >
-                      <contact.icon className="w-5 h-5" />
+                      <contact.icon className={cn("w-5 h-5", contact.name === "X" && "fill-current")} />
                     </a>
                   </Button>
                 )}

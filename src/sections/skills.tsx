@@ -80,16 +80,16 @@ export default function Skills() {
         >
           <Tabs defaultValue={categories[0]} className="w-full overflow-visible">
             {/* Horizontal scrollable tabs on mobile */}
-            <div className="relative mb-8 -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="relative mb-10 -mx-4 px-4 sm:mx-0 sm:px-0">
               <div className="overflow-x-auto pb-2 pt-1 pr-8 scrollbar-hide touch-pan-x">
-                <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-3 lg:grid-cols-5 gap-3 bg-transparent">
+                <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 lg:gap-4 bg-transparent">
                   {categories.map((category) => (
                     <TabsTrigger
                       key={category}
                       value={category}
-                      className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-base font-medium py-3.5 px-5 rounded-lg border-2 border-border min-h-[48px] min-w-[110px] sm:min-w-0 whitespace-nowrap transition-all hover:border-primary/50 touch-manipulation"
+                      className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6 rounded-lg border-2 border-border min-h-[48px] min-w-[110px] sm:min-w-0 whitespace-nowrap transition-all hover:border-primary/50 touch-manipulation"
                     >
-                      {category.replace(" Development", "")}
+                      {category.replace(" Development", "").replace("Tools & Environment", "Tools")}
                     </TabsTrigger>
                   ))}
                 </TabsList>
